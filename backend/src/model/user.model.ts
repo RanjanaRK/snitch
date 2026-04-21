@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 
-const userModel = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   contact: { type: String, required: false },
   password: {
@@ -30,6 +30,6 @@ const userModel = new mongoose.Schema({
 //   return await bcrypt.compare(candidatePassword, this.password);
 // };
 
-const User = mongoose.model("user", userModel);
+const userModel = mongoose.model("user", userSchema);
 
-export default User;
+export default userModel;
