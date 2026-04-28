@@ -1,14 +1,20 @@
 import bcrypt from "bcryptjs";
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
+export interface IUser extends Document {
+  email: string;
+  contact: string;
+  password: string;
+  fullname: string;
+  role: "buyer" | "seller";
+  googleId?: string;
+}
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema<IUser>({
   email: { type: String, required: true, unique: true },
   contact: { type: String, required: false },
   password: {
     type: String,
-    required: function () {
-      return !this.googleId;
-    },
+    required: true,
   },
   fullname: { type: String, required: true },
   role: {
@@ -21,14 +27,19 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-// userModel.pre("save", async function () {
-//   if (!this.isModified("password")) return;
-//   this.password = await bcrypt.hash(this.password, 12);
-// });
+userSchema.pre("save", async function () {
+  if (!this.isModified("password")) return;
 
-// userModel.methods.comparePassword = async function (candidatePassword: string) {
-//   return await bcrypt.compare(candidatePassword, this.password);
-// };
+  const hash = await bcrypt.hash(this.password, 10);
+
+  this.password = hash;
+});
+
+userSchema.methods.comparePassword = async function (
+  candidatePassword: string,
+) {
+  return await bcrypt.compare(candidatePassword, this.password);
+};
 
 const userModel = mongoose.model("user", userSchema);
 
