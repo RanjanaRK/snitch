@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+
 dotenv.config();
 
 if (!process.env.MONGO_URI) {
@@ -25,7 +26,15 @@ if (!process.env.IMAGEKIT_PRIVATE_KEY) {
   );
 }
 
-export const env = {
+type Iconfig = {
+  readonly MONGO_URI: string;
+  readonly JWT_SECRET: string;
+  readonly GOOGLE_CLIENT_ID: string;
+  readonly GOOGLE_CLIENT_SECRET: string;
+  readonly NODE_ENV: string;
+  readonly IMAGEKIT_PRIVATE_KEY: string;
+};
+export const env: Iconfig = {
   MONGO_URI: process.env.MONGO_URI,
   JWT_SECRET: process.env.JWT_SECRET,
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
