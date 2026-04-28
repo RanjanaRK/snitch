@@ -7,6 +7,8 @@ export interface IUser extends Document {
   fullname: string;
   role: "buyer" | "seller";
   googleId?: string;
+
+  comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
 const userSchema = new mongoose.Schema<IUser>({
