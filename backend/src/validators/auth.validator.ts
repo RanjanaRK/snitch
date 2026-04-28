@@ -26,6 +26,13 @@ export const validateRegisterUser = [
     .matches(/^\d{10}$/)
     .withMessage("Contact must be a 10 digit number"),
   body("isSeller").isBoolean().withMessage("isSeller must be a boolean"),
+  validateRequest,
+];
 
+export const validateLoginUser = [
+  body("email").isEmail().withMessage("Please enter a valid email"),
+  body("password")
+    .isLength({ min: 6 })
+    .withMessage("Password must be at least 6 characters long"),
   validateRequest,
 ];
