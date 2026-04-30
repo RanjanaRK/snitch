@@ -37,7 +37,7 @@ const RegisterForm = () => {
         fontFamily: "'Inter', sans-serif",
       }}
     >
-      {/* LEFT PANEL (UNCHANGED) */}
+      {/* LEFT PANEL  */}
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
         <img
           src="/snitch_editorial_warm.png"
