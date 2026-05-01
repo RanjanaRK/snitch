@@ -3,7 +3,7 @@ import type { RegisterFormData } from "../utils/zodSchema";
 import type { AuthResponse } from "../utils/authTypes";
 
 const authApiInstance = axios.create({
-  baseURL: "http://localhost:5000/api/auth",
+  baseURL: "http://localhost:3000/api/auth",
   withCredentials: true,
 });
 

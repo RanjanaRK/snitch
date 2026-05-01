@@ -4,8 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import ContinueWithGoogle from "./ContinueWithGoogle";
 import { useForm } from "react-hook-form";
 import { registerSchema, type RegisterFormData } from "../utils/zodSchema";
+import { useAuth } from "../hooks/useAuth";
 
 const RegisterForm = () => {
+  const { handleRegister } = useAuth();
+
   const {
     register,
     handleSubmit,
@@ -22,6 +25,7 @@ const RegisterForm = () => {
 
   const onSubmit = async (data: RegisterFormData) => {
     console.log(data);
+    await handleRegister(data);
   };
 
   return (
