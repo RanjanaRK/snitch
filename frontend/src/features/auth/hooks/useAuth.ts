@@ -9,15 +9,27 @@ export const useAuth = () => {
 
   const handleRegister = async (userdata: RegisterFormData) => {
     try {
+      dispatch(setLoading(true));
+
       const data = await registeruser(userdata);
 
       if (data.user) {
-        dispatch(setUser(data.user || null));
-
-        toast.success(data.message);
+        dispatch(setUser(data.user));
       }
+
+      toast.success(data.message);
+
+      return data;
     } catch (error: any) {
-      dispatch(setError(error.response?.data.message || "Registration failed"));
+      const message = error.response?.data?.message || "Registration failed";
+
+      dispatch(setError(message));
+
+      toast.error(message);
+
+      throw error;
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 

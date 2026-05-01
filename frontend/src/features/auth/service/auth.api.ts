@@ -10,10 +10,14 @@ const authApiInstance = axios.create({
 export const registeruser = async (
   userData: RegisterFormData,
 ): Promise<AuthResponse> => {
-  const response = await authApiInstance.post<AuthResponse>(
-    "/register",
-    userData,
-  );
+  try {
+    const response = await authApiInstance.post("/register", userData);
 
-  return response.data;
+    console.log(response.data);
+    return response.data;
+  } catch (error: any) {
+    console.error(error.response?.data);
+    console.error("Error registering user:", error);
+    throw error;
+  }
 };

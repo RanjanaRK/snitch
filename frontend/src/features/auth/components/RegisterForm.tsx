@@ -5,6 +5,7 @@ import ContinueWithGoogle from "./ContinueWithGoogle";
 import { useForm } from "react-hook-form";
 import { registerSchema, type RegisterFormData } from "../utils/zodSchema";
 import { useAuth } from "../hooks/useAuth";
+import { registeruser } from "../service/auth.api";
 
 const RegisterForm = () => {
   const { handleRegister } = useAuth();
@@ -68,7 +69,7 @@ const RegisterForm = () => {
                 Full Name
               </label>
               <input
-                {...register("fullName", { required: true })}
+                {...register("fullname", { required: true })}
                 placeholder="e.g. John Doe"
                 className="w-full bg-transparent py-3 text-sm border-b border-[#d0c5b5] outline-none"
               />
@@ -80,7 +81,7 @@ const RegisterForm = () => {
                 Contact Number
               </label>
               <input
-                {...register("contactNumber", { required: true })}
+                {...register("contact", { required: true })}
                 placeholder="+91 98765 43210"
                 className="w-full bg-transparent py-3 text-sm border-b border-[#d0c5b5] outline-none"
               />
@@ -105,7 +106,7 @@ const RegisterForm = () => {
                 Password
               </label>
               <input
-                type="password"
+                // type="password"
                 {...register("password", { required: true })}
                 placeholder="••••••••"
                 className="w-full bg-transparent py-3 text-sm border-b border-[#d0c5b5] outline-none"

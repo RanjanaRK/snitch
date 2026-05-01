@@ -3,17 +3,11 @@ import userModel, { type IUser } from "../model/user.model.js";
 import jwt from "jsonwebtoken";
 import env from "../config/env.js";
 
-interface sendTokenResponseTypes {
-  user: IUser;
-  res: Response;
-  message: string;
-}
-
-async function sendTokenResponse({
-  user,
-  res,
-  message,
-}: sendTokenResponseTypes) {
+async function sendTokenResponse(
+  user: IUser,
+  res: Response,
+  message: string,
+): Promise<void> {
   const token = jwt.sign({ id: user._id }, env.JWT_SECRET, {
     expiresIn: "7d",
   });
@@ -26,8 +20,6 @@ async function sendTokenResponse({
   });
 
   res.status(200).json({
-    message,
-    res,
     user: {
       _id: user._id,
       email: user.email,
@@ -35,6 +27,8 @@ async function sendTokenResponse({
       contact: user.contact,
       role: user.role,
     },
+    success: true,
+    message,
   });
 }
 
@@ -59,11 +53,7 @@ export const register = async (req: Request, res: Response) => {
       role: isSeller ? "seller" : "buyer",
     });
 
-    await sendTokenResponse({
-      user,
-      res,
-      message: "User registered successfully",
-    });
+    await sendTokenResponse(user, res, "User registered successfully");
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
@@ -86,11 +76,7 @@ export const login = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
-    await sendTokenResponse({
-      user,
-      res,
-      message: "User logged in successfully",
-    });
+    await sendTokenResponse(user, res, "User logged in successfully");
   } catch (error) {
     return res.status(500).json({ message: "Server error" });
   }
