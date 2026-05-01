@@ -1,11 +1,10 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import ContinueWithGoogle from "./ContinueWithGoogle";
 import { useForm } from "react-hook-form";
-import { registerSchema, type RegisterFormData } from "../utils/zodSchema";
 import { useAuth } from "../hooks/useAuth";
-import { registeruser } from "../service/auth.api";
+import { registerSchema, type RegisterFormData } from "../utils/zodSchema";
+import ContinueWithGoogle from "./ContinueWithGoogle";
 
 const RegisterForm = () => {
   const { handleRegister } = useAuth();

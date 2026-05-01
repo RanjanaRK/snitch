@@ -2,7 +2,10 @@ import { loginSchema, type LoginFormData } from "../utils/zodSchema";
 import ContinueWithGoogle from "./ContinueWithGoogle";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuth } from "../hooks/useAuth";
 const LoginForm = () => {
+  const { handleLogin } = useAuth();
+
   const {
     register,
     handleSubmit,
@@ -12,7 +15,8 @@ const LoginForm = () => {
   });
 
   const onSubmit = async (data: LoginFormData) => {
-    console.log("FORM DATA:", data);
+    // console.log("FORM DATA:", data);
+    await handleLogin(data);
   };
 
   return (
