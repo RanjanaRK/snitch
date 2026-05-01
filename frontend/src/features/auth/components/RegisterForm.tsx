@@ -5,9 +5,11 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "../hooks/useAuth";
 import { registerSchema, type RegisterFormData } from "../utils/zodSchema";
 import ContinueWithGoogle from "./ContinueWithGoogle";
+import { useNavigate } from "react-router";
 
 const RegisterForm = () => {
   const { handleRegister } = useAuth();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -26,6 +28,7 @@ const RegisterForm = () => {
   const onSubmit = async (data: RegisterFormData) => {
     console.log(data);
     await handleRegister(data);
+    navigate("/");
   };
 
   return (
