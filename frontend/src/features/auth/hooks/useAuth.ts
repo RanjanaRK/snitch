@@ -9,8 +9,8 @@ export const useAuth = () => {
   const handleRegister = async (userdata: RegisterFormData) => {
     const data = await registeruser(userdata);
 
-    dispatch(setUser(data.user));
+    dispatch(setUser(data.user || null));
   };
 
-  return {};
+  return { handleRegister };
 };
