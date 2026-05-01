@@ -1,15 +1,9 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import ContinueWithGoogle from "./ContinueWithGoogle";
 import { useForm } from "react-hook-form";
-
-type RegisterFormData = {
-  fullName: string;
-  contactNumber: string;
-  email: string;
-  password: string;
-  isSeller: boolean;
-};
+import { registerSchema, type RegisterFormData } from "../utils/zodSchema";
 
 const RegisterForm = () => {
   const {
@@ -18,6 +12,7 @@ const RegisterForm = () => {
     watch,
     formState: { isSubmitting },
   } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       isSeller: false,
     },
