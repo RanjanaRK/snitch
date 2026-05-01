@@ -10,7 +10,10 @@ const authApiInstance = axios.create({
 export const registeruser = async (
   userData: RegisterFormData,
 ): Promise<AuthResponse> => {
-  const response = await authApiInstance.post("/register", userData);
+  const response = await authApiInstance.post<AuthResponse>(
+    "/register",
+    userData,
+  );
 
   return response.data;
 };
