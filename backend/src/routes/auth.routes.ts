@@ -9,6 +9,7 @@ import {
   validateRegisterUser,
 } from "../validators/auth.validator.js";
 import passport from "passport";
+import env from "../config/env.js";
 
 const authRouter = Router();
 
@@ -25,7 +26,8 @@ authRouter.get(
   "/google/callback",
   passport.authenticate("google", {
     session: false,
-    failureRedirect: "http://localhost:5173/login",
+    failureRedirect:
+      env.NODE_ENV === "development" ? "http://localhost:5173/login" : "/login",
   }),
   googleAuthCallback,
 );
