@@ -81,3 +81,9 @@ export const login = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Server error" });
   }
 };
+
+export const googleAuthCallback = async (req: Request, res: Response) => {
+  console.log(req.user);
+
+  res.redirect("http://localhost:5173");
+};

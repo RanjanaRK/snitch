@@ -16,7 +16,9 @@ const userSchema = new mongoose.Schema<IUser>({
   contact: { type: String, required: false },
   password: {
     type: String,
-    required: true,
+    required: function (this: IUser) {
+      return !this.googleId;
+    },
   },
   fullname: { type: String, required: true },
   role: {
