@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import userModel, { type IUser } from "../model/user.model.js";
 import jwt from "jsonwebtoken";
 import env from "../config/env.js";
+import type { GoogleUser } from "../utils/types.js";
 
 async function sendTokenResponse(
   user: IUser,
@@ -83,7 +84,42 @@ export const login = async (req: Request, res: Response) => {
 };
 
 export const googleAuthCallback = async (req: Request, res: Response) => {
-  console.log(req.user);
+  try {
+    const userData = req.user as GoogleUser;
 
-  res.redirect("http://localhost:5173");
+    const { id, displayName, emails } = userData;
+
+    const email = emails?.[0]?.value;
+
+    if (!email) {
+      return res.status(400).json({
+        message: "Google account email not found",
+      });
+    }
+
+    let user = await userModel.findOne({ email });
+
+    if (!user) {
+      user = await userModel.create({
+        email,
+        googleId: id,
+        fullname: displayName,
+      });
+    }
+
+    const token = jwt.sign({ id: user?._id }, env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    res.redirect("http://localhost:5173");
+  } catch (error) {
+    return res.status(500).json({ message: "Server error" });
+  }
 };
