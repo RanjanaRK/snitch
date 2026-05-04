@@ -7,6 +7,7 @@ import connectDB from "./config/db.js";
 import env from "./config/env.js";
 import authRouter from "./routes/auth.routes.js";
 import app from "./server.js";
+import productRouter from "./routes/product.routes.js";
 
 connectDB();
 
@@ -37,6 +38,7 @@ passport.use(
 );
 
 app.use("/api/auth", authRouter);
+app.use("/api/products", productRouter);
 
 const PORT = process.env.PORT || 3000;
 
