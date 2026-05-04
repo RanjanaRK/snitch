@@ -9,7 +9,7 @@ async function sendTokenResponse(
   res: Response,
   message: string,
 ): Promise<void> {
-  const token = jwt.sign({ id: user._id }, env.JWT_SECRET, {
+  const token = jwt.sign({ id: user._id, role: user.role }, env.JWT_SECRET, {
     expiresIn: "7d",
   });
 
@@ -107,9 +107,13 @@ export const googleAuthCallback = async (req: Request, res: Response) => {
       });
     }
 
-    const token = jwt.sign({ id: user?._id }, env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
+    const token = jwt.sign(
+      { id: user?._id, role: user?.role },
+      env.JWT_SECRET,
+      {
+        expiresIn: "7d",
+      },
+    );
 
     res.cookie("token", token, {
       httpOnly: true,

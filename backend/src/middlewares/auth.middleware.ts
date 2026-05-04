@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
+import jwt from "jsonwebtoken";
 
 export const authenticateSeller = (
   req: Request,
@@ -12,5 +13,8 @@ export const authenticateSeller = (
   }
 
   try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
+      userId: string;
+    };
   } catch (error) {}
 };
