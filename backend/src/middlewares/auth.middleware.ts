@@ -11,7 +11,7 @@ export const authenticateRole = (allowedRoles: string[]) => {
 
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as {
-        userId: string;
+        id: string;
         role: string;
       };
 
