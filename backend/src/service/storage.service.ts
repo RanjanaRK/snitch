@@ -5,10 +5,22 @@ const client = new ImageKit({
   privateKey: env.IMAGEKIT_PRIVATE_KEY,
 });
 
-export const uploadImage = async ({ folder, fileName, buffer }) => {
+interface UploadImageParams {
+  folder?: string;
+  fileName: string;
+  buffer: Buffer;
+}
+
+export const uploadImage = async ({
+  folder = "snitch",
+  fileName,
+  buffer,
+}: UploadImageParams) => {
   const response = await client.files.upload({
     file: await ImageKit.toFile(buffer),
     fileName,
     folder,
   });
+
+  return response;
 };
