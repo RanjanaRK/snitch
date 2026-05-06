@@ -6,6 +6,7 @@ import type { JwtUser } from "../utils/types.js";
 export const createProduct = async (req: Request, res: Response) => {
   try {
     const { title, description, priceAmount, priceCurrency } = req.body;
+
     const seller = req.user as JwtUser;
 
     if (!seller) {
@@ -28,7 +29,7 @@ export const createProduct = async (req: Request, res: Response) => {
       title,
       description,
       price: {
-        amount: priceAmount,
+        amount: Number(priceAmount),
         currency: priceCurrency || "INR",
       },
       images,
