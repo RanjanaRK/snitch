@@ -6,7 +6,7 @@ export const authenticateRole = (allowedRoles: string[]) => {
     const token = req.cookies.token;
 
     if (!token) {
-      res.status(401).json({ message: "Unauthorized" });
+      return res.status(401).json({ message: "Unauthorized" });
     }
 
     try {
