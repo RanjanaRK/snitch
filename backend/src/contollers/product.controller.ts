@@ -1,11 +1,12 @@
 import type { Request, Response } from "express";
 import productModel from "../model/product.model.js";
 import { uploadImage } from "../service/storage.service.js";
+import type { JwtUser } from "../utils/types.js";
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
     const { title, description, priceAmount, priceCurrency } = req.body;
-    const seller = req.user;
+    const seller = req.user as JwtUser;
 
     if (!seller) {
       return res.status(401).json({
