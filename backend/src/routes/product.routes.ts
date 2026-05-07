@@ -7,6 +7,7 @@ import {
   getProductById,
   getSellerProducts,
 } from "../contollers/product.controller.js";
+import { productValidator } from "../validators/product.validator.js";
 
 const productRouter = Router();
 
@@ -20,6 +21,7 @@ productRouter.post(
   "/",
   authenticateRole(["seller"]),
   upload.array("images", 7),
+  productValidator,
   createProduct,
 );
 
