@@ -38,4 +38,11 @@ productRouter.get("/seller", authenticateRole(["seller"]), getSellerProducts);
 
 productRouter.get("/detail/:id", getProductById);
 
+/**
+ * @route GET /api/products
+ * @description Get all products
+ * @access Public
+ */
+productRouter.get("/", getAllProducts);
+
 export default productRouter;
