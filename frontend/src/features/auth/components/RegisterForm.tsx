@@ -161,7 +161,7 @@ const RegisterForm = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-4 text-[11px] uppercase tracking-[0.25em] bg-[#1b1c1a] text-[#fbf9f6]"
+              className="w-full py-4 hover:bg-[#8e7e61] text-[11px] uppercase tracking-[0.25em] bg-[#1b1c1a] text-[#fbf9f6]"
             >
               {isSubmitting ? "Creating..." : "Sign Up"}
             </button>

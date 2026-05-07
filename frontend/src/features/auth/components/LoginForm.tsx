@@ -117,7 +117,7 @@ const LoginForm = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-4 text-[11px] uppercase tracking-[0.25em] font-medium transition-all duration-300 mt-2 bg-[#1b1c1a] text-[#fbf9f6]"
+                className="w-full hover:bg-[#8e7e61] py-4 text-[11px] uppercase tracking-[0.25em] font-medium transition-all duration-300 mt-2 bg-[#1b1c1a] text-[#fbf9f6]"
               >
                 {isSubmitting ? "Signing In..." : "Sign In"}
               </button>
