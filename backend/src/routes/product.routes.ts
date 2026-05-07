@@ -3,6 +3,7 @@ import { authenticateRole } from "../middlewares/auth.middleware.js";
 import upload from "../middlewares/upload.middleware.js";
 import {
   createProduct,
+  getAllProducts,
   getProductById,
   getSellerProducts,
 } from "../contollers/product.controller.js";
