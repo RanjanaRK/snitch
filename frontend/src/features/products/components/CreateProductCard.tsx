@@ -7,6 +7,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRef, useState } from "react";
 import { useProduct } from "../hooks/useProduct";
+import { toast } from "sonner";
 
 const CURRENCIES = ["INR", "USD", "EUR", "GBP"];
 const MAX_IMAGES = 7;
@@ -104,9 +105,13 @@ const CreateProductCard = () => {
         formData.append("images", img.file);
       });
 
-      await handleCreateProduct(formData);
-    } catch (error) {
-      console.log(error);
+      const res = await handleCreateProduct(formData);
+
+      setImages([]);
+
+      toast.success(res.message);
+    } catch (error: any) {
+      toast.error(error.message);
     } finally {
       setIsSubmitting(false);
     }
@@ -192,7 +197,9 @@ const CreateProductCard = () => {
                   <input
                     type="number"
                     placeholder="999"
-                    {...register("priceAmount")}
+                    {...register("priceAmount", {
+                      valueAsNumber: true,
+                    })}
                     className="w-full bg-transparent outline-none py-3 text-sm border-b border-[#d0c5b5]"
                   />
 
