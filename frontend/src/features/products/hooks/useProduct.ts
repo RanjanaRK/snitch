@@ -12,7 +12,7 @@ export const useProduct = () => {
   const handleGetSellerProducts = async () => {
     const data = await getSellerProducts();
     dispatch(setSellerProducts(data.products));
-    return data;
+    return data.products;
   };
 
   return {

@@ -6,6 +6,7 @@ import { useAuth } from "../hooks/useAuth";
 import { registerSchema, type RegisterFormData } from "../utils/zodSchema";
 import ContinueWithGoogle from "./ContinueWithGoogle";
 import { useNavigate } from "react-router";
+import { toast } from "sonner";
 
 const RegisterForm = () => {
   const { handleRegister } = useAuth();
@@ -26,9 +27,14 @@ const RegisterForm = () => {
   const isSeller = watch("isSeller");
 
   const onSubmit = async (data: RegisterFormData) => {
-    console.log(data);
-    await handleRegister(data);
-    navigate("/");
+    try {
+      const res = await handleRegister(data);
+      toast.success(res.message);
+
+      navigate("/");
+    } catch (error: any) {
+      toast.error(error.message);
+    }
   };
 
   return (

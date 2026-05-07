@@ -42,12 +42,11 @@ export const useAuth = () => {
       if (data.user) {
         dispatch(setUser(data.user));
       }
-      toast.success(data.message);
+
       return data;
     } catch (error: any) {
       const message = error.response.data.message || "Login failed";
 
-      toast.error(message);
       dispatch(setError(message));
     } finally {
       dispatch(setLoading(false));
