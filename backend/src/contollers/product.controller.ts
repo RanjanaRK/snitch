@@ -45,3 +45,25 @@ export const createProduct = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error creating product" });
   }
 };
+
+export const getSellerProducts = async (req: Request, res: Response) => {
+  try {
+    const seller = req.user as JwtUser;
+
+    if (!seller) {
+      return res.status(401).json({
+        message: "Unauthorized",
+      });
+    }
+
+    const products = await productModel.find({ seller: seller.id });
+
+    return res.status(200).json({
+      message: "Products fetched successfully",
+      success: true,
+      products,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Error fetching products" });
+  }
+};
