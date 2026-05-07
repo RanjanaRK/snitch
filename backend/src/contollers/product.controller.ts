@@ -36,7 +36,7 @@ export const createProduct = async (req: Request, res: Response) => {
       seller: seller.id,
     });
 
-    res.status(201).json({
+    return res.status(201).json({
       message: "Product created successfully",
       success: true,
       product,
