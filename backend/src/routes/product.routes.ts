@@ -3,6 +3,7 @@ import { authenticateRole } from "../middlewares/auth.middleware.js";
 import upload from "../middlewares/upload.middleware.js";
 import {
   createProduct,
+  getProductById,
   getSellerProducts,
 } from "../contollers/product.controller.js";
 
@@ -28,5 +29,13 @@ productRouter.post(
  */
 
 productRouter.get("/seller", authenticateRole(["seller"]), getSellerProducts);
+
+/**
+ * @route GET /api/products/:id
+ * @description Get a product by its ID
+ * @access Public
+ */
+
+productRouter.get("/detail/:id", getProductById);
 
 export default productRouter;
