@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import { useProduct } from "../hooks/useProduct";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import type { Product } from "../utils/productTypes";
 import ProductCard from "../components/ProductCard";
+import { useProduct } from "../hooks/useProduct";
+import type { Product } from "../utils/productTypes";
 
 const Dashboard = () => {
   const navigate = useNavigate();

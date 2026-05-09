@@ -21,10 +21,7 @@ const ProductCard = ({ product }: Props) => {
         className="group cursor-pointer flex flex-col"
       >
         {/* Image Container */}
-        <div
-          className="aspect-4/5 overflow-hidden mb-6"
-          style={{ backgroundColor: "#f5f3f0" }}
-        >
+        <div className="aspect-4/5 overflow-hidden mb-6 bg-[#f5f3f0] ">
           <img
             src={imageUrl}
             alt={product.title}
@@ -36,28 +33,19 @@ const ProductCard = ({ product }: Props) => {
         <div className="flex flex-col gap-2">
           <div className="flex items-start justify-between gap-4">
             <h3
-              className="text-xl leading-snug transition-colors duration-300 group-hover:text-[#C9A96E]"
-              style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                color: "#1b1c1a",
-              }}
+              className="text-xl leading-snug transition-colors duration-300 group-hover:text-[#C9A96E] font-['Cormorant_Garamond'] text-[#1b1c1a] font-semibold
+              "
             >
               {product.title}
             </h3>
           </div>
 
-          <p
-            className="text-[12px] line-clamp-2 leading-relaxed"
-            style={{ color: "#7A6E63" }}
-          >
+          <p className="text-[12px] line-clamp-2 leading-relaxed text-[#7A6E63] ">
             {product.description}
           </p>
 
           <div className="mt-2">
-            <span
-              className="text-[10px] uppercase tracking-[0.2em] font-medium"
-              style={{ color: "#1b1c1a" }}
-            >
+            <span className="text-[10px] uppercase tracking-[0.2em] font-medium text-[#1b1c1a]">
               {product.price?.currency}{" "}
               {product.price?.amount?.toLocaleString()}
             </span>
