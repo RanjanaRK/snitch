@@ -18,34 +18,31 @@ const ProductCard = ({ product }: Props) => {
           navigate(`/seller/product/${product._id}`);
         }}
         key={product._id}
-        className="group cursor-pointer flex flex-col"
+        className="group flex cursor-pointer flex-col"
       >
         {/* Image Container */}
-        <div className="aspect-4/5 overflow-hidden mb-6 bg-[#f5f3f0] ">
+        <div className="mb-6 aspect-4/5 overflow-hidden bg-[#f5f3f0]">
           <img
             src={imageUrl}
             alt={product.title}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
         </div>
 
         {/* Product Details */}
         <div className="flex flex-col gap-2">
           <div className="flex items-start justify-between gap-4">
-            <h3
-              className="text-xl leading-snug transition-colors duration-300 group-hover:text-[#C9A96E] font-['Cormorant_Garamond'] text-[#1b1c1a] font-semibold
-              "
-            >
+            <h3 className="font-['Cormorant_Garamond'] text-xl leading-snug font-semibold text-[#1b1c1a] transition-colors duration-300 group-hover:text-[#C9A96E]">
               {product.title}
             </h3>
           </div>
 
-          <p className="text-[12px] line-clamp-2 leading-relaxed text-[#7A6E63] ">
+          <p className="line-clamp-2 text-[12px] leading-relaxed text-[#7A6E63]">
             {product.description}
           </p>
 
           <div className="mt-2">
-            <span className="text-[10px] uppercase tracking-[0.2em] font-medium text-[#1b1c1a]">
+            <span className="text-[10px] font-medium tracking-[0.2em] text-[#1b1c1a] uppercase">
               {product.price?.currency}{" "}
               {product.price?.amount?.toLocaleString()}
             </span>
