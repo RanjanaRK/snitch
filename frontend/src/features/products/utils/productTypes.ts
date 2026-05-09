@@ -3,13 +3,17 @@ type Price = {
   currency: string;
 };
 
+type Image = {
+  url: string;
+};
+
 export type Product = {
-  id: string;
+  _id: string;
   title: string;
   description: string;
   seller: string;
   price: Price;
-  images: string[];
+  images: Image[];
   createdAt: string;
   updatedAt: string;
 };
