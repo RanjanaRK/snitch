@@ -4,6 +4,7 @@ import Register from "../features/auth/pages/Register";
 import CreateProduct from "../features/products/pages/CreateProduct";
 import Dashboard from "../features/products/pages/Dashboard";
 import Protected from "../features/auth/components/Protected";
+import Home from "../features/products/pages/Home";
 
 export const routes = createBrowserRouter([
   {
@@ -16,11 +17,7 @@ export const routes = createBrowserRouter([
   },
   {
     path: "/",
-    element: (
-      <Protected>
-        <h1 className="mt-20 text-center">Welcome to the Home Page</h1>
-      </Protected>
-    ),
+    element: <Home />,
   },
 
   {

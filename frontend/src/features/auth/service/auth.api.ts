@@ -12,7 +12,7 @@ export const registerUser = async (
 ): Promise<AuthResponse> => {
   const response = await authApiInstance.post("/register", userData);
 
-  console.log(response.data);
+  // console.log(response.data);
   return response.data;
 };
 
@@ -21,14 +21,14 @@ export const loginUser = async (
 ): Promise<AuthResponse> => {
   const response = await authApiInstance.post("/login", userData);
 
-  console.log(response.data);
+  // console.log(response.data);
   return response.data;
 };
 
 export const getMe = async (): Promise<AuthResponse> => {
   const repsonse = await authApiInstance.get<AuthResponse>("/me");
 
-  console.log(repsonse);
+  // console.log(repsonse);
 
   return repsonse.data;
 };

@@ -13,7 +13,7 @@ export const useAuth = () => {
 
       const data = await registerUser(userdata);
 
-      console.log(data);
+      // console.log(data);
 
       if (data.user) {
         dispatch(setUser(data.user));
@@ -60,13 +60,13 @@ export const useAuth = () => {
       dispatch(setLoading(true));
 
       const data = await getMe();
-      console.log(data.user);
+      // console.log(data.user);
 
       if (data.user) {
         dispatch(setUser(data.user));
       }
     } catch (error: any) {
-      console.log(error);
+      // console.log(error);
 
       dispatch(setError(error));
     } finally {

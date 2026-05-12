@@ -4,7 +4,7 @@ import {
   getAllProducts,
   getSellerProducts,
 } from "../services/product.api";
-import { setSellerProducts } from "../state/product.slice";
+import { setProducts, setSellerProducts } from "../state/product.slice";
 
 export const useProduct = () => {
   const dispatch = useDispatch();
@@ -21,7 +21,9 @@ export const useProduct = () => {
 
   const handleGetProducts = async () => {
     const data = await getAllProducts();
-    dispatch(setSellerProducts(data.products));
+    dispatch(setProducts(data.products));
+    console.log(data);
+
     return data.products;
   };
 

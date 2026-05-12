@@ -15,7 +15,7 @@ function App() {
     handleGetme();
   }, []);
 
-  console.log(user);
+  // console.log(user);
   return (
     <>
       <RouterProvider router={routes} />
