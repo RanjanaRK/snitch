@@ -7,6 +7,7 @@ import { registerSchema, type RegisterFormData } from "../utils/zodSchema";
 import ContinueWithGoogle from "./ContinueWithGoogle";
 import { useNavigate } from "react-router";
 import { toast } from "sonner";
+import { id } from "zod/v4/locales";
 
 const RegisterForm = () => {
   const { handleRegister } = useAuth();
@@ -31,7 +32,11 @@ const RegisterForm = () => {
       const res = await handleRegister(data);
       toast.success(res.message);
 
-      navigate("/");
+      if (res.user?.role === "buyer") {
+        navigate("/");
+      } else if (res.user?.role === "seller") {
+        navigate("/seller/dashboard");
+      }
     } catch (error: any) {
       toast.error(error.message);
     }
@@ -39,26 +44,26 @@ const RegisterForm = () => {
 
   return (
     <div
-      className="min-h-screen flex flex-col lg:flex-row selection:bg-[#C9A96E]/30"
+      className="flex min-h-screen flex-col selection:bg-[#C9A96E]/30 lg:flex-row"
       style={{
         backgroundColor: "#fbf9f6",
         fontFamily: "'Inter', sans-serif",
       }}
     >
       {/* LEFT PANEL  */}
-      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
+      <div className="relative hidden overflow-hidden lg:flex lg:w-1/2">
         <img
           src="/snitch_editorial_warm.png"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover"
         />
       </div>
 
       {/* RIGHT PANEL */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center px-8 py-16">
+      <div className="flex w-full items-center justify-center px-8 py-16 lg:w-1/2">
         <div className="w-full max-w-sm">
           {/* HEADER */}
           <div className="mb-12">
-            <p className="text-[10px] uppercase tracking-[0.22em] mb-4 text-[#C9A96E]">
+            <p className="mb-4 text-[10px] tracking-[0.22em] text-[#C9A96E] uppercase">
               Welcome to Snitch
             </p>
             <h1 className="text-[2.6rem] font-light text-[#1b1c1a]">
@@ -73,56 +78,56 @@ const RegisterForm = () => {
           >
             {/* FULL NAME */}
             <div className="flex flex-col gap-2">
-              <label className="text-[10px] uppercase text-[#7A6E63]">
+              <label className="text-[10px] text-[#7A6E63] uppercase">
                 Full Name
               </label>
               <input
                 {...register("fullname", { required: true })}
                 placeholder="e.g. John Doe"
-                className="w-full bg-transparent py-3 text-sm border-b border-[#d0c5b5] outline-none"
+                className="w-full border-b border-[#d0c5b5] bg-transparent py-3 text-sm outline-none"
               />
             </div>
 
             {/* CONTACT */}
             <div className="flex flex-col gap-2">
-              <label className="text-[10px] uppercase text-[#7A6E63]">
+              <label className="text-[10px] text-[#7A6E63] uppercase">
                 Contact Number
               </label>
               <input
                 {...register("contact", { required: true })}
                 placeholder="+91 98765 43210"
-                className="w-full bg-transparent py-3 text-sm border-b border-[#d0c5b5] outline-none"
+                className="w-full border-b border-[#d0c5b5] bg-transparent py-3 text-sm outline-none"
               />
             </div>
 
             {/* EMAIL */}
             <div className="flex flex-col gap-2">
-              <label className="text-[10px] uppercase text-[#7A6E63]">
+              <label className="text-[10px] text-[#7A6E63] uppercase">
                 Email Address
               </label>
               <input
                 type="email"
                 {...register("email", { required: true })}
                 placeholder="hello@example.com"
-                className="w-full bg-transparent py-3 text-sm border-b border-[#d0c5b5] outline-none"
+                className="w-full border-b border-[#d0c5b5] bg-transparent py-3 text-sm outline-none"
               />
             </div>
 
             {/* PASSWORD */}
             <div className="flex flex-col gap-2">
-              <label className="text-[10px] uppercase text-[#7A6E63]">
+              <label className="text-[10px] text-[#7A6E63] uppercase">
                 Password
               </label>
               <input
                 // type="password"
                 {...register("password", { required: true })}
                 placeholder="••••••••"
-                className="w-full bg-transparent py-3 text-sm border-b border-[#d0c5b5] outline-none"
+                className="w-full border-b border-[#d0c5b5] bg-transparent py-3 text-sm outline-none"
               />
             </div>
 
             {/* SELLER CHECKBOX */}
-            <label className="flex items-center gap-4 cursor-pointer">
+            <label className="flex cursor-pointer items-center gap-4">
               <div className="relative">
                 <input
                   type="checkbox"
@@ -130,14 +135,14 @@ const RegisterForm = () => {
                   className="peer sr-only"
                 />
                 <div
-                  className="w-4 h-4 border flex items-center justify-center"
+                  className="flex h-4 w-4 items-center justify-center border"
                   style={{
                     borderColor: isSeller ? "#C9A96E" : "#d0c5b5",
                     backgroundColor: isSeller ? "#C9A96E" : "transparent",
                   }}
                 >
                   {isSeller && (
-                    <svg className="w-2.5 h-2.5" viewBox="0 0 12 12">
+                    <svg className="h-2.5 w-2.5" viewBox="0 0 12 12">
                       <path
                         d="M2 6l3 3 5-5"
                         stroke="#fbf9f6"
@@ -161,16 +166,16 @@ const RegisterForm = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-4 hover:bg-[#8e7e61] text-[11px] uppercase tracking-[0.25em] bg-[#1b1c1a] text-[#fbf9f6]"
+              className="w-full bg-[#1b1c1a] py-4 text-[11px] tracking-[0.25em] text-[#fbf9f6] uppercase hover:bg-[#8e7e61]"
             >
               {isSubmitting ? "Creating..." : "Sign Up"}
             </button>
 
             {/* DIVIDER */}
             <div className="flex items-center gap-4">
-              <div className="flex-1 h-px bg-[#e4e2df]" />
+              <div className="h-px flex-1 bg-[#e4e2df]" />
               <span className="text-[10px] text-[#B5ADA3]">or</span>
-              <div className="flex-1 h-px bg-[#e4e2df]" />
+              <div className="h-px flex-1 bg-[#e4e2df]" />
             </div>
 
             <ContinueWithGoogle />
@@ -178,7 +183,7 @@ const RegisterForm = () => {
             {/* FOOTER */}
             <p className="text-center text-[11px] text-[#B5ADA3]">
               Already have an account?{" "}
-              <a href="/login" className="underline text-[#7A6E63]">
+              <a href="/login" className="text-[#7A6E63] underline">
                 Sign in
               </a>
             </p>
