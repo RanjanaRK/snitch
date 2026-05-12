@@ -39,7 +39,7 @@ productRouter.get("/seller", authenticateRole(["seller"]), getSellerProducts);
  * @access Public
  */
 
-productRouter.get("/detail/:id", getProductById);
+productRouter.get("/:id", getProductById);
 
 /**
  * @route GET /api/products

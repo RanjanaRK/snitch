@@ -30,3 +30,11 @@ export const getAllProducts = async (): Promise<ProductsResponse> => {
 
   return res.data;
 };
+
+export const productDetails = async (
+  productId: string,
+): Promise<ProductResponse> => {
+  const res = await productApiInstance.get<ProductResponse>(`/${productId}`);
+
+  return res.data;
+};
