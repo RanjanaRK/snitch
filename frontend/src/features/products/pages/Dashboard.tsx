@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import ProductCard from "../components/ProductCard";
 import { useProduct } from "../hooks/useProduct";
 import type { Product } from "../utils/productTypes";
+import type { RootState } from "../../../app/app.store";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ const Dashboard = () => {
   const { handleGetSellerProducts } = useProduct();
 
   const sellerProducts = useSelector(
-    (state: any) => state.product.sellerProduct,
+    (state: RootState) => state.product.sellerProduct,
   );
 
   useEffect(() => {
