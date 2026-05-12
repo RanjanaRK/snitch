@@ -22,3 +22,9 @@ export const getSellerProducts = async (): Promise<ProductsResponse> => {
 
   return res.data;
 };
+
+export const getAllProducts = async (): Promise<ProductsResponse> => {
+  const res = await productApiInstance.get<ProductsResponse>("/");
+
+  return res.data;
+};
