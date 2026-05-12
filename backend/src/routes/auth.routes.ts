@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  getMe,
   googleAuthCallback,
   login,
   register,

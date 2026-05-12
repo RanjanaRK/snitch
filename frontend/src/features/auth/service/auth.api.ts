@@ -10,29 +10,24 @@ const authApiInstance = axios.create({
 export const registerUser = async (
   userData: RegisterFormData,
 ): Promise<AuthResponse> => {
-  //   try {
   const response = await authApiInstance.post("/register", userData);
 
   console.log(response.data);
   return response.data;
-  //   } catch (error: any) {
-  //     console.error(error.response?.data);
-  //     console.error("Error registering user:", error);
-  //     throw error;
-  //   }
 };
 
 export const loginUser = async (
   userData: LoginFormData,
 ): Promise<AuthResponse> => {
-  //   try {
   const response = await authApiInstance.post("/login", userData);
 
   console.log(response.data);
   return response.data;
-  //   } catch (error: any) {
-  //     console.error(error.response?.data);
-  //     console.error("Error logging in user:", error);
-  //     throw error;
-  //   }
+};
+
+export const getMe = async (): Promise<AuthResponse> => {
+  const repsonse = await authApiInstance.get<AuthResponse>("/me");
+  console.log(repsonse);
+
+  return repsonse.data;
 };

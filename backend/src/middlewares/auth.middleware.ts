@@ -1,6 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import type { JwtUser } from "../utils/types.js";
+import env from "../config/env.js";
 
 export const authenticateRole = (allowedRoles: string[]) => {
   const middlware = (req: Request, res: Response, next: NextFunction) => {
@@ -11,10 +12,7 @@ export const authenticateRole = (allowedRoles: string[]) => {
     }
 
     try {
-      const decoded = jwt.verify(
-        token,
-        process.env.JWT_SECRET as string,
-      ) as JwtUser;
+      const decoded = jwt.verify(token, env.JWT_SECRET as string) as JwtUser;
 
       if (!allowedRoles.includes(decoded.role)) {
         return res.status(403).json({ message: "Forbidden" });

@@ -1,5 +1,5 @@
 import { setUser, setError, setLoading } from "../state/auth.slice";
-import { loginUser, registerUser } from "../service/auth.api";
+import { getMe, loginUser, registerUser } from "../service/auth.api";
 import type { LoginFormData, RegisterFormData } from "../utils/zodSchema";
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
@@ -53,5 +53,23 @@ export const useAuth = () => {
     }
   };
 
-  return { handleRegister, handleLogin };
+  const handleGetme = async () => {
+    try {
+      dispatch(setLoading(true));
+
+      const data = await getMe();
+
+      if (data.user) {
+        dispatch(setUser(data.user));
+      }
+    } catch (error: any) {
+      console.log(error);
+
+      dispatch(setError(error));
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+  return { handleRegister, handleLogin, handleGetme };
 };

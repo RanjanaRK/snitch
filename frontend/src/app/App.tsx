@@ -1,13 +1,19 @@
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { RouterProvider } from "react-router";
+import { useAuth } from "../features/auth/hooks/useAuth";
 import "./app.css";
 import { routes } from "./app.routes";
-import { useSelector } from "react-redux";
-import type { UserType } from "../features/auth/utils/authTypes";
 const App = () => {
-  const user = useSelector((state: UserType | null) => state?.auth?.user);
+  const { handleGetme } = useAuth();
+
+  const user = useSelector((state: any) => state.auth.user);
+
+  useEffect(() => {
+    handleGetme();
+  }, []);
 
   console.log(user);
-
   return (
     <>
       <RouterProvider router={routes} />

@@ -108,7 +108,7 @@ export const googleAuthCallback = async (req: Request, res: Response) => {
     }
 
     const token = jwt.sign(
-      { id: user?._id, role: user?.role },
+      { _id: user?._id, role: user?.role },
       env.JWT_SECRET,
       {
         expiresIn: "7d",
@@ -130,14 +130,15 @@ export const googleAuthCallback = async (req: Request, res: Response) => {
 
 export const getMe = async (req: Request, res: Response) => {
   try {
-    const user = req.user as IUser;
+    const user = req.user as JwtUser;
+
     if (!user) {
       return res.status(401).json({
         message: "Unauthorized",
       });
     }
 
-    const currentUser = await userModel.findById(user._id).select("-password");
+    const currentUser = await userModel.findById(user.id).select("-password");
 
     return res.status(200).json({
       message: "User fetched successfully",
