@@ -33,6 +33,6 @@ authRouter.get(
   googleAuthCallback,
 );
 
-authRouter.get("/me", authenticateRole(["seller", "buyer"]), () => {});
+authRouter.get("/me", authenticateRole(["seller", "buyer"]), getMe);
 
 export default authRouter;
