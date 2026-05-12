@@ -1,5 +1,5 @@
 export type JwtUser = {
-  id: string;
+  _id: string;
   role: "buyer" | "seller";
 };
 

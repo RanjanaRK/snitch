@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 import userModel, { type IUser } from "../model/user.model.js";
 import jwt from "jsonwebtoken";
 import env from "../config/env.js";
-import type { GoogleUser } from "../utils/types.js";
+import type { GoogleUser, JwtUser } from "../utils/types.js";
 
 async function sendTokenResponse(
   user: IUser,
@@ -123,6 +123,27 @@ export const googleAuthCallback = async (req: Request, res: Response) => {
     });
 
     res.redirect("http://localhost:5173");
+  } catch (error) {
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const getMe = async (req: Request, res: Response) => {
+  try {
+    const user = req.user as IUser;
+    if (!user) {
+      return res.status(401).json({
+        message: "Unauthorized",
+      });
+    }
+
+    const currentUser = await userModel.findById(user._id).select("-password");
+
+    return res.status(200).json({
+      message: "User fetched successfully",
+      success: true,
+      currentUser,
+    });
   } catch (error) {
     return res.status(500).json({ message: "Server error" });
   }

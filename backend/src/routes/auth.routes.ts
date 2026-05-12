@@ -10,6 +10,7 @@ import {
 } from "../validators/auth.validator.js";
 import passport from "passport";
 import env from "../config/env.js";
+import { authenticateRole } from "../middlewares/auth.middleware.js";
 
 const authRouter = Router();
 
@@ -31,5 +32,7 @@ authRouter.get(
   }),
   googleAuthCallback,
 );
+
+authRouter.get("/me", authenticateRole(["seller", "buyer"]), () => {});
 
 export default authRouter;

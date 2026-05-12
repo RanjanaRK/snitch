@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import productModel from "../model/product.model.js";
 import { uploadImage } from "../service/storage.service.js";
 import type { JwtUser } from "../utils/types.js";
+import type { IUser } from "../model/user.model.js";
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
@@ -33,7 +34,7 @@ export const createProduct = async (req: Request, res: Response) => {
         currency: priceCurrency || "INR",
       },
       images,
-      seller: seller.id,
+      seller: seller._id,
     });
 
     return res.status(201).json({
@@ -48,7 +49,7 @@ export const createProduct = async (req: Request, res: Response) => {
 
 export const getSellerProducts = async (req: Request, res: Response) => {
   try {
-    const seller = req.user as JwtUser;
+    const seller = req.user as IUser;
 
     if (!seller) {
       return res.status(401).json({
@@ -56,7 +57,7 @@ export const getSellerProducts = async (req: Request, res: Response) => {
       });
     }
 
-    const products = await productModel.find({ seller: seller.id });
+    const products = await productModel.find({ seller: seller._id });
 
     return res.status(200).json({
       message: "Products fetched successfully",
