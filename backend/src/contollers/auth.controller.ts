@@ -130,20 +130,20 @@ export const googleAuthCallback = async (req: Request, res: Response) => {
 
 export const getMe = async (req: Request, res: Response) => {
   try {
-    const user = req.user as JwtUser;
+    const currentUser = req.user as JwtUser;
 
-    if (!user) {
+    if (!currentUser) {
       return res.status(401).json({
         message: "Unauthorized",
       });
     }
 
-    const currentUser = await userModel.findById(user.id).select("-password");
+    const user = await userModel.findById(currentUser.id).select("-password");
 
     return res.status(200).json({
       message: "User fetched successfully",
       success: true,
-      currentUser,
+      user,
     });
   } catch (error) {
     return res.status(500).json({ message: "Server error" });

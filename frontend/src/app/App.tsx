@@ -4,10 +4,12 @@ import { RouterProvider } from "react-router";
 import { useAuth } from "../features/auth/hooks/useAuth";
 import "./app.css";
 import { routes } from "./app.routes";
-const App = () => {
+import type { RootState } from "./app.store";
+
+function App() {
   const { handleGetme } = useAuth();
 
-  const user = useSelector((state: any) => state.auth.user);
+  const user = useSelector((state: RootState) => state.auth.user);
 
   useEffect(() => {
     handleGetme();
@@ -19,6 +21,6 @@ const App = () => {
       <RouterProvider router={routes} />
     </>
   );
-};
+}
 
 export default App;

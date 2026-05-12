@@ -27,6 +27,7 @@ export const loginUser = async (
 
 export const getMe = async (): Promise<AuthResponse> => {
   const repsonse = await authApiInstance.get<AuthResponse>("/me");
+
   console.log(repsonse);
 
   return repsonse.data;

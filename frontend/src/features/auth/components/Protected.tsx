@@ -1,12 +1,11 @@
 import type { ReactNode } from "react";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router";
-import type { UserType } from "../utils/authTypes";
 import type { RootState } from "../../../app/app.store";
 
 type Props = {
   children: ReactNode;
-  role: string;
+  role?: "buyer" | "seller";
 };
 
 const Protected = ({ children, role = "buyer" }: Props) => {
@@ -27,7 +26,7 @@ const Protected = ({ children, role = "buyer" }: Props) => {
     return <Navigate to="/" />;
   }
 
-  return { children };
+  return children;
 };
 
 export default Protected;
