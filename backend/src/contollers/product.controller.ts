@@ -102,3 +102,5 @@ export const getAllProducts = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Error fetching products" });
   }
 };
+
+export const addProductVariant = async (req: Request, res: Response) => {};

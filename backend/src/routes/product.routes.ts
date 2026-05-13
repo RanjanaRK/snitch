@@ -2,6 +2,7 @@ import { Router } from "express";
 import { authenticateRole } from "../middlewares/auth.middleware.js";
 import upload from "../middlewares/upload.middleware.js";
 import {
+  addProductVariant,
   createProduct,
   getAllProducts,
   getProductById,
@@ -47,5 +48,11 @@ productRouter.get("/:id", getProductById);
  * @access Public
  */
 productRouter.get("/", getAllProducts);
+
+productRouter.post(
+  "/:productId/variants",
+  authenticateRole(["seller"]),
+  addProductVariant,
+);
 
 export default productRouter;
