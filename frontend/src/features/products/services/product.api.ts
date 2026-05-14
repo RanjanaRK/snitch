@@ -38,3 +38,27 @@ export const productDetails = async (
 
   return res.data;
 };
+
+export const productVariants = async (
+  productId: string,
+  newProductVariant: any,
+) => {
+  console.log(newProductVariant);
+
+  // const formData = new FormData();
+
+  // newProductVariant.images.forEach((image) => {
+  //   formData.append(`images`, image.file);
+  // });
+
+  // formData.append("stock", newProductVariant.stock);
+  // formData.append("priceAmount", newProductVariant.price);
+  // formData.append("attributes", JSON.stringify(newProductVariant.attributes));
+
+  const response = await productApiInstance.post(
+    `/${productId}/variants`,
+    newProductVariant,
+  );
+
+  return response.data;
+};

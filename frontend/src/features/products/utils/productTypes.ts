@@ -30,3 +30,24 @@ export type ProductsResponse = {
   success: boolean;
   products: Product[];
 };
+
+export type Variant = {
+  _id: string;
+  images: Image[];
+  color: string;
+  sizes: string[];
+  price: Price;
+  attributes: string[];
+};
+
+export type VariantResponse = {
+  message: string;
+  success: boolean;
+  variant: Variant;
+};
+
+export type VariantsResponse = {
+  message: string;
+  success: boolean;
+  variants: Variant[];
+};
