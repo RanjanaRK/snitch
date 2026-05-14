@@ -1,4 +1,49 @@
+import { useParams } from "react-router";
+import { useProduct } from "../hooks/useProduct";
+import { useEffect, useState } from "react";
+import type { Product, Variant } from "../utils/productTypes";
+
 const SellerProductDetails = () => {
+  const [product, setProduct] = useState<Product | null>(null);
+  const [localVariants, setLocalVariants] = useState<Variant[]>([]);
+  const [isAddingVariant, setIsAddingVariant] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [attributeInputs, setAttributeInputs] = useState([
+    { key: "", value: "" },
+  ]);
+  const [newVariant, setNewVariant] = useState({
+    images: [],
+    stock: 0,
+    attributes: {}, // Strictly an object
+    price: { amount: "", currency: "INR" },
+  });
+
+  const { productId } = useParams();
+
+  const { handleGetProductDetails } = useProduct();
+
+  const fetchProductDetails = async () => {
+    setLoading(true);
+    try {
+      const data = await handleGetProductDetails(productId!);
+      const prod = data?.product || data;
+      setProduct(prod);
+      // Initialize variants locally
+      if (prod?.variants) {
+        setLocalVariants(prod.variants);
+      }
+      console.log(prod);
+    } catch (error) {
+      console.error("Failed to fetch product details", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProductDetails();
+  }, [productId]);
+
   return (
     <>
       {/* Add Variant Button */}

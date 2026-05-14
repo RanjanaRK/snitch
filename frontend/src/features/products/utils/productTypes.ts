@@ -17,6 +17,7 @@ export type Product = {
   images: Image[];
   createdAt: string;
   updatedAt: string;
+  variants: Variant[];
 };
 
 export type ProductResponse = {
