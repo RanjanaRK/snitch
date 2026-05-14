@@ -52,6 +52,7 @@ productRouter.get("/", getAllProducts);
 productRouter.post(
   "/:productId/variants",
   authenticateRole(["seller"]),
+  upload.array("images", 5),
   addProductVariant,
 );
 

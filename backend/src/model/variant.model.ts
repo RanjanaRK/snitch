@@ -22,6 +22,9 @@ const variantSchema = new mongoose.Schema(
     price: {
       type: priceSchema,
     },
+    attributes: {
+      type: String,
+    },
   },
   { _id: false, _v: false },
 );
