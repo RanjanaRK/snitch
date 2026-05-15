@@ -1,8 +1,3 @@
-type Price = {
-  amount: number;
-  currency: string;
-};
-
 type Image = {
   url: string;
   _id: string;
@@ -32,15 +27,6 @@ export type ProductsResponse = {
   products: Product[];
 };
 
-export type Variant = {
-  _id: string;
-  images: Image[];
-  color: string;
-  sizes: string[];
-  price: Price;
-  attributes: string[];
-};
-
 export type VariantResponse = {
   message: string;
   success: boolean;
@@ -52,3 +38,24 @@ export type VariantsResponse = {
   success: boolean;
   variants: Variant[];
 };
+
+export interface VariantImage {
+  url: string;
+  file?: File;
+  previewUrl?: string;
+}
+
+export interface Variant {
+  images: VariantImage[];
+  stock: number;
+  attributes: Record<string, string>;
+  price?: {
+    amount: number;
+    currency: string;
+  };
+}
+
+export interface Price {
+  amount: number;
+  currency: string;
+}

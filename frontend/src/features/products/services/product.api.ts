@@ -1,5 +1,9 @@
 import axios from "axios";
-import type { ProductResponse, ProductsResponse } from "../utils/productTypes";
+import type {
+  ProductResponse,
+  ProductsResponse,
+  Variant,
+} from "../utils/productTypes";
 
 const productApiInstance = axios.create({
   baseURL: "http://localhost:3000/api/products",
@@ -39,25 +43,25 @@ export const productDetails = async (
   return res.data;
 };
 
-export const productVariants = async (
+export const addProductVariants = async (
   productId: string,
-  newProductVariant: any,
+  newProductVariant: Variant,
 ) => {
   console.log(newProductVariant);
 
-  // const formData = new FormData();
+  const formData = new FormData();
 
-  // newProductVariant.images.forEach((image) => {
-  //   formData.append(`images`, image.file);
-  // });
+  newProductVariant.images.forEach((image: any) => {
+    formData.append(`images`, image.file);
+  });
 
-  // formData.append("stock", newProductVariant.stock);
-  // formData.append("priceAmount", newProductVariant.price);
-  // formData.append("attributes", JSON.stringify(newProductVariant.attributes));
+  formData.append("stock", String(newProductVariant.stock));
+  formData.append("priceAmount", String(newProductVariant.price));
+  formData.append("attributes", JSON.stringify(newProductVariant.attributes));
 
   const response = await productApiInstance.post(
     `/${productId}/variants`,
-    newProductVariant,
+    formData,
   );
 
   return response.data;

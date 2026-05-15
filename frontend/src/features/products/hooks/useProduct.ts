@@ -1,11 +1,13 @@
 import { useDispatch } from "react-redux";
 import {
+  addProductVariants,
   createProduct,
   getAllProducts,
   getSellerProducts,
   productDetails,
 } from "../services/product.api";
 import { setProducts, setSellerProducts } from "../state/product.slice";
+import type { Variant } from "../utils/productTypes";
 
 export const useProduct = () => {
   const dispatch = useDispatch();
@@ -36,10 +38,20 @@ export const useProduct = () => {
     return data;
   };
 
+  const handleAddProductVariant = async (
+    productId: string,
+    newProductVariant: Variant,
+  ) => {
+    const data = await addProductVariants(productId, newProductVariant);
+
+    return data;
+  };
+
   return {
     handleCreateProduct,
     handleGetSellerProducts,
     handleGetProducts,
     handleGetProductDetails,
+    handleAddProductVariant,
   };
 };
