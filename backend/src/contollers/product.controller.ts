@@ -105,11 +105,8 @@ export const getAllProducts = async (req: Request, res: Response) => {
 
 export const addProductVariant = async (req: Request, res: Response) => {
   try {
-    const { productId } = req.params;
-
+    const productId = req.params.productId;
     const seller = req.user as JwtUser;
-    // const { color, sizes, price } = req.body;
-
     const product = await productModel.findOne({
       _id: productId,
       seller: seller.id,
@@ -118,13 +115,12 @@ export const addProductVariant = async (req: Request, res: Response) => {
     if (!product) {
       return res.status(404).json({
         message: "Product not found",
+        success: false,
       });
     }
 
     const files = req.files as Express.Multer.File[];
-
-    const images: any = [];
-
+    const images: any[] = [];
     if (files && files.length !== 0) {
       (
         await Promise.all(
@@ -139,30 +135,22 @@ export const addProductVariant = async (req: Request, res: Response) => {
       ).map((image) => images.push(image));
     }
 
-    product.variants.push({});
-
     const price = req.body.priceAmount;
-    const priceCurrency = req.body.priceCurrency;
     const stock = req.body.stock;
     const attributes = JSON.parse(req.body.attributes || "{}");
-    const color = req.body.color;
-    const sizes = JSON.parse(req.body.sizes || "[]");
+
+    console.log(price);
 
     product.variants.push({
       images,
-
-      color,
-
-      sizes,
-
       price: {
         amount: Number(price) || product.price.amount,
-
-        currency: priceCurrency || product.price.currency,
+        currency: req.body.priceCurrency || product.price.currency,
       },
       stock,
       attributes,
     });
+
     await product.save();
 
     return res.status(200).json({
