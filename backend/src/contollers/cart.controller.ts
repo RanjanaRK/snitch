@@ -6,7 +6,7 @@ import type { JwtUser } from "../utils/types.js";
 export const addToCart = async (req: Request, res: Response) => {
   try {
     const { productId, variantId } = req.params;
-    const { quantity } = req.body;
+    const { quantity = 1 } = req.body;
     const user = req.user as JwtUser;
 
     if (!user) {
