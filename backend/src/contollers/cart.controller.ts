@@ -1,12 +1,14 @@
 import type { Request, Response } from "express";
-import productModel from "../model/product.model.js";
 import cartModel from "../model/cart.model.js";
+import productModel from "../model/product.model.js";
 import type { JwtUser } from "../utils/types.js";
-import mongoose from "mongoose";
 
 export const addToCart = async (req: Request, res: Response) => {
   try {
     const { productId, variantId } = req.params;
+
+    console.log(productId, variantId, "addToCart Id");
+
     const { quantity = 1 } = req.body;
     const user = req.user as JwtUser;
 

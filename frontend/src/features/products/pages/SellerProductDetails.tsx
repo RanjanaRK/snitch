@@ -89,15 +89,14 @@ const SellerProductDetails = () => {
     const cleanAttributes = { ...newVariant.attributes };
 
     const variantToSave: Variant = {
+      _id: "",
       images: cleanImages,
       stock: Number(newVariant.stock),
       attributes: cleanAttributes,
-      price: newVariant.price.amount
-        ? {
-            amount: Number(newVariant.price.amount),
-            currency: newVariant.price.currency,
-          }
-        : undefined,
+      price: {
+        amount: Number(newVariant.price.amount),
+        currency: newVariant.price.currency,
+      },
     };
 
     setLocalVariants([...localVariants, variantToSave]);

@@ -46,10 +46,16 @@ export interface VariantImage {
 }
 
 export interface Variant {
-  images: VariantImage[];
+  _id: string;
   stock: number;
+
   attributes: Record<string, string>;
-  price?: {
+
+  images: {
+    url: string;
+  }[];
+
+  price: {
     amount: number;
     currency: string;
   };
