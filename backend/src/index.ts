@@ -8,6 +8,7 @@ import env from "./config/env.js";
 import authRouter from "./routes/auth.routes.js";
 import app from "./server.js";
 import productRouter from "./routes/product.routes.js";
+import cartRouter from "./routes/cart.routes.js";
 
 connectDB();
 

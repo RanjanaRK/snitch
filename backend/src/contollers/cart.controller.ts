@@ -97,3 +97,29 @@ export const addToCart = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Server error" });
   }
 };
+
+export const getCart = async (req: Request, res: Response) => {
+  try {
+    const user = req.user as JwtUser;
+
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const cart = await cartModel
+      .findOne({ user: user.id })
+      .populate("items.product");
+
+    if (!cart) {
+      const newCart = await cartModel.create({ user: user.id });
+    }
+
+    return res.status(200).json({
+      message: "Cart fetched successfully",
+      success: true,
+      cart,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Server error" });
+  }
+};
