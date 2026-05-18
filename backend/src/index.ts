@@ -39,6 +39,7 @@ passport.use(
 
 app.use("/api/auth", authRouter);
 app.use("/api/products", productRouter);
+app.use("/api/cart", cartRouter);
 
 const PORT = process.env.PORT || 3000;
 

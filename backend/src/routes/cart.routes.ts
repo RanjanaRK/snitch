@@ -8,6 +8,7 @@ cartRouter.post(
   "/:productId/:variantId",
   authenticateRole(["buyer"]),
   validateAddToCart,
+  addToCart,
 );
 
 export default cartRouter;

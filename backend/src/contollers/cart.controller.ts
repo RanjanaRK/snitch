@@ -40,7 +40,7 @@ export const addToCart = async (req: Request, res: Response) => {
         user: user.id,
       })) || (await cartModel.create({ user: user.id }));
 
-    const isProductAlreadyIncart = cart.items.find(
+    const isProductAlreadyIncart = cart.items.some(
       (item) =>
         item.product.toString() === productId &&
         item.variant?.toString() === variantId,
