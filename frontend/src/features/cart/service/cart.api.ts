@@ -22,3 +22,9 @@ export const addToCart = async ({
 
   return response.data;
 };
+
+export const getCart = async (): Promise<CartResponse> => {
+  const response = await cartApiInstance.get("/");
+
+  return response.data;
+};
