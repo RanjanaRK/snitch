@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import Nav from "../features/shared/components/nav";
+import Nav from "../features/shared/components/Nav";
 
 const AppLayout = () => {
   return (
