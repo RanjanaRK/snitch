@@ -125,3 +125,75 @@ export const getCart = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Server error" });
   }
 };
+
+export const increamentCartItemQuantity = async (
+  req: Request,
+  res: Response,
+) => {
+  try {
+    const { productId, variantId } = req.params;
+    const user = req.user as JwtUser;
+
+    const product = await productModel.findOne({
+      _id: productId,
+      "variants._id": variantId,
+    });
+
+    if (!product) {
+      return res
+        .status(404)
+        .json({ message: "Product not found", success: false });
+    }
+
+    const cart = await cartModel.findOne({
+      user: user.id,
+    });
+
+    if (!cart) {
+      return res
+        .status(404)
+        .json({ message: "Cart not found", success: false });
+    }
+
+    const stock = product.variants.find(
+      (variant) => variant._id.toString() === variantId,
+    )?.stock;
+
+    if (!stock) {
+      return res
+        .status(404)
+        .json({ message: "Variant not found", success: false });
+    }
+
+    const itemQuantityInCart =
+      cart?.items.find(
+        (item) =>
+          item.product.toString() === productId &&
+          item.variant?.toString() === variantId,
+      )?.quantity || 0;
+
+    if (itemQuantityInCart + 1 > stock) {
+      return res.status(400).json({
+        message: `Only ${stock} items left in stock. and you already have ${itemQuantityInCart} items in your cart`,
+        success: false,
+      });
+    }
+
+    await cartModel.findOneAndUpdate(
+      {
+        user: user.id,
+        "items.product": productId,
+        "items.variant": variantId,
+      } as any,
+      { $inc: { "items.$.quantity": 1 } },
+      { new: true },
+    );
+
+    return res.status(200).json({
+      message: "Cart item quantity incremented successfully",
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Server error" });
+  }
+};
