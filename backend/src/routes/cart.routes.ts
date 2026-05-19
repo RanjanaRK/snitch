@@ -1,5 +1,9 @@
 import { Router } from "express";
-import { addToCart, getCart } from "../contollers/cart.controller.js";
+import {
+  addToCart,
+  getCart,
+  increamentCartItemQuantity,
+} from "../contollers/cart.controller.js";
 import { authenticateRole } from "../middlewares/auth.middleware.js";
 import {
   validateAddToCart,
@@ -21,6 +25,7 @@ cartRouter.patch(
   "/quantity/increament/:productId/:variantId",
   authenticateRole(["buyer"]),
   validateCartIncreamentQuantity,
+  increamentCartItemQuantity,
 );
 
 export default cartRouter;

@@ -22,9 +22,9 @@ const tokens = {
 };
 
 const Cart = () => {
-  const cartItems = useSelector((state: RootState) => state.cart.items);
+  const cartItems = useSelector((state: RootState) => state.cart);
 
-  const { handleGetCartItem } = useCart();
+  const { handleGetCartItem, handleIncreamentCartItem } = useCart();
 
   console.log(cartItems);
 
@@ -36,17 +36,18 @@ const Cart = () => {
     handleGetCartItem();
   }, []);
 
-  const changeQty = (id: number, delta: number) => {
+  const changeQty = (id: string, delta: number) => {
     setQuantities((prev) => ({
       ...prev,
       [id]: Math.max(1, (prev[id] ?? 1) + delta),
     }));
   };
 
-  const getVariantDetails = (product: Product, variantId: Variant) => {
-    if (!product?.variants || !variantId) return null;
-    return product.variants;
-  };
+  //   const getVariantDetails = (product: Product, variant: Variant) => {
+  //     if (!product?.variants || !variant) return null;
+
+  //     return product.variants.find((v) => v._id === variant._id);
+  //   };
 
   const getDisplayImage = (product: Product, variant: Variant) => {
     if (variant?.images?.length) return variant.images[0].url;
@@ -57,7 +58,18 @@ const Cart = () => {
   const formatCurrency = (amount: number, currency = "INR") =>
     `${currency} ${Number(amount).toLocaleString("en-IN")}`;
 
-  if (!cartItems?.length) {
+  const totalPrice =
+    cartItems?.items?.reduce((acc: number, item: any) => {
+      const itemPrice =
+        item?.price?.amount ??
+        item?.variant?.price?.amount ??
+        item?.product?.price?.amount ??
+        0;
+
+      return acc + itemPrice * item.quantity;
+    }, 0) ?? 0;
+
+  if (!cartItems?.items.length) {
     return (
       <>
         <link
@@ -168,32 +180,52 @@ const Cart = () => {
                   className="text-[10px] font-medium tracking-[0.24em] uppercase"
                   style={{ color: tokens.muted }}
                 >
-                  {cartItems?.length}{" "}
-                  {cartItems?.length === 1 ? "piece" : "pieces"}
+                  {cartItems?.items.length}{" "}
+                  {cartItems?.items.length === 1 ? "piece" : "pieces"}
                 </p>
               </div>
 
               {/* ── Cart Item List ── */}
               <div className="flex flex-col gap-6">
-                {cartItems.map((item) => {
-                  const {
-                    product,
-                    variant,
-                    price,
-                    product: { _id },
-                  } = item;
-                  const variantDetail = getVariantDetails(product, variant);
+                {cartItems.items.map((item) => {
+                  //   const {
+                  //     product,
+                  //     variant,
+                  //     price,
+                  //     product: { _id },
+                  //   } = item;
+                  //   const variantDetail = variant;
+                  //   //   const variantDetail = getVariantDetails(product, variant);
+                  //   const imageUrl = getDisplayImage(product, variant);
+                  //   const displayPrice =
+                  //     price ?? variant?.price ?? product?.price;
+
+                  //   const qty = quantities[_id] ?? item.quantity ?? 1;
+                  //   const attributes = variant?.attributes ?? {};
+                  //   const stock = variant?.stock;
+                  //   const variantPrice = variant?.price;
+
+                  const { product, variant, price } = item;
+
+                  const productId = product?._id;
+
+                  const variantId =
+                    typeof variant === "string" ? variant : variant?._id;
+
                   const imageUrl = getDisplayImage(product, variant);
+
                   const displayPrice =
                     price ?? variant?.price ?? product?.price;
-                  const qty = quantities[_id] ?? item.quantity ?? 1;
+
+                  const qty = quantities[productId] ?? item.quantity ?? 1;
+
                   const attributes = variant?.attributes ?? {};
+
                   const stock = variant?.stock;
-                  const variantPrice = variant?.price;
 
                   return (
                     <div
-                      key={_id}
+                      key={product._id}
                       className="flex gap-6 p-6 transition-all duration-300 md:gap-8 md:p-8"
                       style={{ backgroundColor: tokens.surfaceLow }}
                     >
@@ -275,34 +307,6 @@ const Cart = () => {
                               {stock > 0 ? `${stock} in stock` : "Out of stock"}
                             </p>
                           )}
-                          {displayPrice.amount !== variantPrice.amount && (
-                            <>
-                              {displayPrice.amount > variantPrice.amount ? (
-                                <p className="mb-4 text-[10px] font-bold tracking-[0.15em] text-green-800 uppercase">
-                                  {" "}
-                                  you will get this at{" "}
-                                  {formatCurrency(
-                                    variantPrice.amount,
-                                    variantPrice.currency,
-                                  )}{" "}
-                                  save{" "}
-                                  {Math.abs(
-                                    variantPrice.amount - displayPrice.amount,
-                                  )}
-                                  .{" "}
-                                </p>
-                              ) : (
-                                <p className="mb-4 text-[10px] font-bold tracking-[0.15em] text-red-600 uppercase">
-                                  {" "}
-                                  Warning this product will cost you{" "}
-                                  {Math.abs(
-                                    variantPrice.amount - displayPrice.amount,
-                                  )}{" "}
-                                  more.{" "}
-                                </p>
-                              )}
-                            </>
-                          )}
                         </div>
 
                         {/* Bottom Row: Quantity + Remove */}
@@ -315,8 +319,8 @@ const Cart = () => {
                             }}
                           >
                             <button
-                              id={`qty-dec-${_id}`}
-                              //   onClick={() => changeQty(_id, -1)}
+                              id={`qty-dec-${product._id}`}
+                              onClick={() => changeQty(product._id, -1)}
                               className="flex h-9 w-9 items-center justify-center text-sm font-light transition-colors hover:opacity-60"
                               style={{
                                 color: tokens.onSurface,
@@ -333,13 +337,13 @@ const Cart = () => {
                               {qty}
                             </span>
                             <button
-                              id={`qty-inc-${_id}`}
-                              //   onClick={() =>
-                              //     handleIncrementCartItem({
-                              //       productId: _id,
-                              //       variantId,
-                              //     })
-                              //   }
+                              id={`qty-inc-${product._id}`}
+                              onClick={() =>
+                                handleIncreamentCartItem({
+                                  productId,
+                                  variantId,
+                                })
+                              }
                               className="flex h-9 w-9 items-center justify-center text-sm font-light transition-colors hover:opacity-60"
                               style={{
                                 color: tokens.onSurface,
@@ -353,7 +357,7 @@ const Cart = () => {
 
                           {/* Remove */}
                           <button
-                            id={`remove-${_id}`}
+                            id={`remove-${product._id}`}
                             className="text-[10px] font-medium tracking-[0.22em] uppercase transition-all duration-200 hover:underline hover:opacity-70"
                             style={{ color: tokens.muted }}
                           >
@@ -443,7 +447,7 @@ const Cart = () => {
                       className="text-[11px] font-medium tracking-[0.12em] uppercase"
                       style={{ color: tokens.onSurface }}
                     >
-                      {formatCurrency(cartItems.totalPrice)}
+                      {formatCurrency(totalPrice)}
                     </span>
                   </div>
 
@@ -455,15 +459,12 @@ const Cart = () => {
                       Shipping
                     </span>
                     <span
-                      className="text-[10px] tracking-[0.1em] uppercase"
+                      className="text-[10px] tracking-widest uppercase"
                       style={{
-                        color:
-                          cartItems.totalPrice >= 15000
-                            ? "#5a7a5a"
-                            : tokens.muted,
+                        color: totalPrice >= 15000 ? "#5a7a5a" : tokens.muted,
                       }}
                     >
-                      {cartItems.totalPrice >= 15000
+                      {totalPrice >= 15000
                         ? "Complimentary"
                         : `Complimentary over INR 15,000`}
                     </span>
@@ -477,7 +478,7 @@ const Cart = () => {
                       Duties & Taxes
                     </span>
                     <span
-                      className="text-[10px] tracking-[0.1em] uppercase"
+                      className="text-[10px] tracking-widest uppercase"
                       style={{ color: tokens.muted }}
                     >
                       Included
@@ -503,7 +504,7 @@ const Cart = () => {
                     className="text-base font-medium tracking-[0.18em] uppercase"
                     style={{ color: tokens.onSurface }}
                   >
-                    {formatCurrency(cartItems.totalPrice)}
+                    {formatCurrency(totalPrice)}
                   </span>
                 </div>
 

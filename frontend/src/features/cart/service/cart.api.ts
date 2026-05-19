@@ -30,3 +30,17 @@ export const getCart = async (): Promise<CartResponse> => {
 
   return response.data;
 };
+
+export const increamentCartItemQuantity = async ({
+  productId,
+  variantId,
+}: {
+  productId: string;
+  variantId: string;
+}): Promise<CartResponse> => {
+  const response = await cartApiInstance.patch(
+    `/quantity/increament/${productId}/${variantId}`,
+  );
+
+  return response.data;
+};
