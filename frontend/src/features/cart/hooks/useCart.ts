@@ -17,7 +17,7 @@ export const useCart = () => {
   };
   const handleGetCartItem = async () => {
     const data = await getCart();
-
+    console.log(data);
     dispatch(setCart(data.cart));
 
     return data;

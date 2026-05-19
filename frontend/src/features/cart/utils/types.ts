@@ -1,9 +1,14 @@
+import type { UserType } from "../../auth/utils/authTypes";
 import type {
   Price,
   Product,
   Variant,
 } from "../../products/utils/productTypes";
 
+export interface Cart {
+  items: CartProduct[];
+  user: UserType;
+}
 export type CartProduct = {
   product: Product;
   variant: Variant;
@@ -14,5 +19,5 @@ export type CartProduct = {
 export type CartResponse = {
   success: boolean;
   message: string;
-  cart: CartProduct[];
+  cart: Cart;
 };

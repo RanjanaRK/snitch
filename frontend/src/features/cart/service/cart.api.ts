@@ -26,5 +26,7 @@ export const addToCart = async ({
 export const getCart = async (): Promise<CartResponse> => {
   const response = await cartApiInstance.get("/");
 
+  console.log(response.data);
+
   return response.data;
 };
