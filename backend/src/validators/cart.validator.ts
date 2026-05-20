@@ -23,7 +23,7 @@ export const validateAddToCart = [
   validateResult,
 ];
 
-export const validateCartIncreamentQuantity = [
+export const validateCartQuantity = [
   param("productId").isMongoId().withMessage("Inavlid product ID"),
   param("variantId").isMongoId().withMessage("Invalid variant ID"),
   validateResult,

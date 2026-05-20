@@ -199,3 +199,95 @@ export const increamentCartItemQuantity = async (
     return res.status(500).json({ message: "Server error" });
   }
 };
+
+export const decreamentCartItemQuantity = async (
+  req: Request,
+  res: Response,
+) => {
+  try {
+    const { productId, variantId } = req.params;
+    const user = req.user as JwtUser;
+
+    const product = await productModel.findOne({
+      _id: productId,
+      "variants._id": variantId,
+    });
+
+    if (!product) {
+      return res
+        .status(404)
+        .json({ message: "Product not found", success: false });
+    }
+
+    const cart = await cartModel.findOne({
+      user: user.id,
+    });
+
+    if (!cart) {
+      return res
+        .status(404)
+        .json({ message: "Cart not found", success: false });
+    }
+
+    const stock = product.variants.find(
+      (variant) => variant._id.toString() === variantId,
+    )?.stock;
+
+    if (!stock) {
+      return res
+        .status(404)
+        .json({ message: "Variant not found", success: false });
+    }
+
+    const itemQuantityInCart = cart?.items.find(
+      (item) =>
+        item.product.toString() === productId &&
+        item.variant?.toString() === variantId,
+    );
+
+    if (!itemQuantityInCart) {
+      return res.status(404).json({
+        message: "Cart item not found",
+        success: false,
+      });
+    }
+
+    if (itemQuantityInCart?.quantity <= 1) {
+      await cartModel.findOneAndUpdate(
+        { user: user.id },
+        {
+          $pull: {
+            items: {
+              product: productId,
+              variant: variantId,
+            },
+          },
+        },
+      );
+
+      return res.status(200).json({
+        message: "Item removed from cart",
+        success: true,
+      });
+    }
+
+    await cartModel.findOneAndUpdate(
+      {
+        user: user.id,
+        "items.product": productId,
+        "items.variant": variantId,
+      } as any,
+      { $: { "items.$.quantity": -1 } },
+      {
+        returnDocument: "after",
+      },
+    );
+
+    return res.status(200).json({
+      message: "Cart item quantity decremented successfully",
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Server error" });
+  }
+};

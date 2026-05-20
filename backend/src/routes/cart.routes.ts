@@ -1,13 +1,14 @@
 import { Router } from "express";
 import {
   addToCart,
+  decreamentCartItemQuantity,
   getCart,
   increamentCartItemQuantity,
 } from "../contollers/cart.controller.js";
 import { authenticateRole } from "../middlewares/auth.middleware.js";
 import {
   validateAddToCart,
-  validateCartIncreamentQuantity,
+  validateCartQuantity,
 } from "../validators/cart.validator.js";
 
 const cartRouter = Router();
@@ -24,8 +25,15 @@ cartRouter.get("/", authenticateRole(["buyer"]), getCart);
 cartRouter.patch(
   "/quantity/increament/:productId/:variantId",
   authenticateRole(["buyer"]),
-  validateCartIncreamentQuantity,
+  validateCartQuantity,
   increamentCartItemQuantity,
+);
+
+cartRouter.patch(
+  "/quantity/decreament/:productId/:variantId",
+  authenticateRole(["buyer"]),
+  validateCartQuantity,
+  decreamentCartItemQuantity,
 );
 
 export default cartRouter;
