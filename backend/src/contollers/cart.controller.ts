@@ -187,7 +187,7 @@ export const increamentCartItemQuantity = async (
       } as any,
       { $inc: { "items.$.quantity": 1 } },
       {
-        returnDocument: "after",
+        new: true,
       },
     );
 
