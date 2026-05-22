@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   addToCart,
   decreamentCartItemQuantity,
+  deleteCartItem,
   getCart,
   increamentCartItemQuantity,
 } from "../contollers/cart.controller.js";
@@ -34,6 +35,13 @@ cartRouter.patch(
   authenticateRole(["buyer"]),
   validateCartQuantity,
   decreamentCartItemQuantity,
+);
+
+cartRouter.patch(
+  "/items/remove/:productId/:variantId",
+  authenticateRole(["buyer"]),
+  validateCartQuantity,
+  deleteCartItem,
 );
 
 export default cartRouter;
