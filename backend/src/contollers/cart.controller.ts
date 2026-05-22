@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import cartModel from "../model/cart.model.js";
 import productModel from "../model/product.model.js";
 import type { JwtUser } from "../utils/types.js";
+import mongoose from "mongoose";
 
 export const addToCart = async (req: Request, res: Response) => {
   try {
@@ -108,9 +109,74 @@ export const getCart = async (req: Request, res: Response) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const cart = await cartModel
-      .findOne({ user: user.id })
-      .populate("items.product");
+    // const cart = await cartModel
+    //   .findOne({ user: user.id })
+    //   .populate("items.product");
+
+    const cart = await cartModel.aggregate([
+      {
+        $match: {
+          user: new mongoose.Types.ObjectId(user.id),
+        },
+      },
+      {
+        $unwind: {
+          path: "$items",
+        },
+      },
+      {
+        $lookup: {
+          from: "products",
+          localField: "items.product",
+          foreignField: "_id",
+          as: "items.product",
+        },
+      },
+      {
+        $unwind: {
+          path: "$items.product",
+        },
+      },
+      {
+        $unwind: {
+          path: "$items.product.variants",
+        },
+      },
+      {
+        $match: {
+          $expr: {
+            $eq: ["$items.variant", "$items.product.variants._id"],
+          },
+        },
+      },
+      {
+        $addFields: {
+          itemPrice: {
+            price: {
+              $multiply: [
+                "$items.quantity",
+                "$items.product.variants.price.amount",
+              ],
+            },
+            currency: "$items.product.variants.price.currency",
+          },
+        },
+      },
+      {
+        $group: {
+          _id: "$_id",
+          totalPrice: {
+            $sum: "$itemPrice.price",
+          },
+          currency: {
+            $first: "$itemPrice.currency",
+          },
+          items: {
+            $push: "$items",
+          },
+        },
+      },
+    ]);
 
     if (!cart) {
       const newCart = await cartModel.create({ user: user.id });
