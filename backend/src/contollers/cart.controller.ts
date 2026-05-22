@@ -291,3 +291,33 @@ export const decreamentCartItemQuantity = async (
     return res.status(500).json({ message: "Server error" });
   }
 };
+
+export const deleteCartItem = async (req: Request, res: Response) => {
+  try {
+    const { productId, variantId } = req.params;
+    const user = req.user as JwtUser;
+
+    await cartModel.findOneAndUpdate(
+      {
+        user: user.id,
+        "items.product": productId,
+        "items.variant": variantId,
+      } as any,
+      {
+        $pull: {
+          items: {
+            product: productId,
+            variant: variantId,
+          },
+        },
+      },
+    );
+
+    return res.status(200).json({
+      message: "Cart item deleted successfully",
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Server error" });
+  }
+};
