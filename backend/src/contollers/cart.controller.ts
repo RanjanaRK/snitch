@@ -318,7 +318,7 @@ export const decreamentCartItemQuantity = async (
       });
     }
 
-    if (itemQuantityInCart?.quantity <= 1) {
+    if (itemQuantityInCart.quantity <= 1) {
       await cartModel.findOneAndUpdate(
         { user: user.id },
         {
@@ -343,9 +343,13 @@ export const decreamentCartItemQuantity = async (
         "items.product": productId,
         "items.variant": variantId,
       } as any,
-      { $: { "items.$.quantity": -1 } },
       {
-        returnDocument: "after",
+        $inc: {
+          "items.$.quantity": -1,
+        },
+      },
+      {
+        new: true,
       },
     );
 

@@ -34,9 +34,27 @@ const cartSlice = createSlice({
         return item;
       });
     },
+
+    decreamentCartItem: (state, action) => {
+      const { productId, variantId } = action.payload;
+
+      state.items = state.items.map((item) => {
+        const currentVariantId =
+          typeof item.variant === "string" ? item.variant : item.variant._id;
+
+        if (item.product._id === productId && currentVariantId === variantId) {
+          return {
+            ...item,
+            quantity: item.quantity - 1,
+          };
+        }
+        return item;
+      });
+    },
   },
 });
 
-export const { setCart, addItems, increamentCartItem } = cartSlice.actions;
+export const { setCart, addItems, increamentCartItem, decreamentCartItem } =
+  cartSlice.actions;
 
 export default cartSlice.reducer;

@@ -24,7 +24,11 @@ const tokens = {
 const Cart = () => {
   const cart = useSelector((state: RootState) => state.cart);
 
-  const { handleGetCartItem, handleIncreamentCartItem } = useCart();
+  const {
+    handleGetCartItem,
+    handleIncreamentCartItem,
+    handleDecreamentCartItem,
+  } = useCart();
 
   console.log(cart, "carrrrrrrrrrrrrrrtttt");
 
@@ -60,16 +64,16 @@ const Cart = () => {
   const formatCurrency = (amount: number, currency = "INR") =>
     `${currency} ${Number(amount).toLocaleString("en-IN")}`;
 
-  const totalPrice =
-    cart?.items.reduce((acc: number, item: any) => {
-      const itemPrice =
-        item?.price?.amount ??
-        item?.variant?.price?.amount ??
-        item?.product?.price?.amount ??
-        0;
+  // const totalPrice =
+  //   cart?.items.reduce((acc: number, item: any) => {
+  //     const itemPrice =
+  //       item?.price?.amount ??
+  //       item?.variant?.price?.amount ??
+  //       item?.product?.price?.amount ??
+  //       0;
 
-      return acc + itemPrice * item.quantity;
-    }, 0) ?? 0;
+  //     return acc + itemPrice * item.quantity;
+  //   }, 0) ?? 0;
 
   if (!cart?.items?.length) {
     return (
@@ -321,8 +325,13 @@ const Cart = () => {
                             }}
                           >
                             <button
-                              id={`qty-dec-${product._id}`}
-                              onClick={() => changeQty(product._id, -1)}
+                              // id={`qty-dec-${product._id}`}
+                              onClick={() =>
+                                handleDecreamentCartItem({
+                                  productId,
+                                  variantId,
+                                })
+                              }
                               className="flex h-9 w-9 items-center justify-center text-sm font-light transition-colors hover:opacity-60"
                               style={{
                                 color: tokens.onSurface,
@@ -449,7 +458,7 @@ const Cart = () => {
                       className="text-[11px] font-medium tracking-[0.12em] uppercase"
                       style={{ color: tokens.onSurface }}
                     >
-                      {formatCurrency(totalPrice)}
+                      {cart.totalPrice}
                     </span>
                   </div>
 
@@ -463,10 +472,11 @@ const Cart = () => {
                     <span
                       className="text-[10px] tracking-widest uppercase"
                       style={{
-                        color: totalPrice >= 15000 ? "#5a7a5a" : tokens.muted,
+                        color:
+                          cart.totalPrice >= 15000 ? "#5a7a5a" : tokens.muted,
                       }}
                     >
-                      {totalPrice >= 15000
+                      {cart.totalPrice >= 15000
                         ? "Complimentary"
                         : `Complimentary over INR 15,000`}
                     </span>
@@ -506,7 +516,7 @@ const Cart = () => {
                     className="text-base font-medium tracking-[0.18em] uppercase"
                     style={{ color: tokens.onSurface }}
                   >
-                    {formatCurrency(totalPrice)}
+                    {formatCurrency(cart.totalPrice)}
                   </span>
                 </div>
 
@@ -531,7 +541,6 @@ const Cart = () => {
                   Proceed to Checkout
                 </button>
 
-                {/* Secondary ghost CTA */}
                 <button
                   id="continue-shopping"
                   className="w-full py-4 text-[11px] font-medium tracking-[0.25em] uppercase transition-all duration-300"
