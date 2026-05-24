@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
 import type { RootState } from "../../../app/app.store";
+import LogoutButton from "../../auth/components/LogoutButton";
 
 const Nav = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -29,7 +30,14 @@ const Nav = () => {
         >
           {user ? (
             <>
-              <span style={{ color: "#1b1c1a" }}>{user.fullname}</span>
+              <Link
+                to="/profile"
+                className="transition-colors hover:text-[#C9A96E]"
+                style={{ color: "#1b1c1a" }}
+              >
+                <span style={{ color: "#1b1c1a" }}>{user.fullname}</span>
+              </Link>
+              <LogoutButton />
               {user.role === "seller" && (
                 <Link
                   to="/seller/dashboard"

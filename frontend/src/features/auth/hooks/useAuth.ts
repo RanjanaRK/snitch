@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
-import { getMe, loginUser, registerUser } from "../service/auth.api";
+import { getMe, loginUser, logout, registerUser } from "../service/auth.api";
 import { setError, setLoading, setUser } from "../state/auth.slice";
 import type { LoginFormData, RegisterFormData } from "../utils/zodSchema";
 
@@ -47,7 +47,7 @@ export const useAuth = () => {
 
       return data;
     } catch (error: any) {
-      const message = error.response.data.message || "Login failed";
+      const message = error.response?.data?.message || "Login failed";
 
       dispatch(setError(message));
     } finally {
@@ -74,5 +74,27 @@ export const useAuth = () => {
     }
   };
 
-  return { handleRegister, handleLogin, handleGetme };
+  const handleLogout = async () => {
+    try {
+      dispatch(setLoading(true));
+
+      const data = await logout();
+
+      toast.success(data.message);
+
+      dispatch(setUser(null));
+
+      return data;
+    } catch (error: any) {
+      const message = error.response?.data?.message || "Logout failed";
+
+      toast.error(message);
+
+      dispatch(setError(message));
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+  return { handleRegister, handleLogin, handleGetme, handleLogout };
 };

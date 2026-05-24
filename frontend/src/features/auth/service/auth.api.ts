@@ -32,3 +32,8 @@ export const getMe = async (): Promise<AuthResponse> => {
 
   return repsonse.data;
 };
+
+export const logout = async (): Promise<AuthResponse> => {
+  const response = await authApiInstance.post("/logout");
+  return response.data;
+};

@@ -3,6 +3,7 @@ import {
   getMe,
   googleAuthCallback,
   login,
+  logout,
   register,
 } from "../contollers/auth.controller.js";
 import {
@@ -36,6 +37,6 @@ authRouter.get(
 
 authRouter.get("/me", authenticateRole(["seller", "buyer"]), getMe);
 
-authRouter.post("/logout", authenticateRole(["seller", "buyer"]), getMe);
+authRouter.post("/logout", authenticateRole(["seller", "buyer"]), logout);
 
 export default authRouter;
