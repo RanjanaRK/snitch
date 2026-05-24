@@ -2,13 +2,12 @@ import { createBrowserRouter } from "react-router";
 import Protected from "../features/auth/components/Protected";
 import Login from "../features/auth/pages/Login";
 import Register from "../features/auth/pages/Register";
-
+import Cart from "../features/cart/pages/Cart";
 import CreateProduct from "../features/products/pages/CreateProduct";
 import Dashboard from "../features/products/pages/Dashboard";
 import Home from "../features/products/pages/Home";
 import ProductDetails from "../features/products/pages/ProductDetails";
 import SellerProductDetails from "../features/products/pages/SellerProductDetails";
-import Cart from "../features/cart/pages/Cart";
 import AppLayout from "./AppLayout";
 
 export const routes = createBrowserRouter([

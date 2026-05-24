@@ -22,11 +22,11 @@ const tokens = {
 };
 
 const Cart = () => {
-  const cartItems = useSelector((state: RootState) => state.cart);
+  const cart = useSelector((state: RootState) => state.cart);
 
   const { handleGetCartItem, handleIncreamentCartItem } = useCart();
 
-  console.log(cartItems);
+  console.log(cart, "carrrrrrrrrrrrrrrtttt");
 
   const navigate = useNavigate();
 
@@ -50,6 +50,8 @@ const Cart = () => {
   //   };
 
   const getDisplayImage = (product: Product, variant: Variant) => {
+    console.log(variant);
+
     if (variant?.images?.length) return variant.images[0].url;
     if (product?.images?.length) return product.images[0].url;
     return null;
@@ -59,7 +61,7 @@ const Cart = () => {
     `${currency} ${Number(amount).toLocaleString("en-IN")}`;
 
   const totalPrice =
-    cartItems?.items?.reduce((acc: number, item: any) => {
+    cart?.items.reduce((acc: number, item: any) => {
       const itemPrice =
         item?.price?.amount ??
         item?.variant?.price?.amount ??
@@ -69,7 +71,7 @@ const Cart = () => {
       return acc + itemPrice * item.quantity;
     }, 0) ?? 0;
 
-  if (!cartItems?.items.length) {
+  if (!cart?.items?.length) {
     return (
       <>
         <link
@@ -180,14 +182,14 @@ const Cart = () => {
                   className="text-[10px] font-medium tracking-[0.24em] uppercase"
                   style={{ color: tokens.muted }}
                 >
-                  {cartItems?.items.length}{" "}
-                  {cartItems?.items.length === 1 ? "piece" : "pieces"}
+                  {cart?.items.length}{" "}
+                  {cart?.items.length === 1 ? "piece" : "pieces"}
                 </p>
               </div>
 
               {/* ── Cart Item List ── */}
               <div className="flex flex-col gap-6">
-                {cartItems.items.map((item) => {
+                {cart.items.map((item) => {
                   //   const {
                   //     product,
                   //     variant,

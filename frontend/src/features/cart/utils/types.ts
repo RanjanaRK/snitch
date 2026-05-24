@@ -8,6 +8,8 @@ import type {
 export interface Cart {
   items: CartProduct[];
   user: UserType;
+  totalPrice: number;
+  currency: string;
 }
 export type CartProduct = {
   product: Product;

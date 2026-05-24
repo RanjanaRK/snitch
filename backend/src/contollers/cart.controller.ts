@@ -179,13 +179,13 @@ export const getCart = async (req: Request, res: Response) => {
     ]);
 
     if (!cart) {
-      const newCart = await cartModel.create({ user: user.id });
+      await cartModel.create({ user: user.id });
     }
 
     return res.status(200).json({
       message: "Cart fetched successfully",
       success: true,
-      cart,
+      cart: cart[0] || null,
     });
   } catch (error) {
     return res.status(500).json({ message: "Server error" });
