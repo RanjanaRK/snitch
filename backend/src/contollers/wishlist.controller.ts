@@ -74,3 +74,34 @@ export const getWishlist = async (req: Request, res: Response) => {
     return res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
+export const deleteWishlist = async (req: Request, res: Response) => {
+  try {
+    const { productId, variantId } = req.params;
+    const user = req.user as JwtUser;
+
+    const wishlist = await wishlistModel.findOneAndUpdate(
+      { user: user.id },
+      {
+        $pull: {
+          items: {
+            product: productId,
+            variant: variantId,
+          },
+        },
+      },
+      {
+        new: true,
+      },
+    );
+
+    if (!wishlist) {
+      return res.status(404).json({ message: "Wishlist not found" });
+    }
+    return res
+      .status(200)
+      .json({ success: true, message: "Removed from wishlist", wishlist });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+};
