@@ -28,6 +28,7 @@ const Cart = () => {
     handleGetCartItem,
     handleIncreamentCartItem,
     handleDecreamentCartItem,
+    handleRemoveCartItem,
   } = useCart();
 
   console.log(cart, "carrrrrrrrrrrrrrrtttt");
@@ -325,7 +326,7 @@ const Cart = () => {
                             }}
                           >
                             <button
-                              // id={`qty-dec-${product._id}`}
+                              id={`qty-dec-${product._id}`}
                               onClick={() =>
                                 handleDecreamentCartItem({
                                   productId,
@@ -371,6 +372,9 @@ const Cart = () => {
                             id={`remove-${product._id}`}
                             className="text-[10px] font-medium tracking-[0.22em] uppercase transition-all duration-200 hover:underline hover:opacity-70"
                             style={{ color: tokens.muted }}
+                            onClick={() =>
+                              handleRemoveCartItem({ productId, variantId })
+                            }
                           >
                             Remove
                           </button>

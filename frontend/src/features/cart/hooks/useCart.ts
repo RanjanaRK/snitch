@@ -4,6 +4,7 @@ import {
   decreamentCartItemQauntity,
   getCart,
   increamentCartItemQuantity,
+  removeCartItem,
 } from "../service/cart.api";
 import {
   decreamentCartItem,
@@ -61,10 +62,23 @@ export const useCart = () => {
     return data;
   };
 
+  const handleRemoveCartItem = async ({
+    productId,
+    variantId,
+  }: {
+    productId: string;
+    variantId: string;
+  }) => {
+    const data = await removeCartItem({ productId, variantId });
+
+    return data;
+  };
+
   return {
     handleAddItem,
     handleGetCartItem,
     handleIncreamentCartItem,
     handleDecreamentCartItem,
+    handleRemoveCartItem,
   };
 };

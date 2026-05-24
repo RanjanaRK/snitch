@@ -59,3 +59,18 @@ export const decreamentCartItemQauntity = async ({
 
   return response.data;
 };
+
+export const removeCartItem = async ({
+  productId,
+  variantId,
+}: {
+  productId: string;
+  variantId: string;
+}): Promise<CartResponse> => {
+  const response = await cartApiInstance.patch(
+    `/items/remove/${productId}/${variantId}`,
+  );
+  console.log(response);
+
+  return response.data;
+};
