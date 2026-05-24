@@ -5,7 +5,7 @@ import { wishlistModel } from "../model/wishlist.model.js";
 
 export const createWishlist = async (req: Request, res: Response) => {
   try {
-    const { productId } = req.params;
+    const { productId, variantId } = req.params;
     const user = req.user as JwtUser;
 
     const product = await productModel.findById(productId);
@@ -15,17 +15,24 @@ export const createWishlist = async (req: Request, res: Response) => {
     }
 
     const wishlist =
-      (await wishlistModel
-        .findOne({ user: user.id })
-        .populate("items.product")) ||
+      (await wishlistModel.findOne({ user: user.id })) ||
       (await wishlistModel.create({ user: user.id, items: [] }));
 
     const alreadyExists = wishlist.items.some(
-      (item) => item.product.toString() === productId,
+      (item) =>
+        item.product.toString() === productId &&
+        item.variant?.toString() === variantId,
     );
 
     if (alreadyExists) {
-      wishlist.items.filter((item) => item.product.toString() !== productId);
+      wishlist.set(
+        "items",
+        wishlist.items.filter(
+          (item) =>
+            item.product.toString() !== productId &&
+            item.variant?.toString() !== variantId,
+        ),
+      );
 
       await wishlist.save();
 
@@ -36,7 +43,7 @@ export const createWishlist = async (req: Request, res: Response) => {
       });
     }
 
-    wishlist.items.push({ product: productId });
+    wishlist.items.push({ product: productId, variant: variantId });
 
     await wishlist.save();
 
@@ -44,6 +51,24 @@ export const createWishlist = async (req: Request, res: Response) => {
       success: true,
       message: "Added to wishlist",
       wishlist,
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+export const getWishlist = async (req: Request, res: Response) => {
+  try {
+    const user = req.user as JwtUser;
+
+    const wishItems = await wishlistModel
+      .find({ user: user.id })
+      .populate("items.product");
+
+    return res.status(200).json({
+      success: true,
+      message: "fetched wishlist",
+      wishlist: wishItems,
     });
   } catch (error) {
     return res.status(500).json({ success: false, message: "Server error" });
