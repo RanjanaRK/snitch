@@ -36,4 +36,6 @@ authRouter.get(
 
 authRouter.get("/me", authenticateRole(["seller", "buyer"]), getMe);
 
+authRouter.post("/logout", authenticateRole(["seller", "buyer"]), getMe);
+
 export default authRouter;
