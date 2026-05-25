@@ -5,6 +5,8 @@ import type { JwtUser } from "../utils/types.js";
 import mongoose from "mongoose";
 import { createOrder } from "../service/payment.service.js";
 import paymentModel from "../model/payment.model.js";
+import { validatePaymentVerification } from "razorpay/dist/utils/razorpay-utils.js";
+import env from "../config/env.js";
 
 const getCartDetails = async (userId: string) => {
   let cart = await cartModel.aggregate([
@@ -491,7 +493,7 @@ export const createOrderController = async (req: Request, res: Response) => {
         amount: cart.totalPrice,
         currency: cart.currency,
       },
-      orderItems: cart.items.map((item) => ({
+      orderItems: cart.items.map((item: any) => ({
         title: item.product.title,
         productId: item.product._id,
         variantId: item.variant,
@@ -513,6 +515,65 @@ export const createOrderController = async (req: Request, res: Response) => {
       order,
     });
   } catch (error) {
-    return res.status(500).json({ message: "Server error" });
+    return res.status(500).json({ message: "Server error", success: false });
+  }
+};
+
+export const verifyOrderController = async (req: Request, res: Response) => {
+  try {
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+      req.body;
+
+    const payment = await paymentModel.findOne({
+      "razorpay.orderId": razorpay_order_id,
+      status: "pending",
+    });
+
+    if (!payment) {
+      return res.status(400).json({
+        message: "Payment not found",
+        success: false,
+      });
+    }
+
+    const isPaymentValid = validatePaymentVerification(
+      {
+        order_id: razorpay_order_id,
+        payment_id: razorpay_payment_id,
+      },
+      razorpay_signature,
+      env.RAZORPAY_KEY_SECRET,
+    );
+
+    if (!isPaymentValid) {
+      payment.status = "failed";
+      await payment.save();
+
+      return res.status(400).json({
+        message: "Payment verification failed",
+        success: false,
+      });
+    }
+
+    if (!payment.razorpay) {
+      return res.status(400).json({
+        message: "Razorpay details missing",
+        success: false,
+      });
+    }
+
+    payment.status = "paid";
+
+    payment.razorpay.paymentId = razorpay_payment_id;
+    payment.razorpay.signature = razorpay_signature;
+
+    await payment.save();
+
+    return res.status(200).json({
+      message: "Payment verified successfully",
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Server error", success: false });
   }
 };

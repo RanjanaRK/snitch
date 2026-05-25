@@ -6,6 +6,7 @@ import {
   deleteCartItem,
   getCart,
   increamentCartItemQuantity,
+  verifyOrderController,
 } from "../contollers/cart.controller.js";
 import { authenticateRole } from "../middlewares/auth.middleware.js";
 import {
@@ -49,6 +50,12 @@ cartRouter.post(
   "/payment/create/order",
   authenticateRole(["buyer"]),
   createOrderController,
+);
+
+cartRouter.post(
+  "/payment/verify/order",
+  authenticateRole(["buyer"]),
+  verifyOrderController,
 );
 
 export default cartRouter;
