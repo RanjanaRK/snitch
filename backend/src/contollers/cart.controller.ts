@@ -4,6 +4,7 @@ import productModel from "../model/product.model.js";
 import type { JwtUser } from "../utils/types.js";
 import mongoose from "mongoose";
 import { createOrder } from "../service/payment.service.js";
+import paymentModel from "../model/payment.model.js";
 
 const getCartDetails = async (userId: string) => {
   let cart = await cartModel.aggregate([
@@ -480,6 +481,31 @@ export const createOrderController = async (req: Request, res: Response) => {
       amount: cart.totalPrice,
       currency: cart.currency,
     });
+
+    const payment = await paymentModel.create({
+      user: user.id,
+      payment: {
+        orderId: order.id,
+      },
+      price: {
+        amount: cart.totalPrice,
+        currency: cart.currency,
+      },
+      orderItems: cart.items.map((item) => ({
+        title: item.product.title,
+        productId: item.product._id,
+        variantId: item.variant,
+        quantity: item.quantity,
+        images: item.product.variants.images || item.product.images,
+        description: item.product.description,
+        price: {
+          amount:
+            item.product.variants.price.amount || item.product.price.amount,
+          currency:
+            item.product.variants.price.currency || item.product.price.currency,
+        },
+      })),
+    } as any);
 
     return res.status(200).json({
       message: "Order created successfully",
