@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router";
 import type { RootState } from "../../../app/app.store";
 import LogoutButton from "../../auth/components/LogoutButton";
+import { Heart } from "lucide-react";
 
 const Nav = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -37,15 +38,11 @@ const Nav = () => {
               >
                 <span style={{ color: "#1b1c1a" }}>{user.fullname}</span>
               </Link>
-              <LogoutButton />
-              {user.role === "seller" && (
-                <Link
-                  to="/seller/dashboard"
-                  className="transition-colors hover:text-[#C9A96E]"
-                >
-                  Seller Dashboard
-                </Link>
-              )}
+
+              <Link to="/wishlist">
+                <Heart />
+              </Link>
+
               <Link
                 to="/cart"
                 className="relative flex items-center transition-opacity hover:opacity-70"
@@ -84,6 +81,17 @@ const Nav = () => {
                   </span>
                 )}
               </Link>
+
+              {user.role === "seller" && (
+                <Link
+                  to="/seller/dashboard"
+                  className="transition-colors hover:text-[#C9A96E]"
+                >
+                  Seller Dashboard
+                </Link>
+              )}
+
+              <LogoutButton />
             </>
           ) : (
             <>
