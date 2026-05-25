@@ -3,57 +3,25 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../../app/app.store";
 import { useCart } from "../hooks/useCart";
 import type { CartProduct } from "../utils/types";
+import { useNavigate } from "react-router";
 
 interface Props {
   order: CartProduct[];
 }
 
 const CheckoutButton = () => {
+  const navigate = useNavigate();
+
   const { Razorpay, error, isLoading } = useRazorpay();
 
-  const { handleCreateCartOrder } = useCart();
+  const { handleCreateCartOrder, handleVerifyCartOrder } = useCart();
 
   const user = useSelector((state: RootState) => state.auth.user);
-
-  //   const handlePayment = async () => {
-  //     const order = await handleCreateCartOrder();
-  //     console.log(order);
-
-  //     const options: RazorpayOrderOptions = {
-  //       key: import.meta.env.REACT_APP_RAZORPAY_KEY_ID,
-  //       amount: 50000, // Amount in paise
-  //       currency: "INR",
-  //       name: "Test Company",
-  //       description: "Test Transaction",
-  //       order_id: "order_9A33XWu170gUtm", // Generate order_id on server
-  //       handler: async (response) => {
-  //         // const isValid = await handleVerifyCartOrder(response);
-
-  //         // if (isValid) {
-  //         //   navigate(`/order-success?order_id=${response?.razorpay_order_id}`);
-  //         // }
-
-  //         console.log(response);
-  //       },
-  //       prefill: {
-  //         name: "John Doe",
-  //         email: "john.doe@example.com",
-  //         contact: "9999999999",
-  //       },
-  //       theme: {
-  //         color: "#F37254",
-  //       },
-  //     };
-
-  //     const razorpayInstance = new Razorpay(options);
-  //     razorpayInstance.open();
-  //   };
 
   const handleCheckout = async () => {
     const order = await handleCreateCartOrder();
 
     console.log(order);
-    // console.log(import.meta.env.VITE_RAZORPAY_KEY_ID);
 
     console.log();
 
@@ -65,11 +33,12 @@ const CheckoutButton = () => {
       description: "Test Transaction",
       order_id: order.id, // Generate order_id on server
       handler: async (response: any) => {
-        // const isValid = await handleVerifyCartOrder(response)
-        // if (isValid) {
-        //     navigate(`/order-success?order_id=${response?.razorpay_order_id}`)
-        // }
         console.log(response);
+        const isValid = await handleVerifyCartOrder(response);
+
+        if (isValid) {
+          navigate(`/order-success?order_id=${response?.razorpay_order_id}`);
+        }
       },
       prefill: {
         name: user?.fullname,

@@ -79,3 +79,21 @@ export const createCartOrder = async () => {
   const response = await cartApiInstance.post("/payment/create/order");
   return response.data;
 };
+
+export const verifyCartOrder = async ({
+  razorpay_order_id,
+  razorpay_payment_id,
+  razorpay_signature,
+}: {
+  razorpay_order_id: string;
+  razorpay_payment_id: string;
+  razorpay_signature: string;
+}) => {
+  const response = await cartApiInstance.post("/payment/verify/order", {
+    razorpay_order_id,
+    razorpay_payment_id,
+    razorpay_signature,
+  });
+
+  return response.data;
+};
