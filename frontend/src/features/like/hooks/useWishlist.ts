@@ -1,11 +1,6 @@
 import { useDispatch } from "react-redux";
 import { addWishlist, getWishlist, removeWishlist } from "../service/like.api";
-import {
-  addWishlistItem,
-  removeWishlistItem,
-  setWishlistItem,
-} from "../state/wishlist.slice";
-import { da } from "zod/v4/locales";
+import { setWishlistItem } from "../state/wishlist.slice";
 
 export const useWishlist = () => {
   const dispatch = useDispatch();

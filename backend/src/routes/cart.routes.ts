@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   addToCart,
+  createOrderController,
   decreamentCartItemQuantity,
   deleteCartItem,
   getCart,
@@ -42,6 +43,12 @@ cartRouter.patch(
   authenticateRole(["buyer"]),
   validateCartQuantity,
   deleteCartItem,
+);
+
+cartRouter.post(
+  "/payment/create/order",
+  authenticateRole(["buyer"]),
+  createOrderController,
 );
 
 export default cartRouter;

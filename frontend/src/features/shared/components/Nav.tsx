@@ -31,13 +31,7 @@ const Nav = () => {
         >
           {user ? (
             <>
-              <Link
-                to="/profile"
-                className="transition-colors hover:text-[#C9A96E]"
-                style={{ color: "#1b1c1a" }}
-              >
-                <span style={{ color: "#1b1c1a" }}>{user.fullname}</span>
-              </Link>
+              <span style={{ color: "#1b1c1a" }}>{user.fullname}</span>
 
               <Link to="/wishlist">
                 <Heart />

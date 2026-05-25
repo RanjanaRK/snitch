@@ -3,6 +3,76 @@ import cartModel from "../model/cart.model.js";
 import productModel from "../model/product.model.js";
 import type { JwtUser } from "../utils/types.js";
 import mongoose from "mongoose";
+import { createOrder } from "../service/payment.service.js";
+
+const getCartDetails = async (userId: string) => {
+  let cart = await cartModel.aggregate([
+    {
+      $match: {
+        user: new mongoose.Types.ObjectId(userId),
+      },
+    },
+    {
+      $unwind: {
+        path: "$items",
+      },
+    },
+    {
+      $lookup: {
+        from: "products",
+        localField: "items.product",
+        foreignField: "_id",
+        as: "items.product",
+      },
+    },
+    {
+      $unwind: {
+        path: "$items.product",
+      },
+    },
+    {
+      $unwind: {
+        path: "$items.product.variants",
+      },
+    },
+    {
+      $match: {
+        $expr: {
+          $eq: ["$items.variant", "$items.product.variants._id"],
+        },
+      },
+    },
+    {
+      $addFields: {
+        itemPrice: {
+          price: {
+            $multiply: [
+              "$items.quantity",
+              "$items.product.variants.price.amount",
+            ],
+          },
+          currency: "$items.product.variants.price.currency",
+        },
+      },
+    },
+    {
+      $group: {
+        _id: "$_id",
+        totalPrice: {
+          $sum: "$itemPrice.price",
+        },
+        currency: {
+          $first: "$itemPrice.currency",
+        },
+        items: {
+          $push: "$items",
+        },
+      },
+    },
+  ]);
+
+  return cart[0];
+};
 
 export const addToCart = async (req: Request, res: Response) => {
   try {
@@ -113,70 +183,72 @@ export const getCart = async (req: Request, res: Response) => {
     //   .findOne({ user: user.id })
     //   .populate("items.product");
 
-    const cart = await cartModel.aggregate([
-      {
-        $match: {
-          user: new mongoose.Types.ObjectId(user.id),
-        },
-      },
-      {
-        $unwind: {
-          path: "$items",
-        },
-      },
-      {
-        $lookup: {
-          from: "products",
-          localField: "items.product",
-          foreignField: "_id",
-          as: "items.product",
-        },
-      },
-      {
-        $unwind: {
-          path: "$items.product",
-        },
-      },
-      {
-        $unwind: {
-          path: "$items.product.variants",
-        },
-      },
-      {
-        $match: {
-          $expr: {
-            $eq: ["$items.variant", "$items.product.variants._id"],
-          },
-        },
-      },
-      {
-        $addFields: {
-          itemPrice: {
-            price: {
-              $multiply: [
-                "$items.quantity",
-                "$items.product.variants.price.amount",
-              ],
-            },
-            currency: "$items.product.variants.price.currency",
-          },
-        },
-      },
-      {
-        $group: {
-          _id: "$_id",
-          totalPrice: {
-            $sum: "$itemPrice.price",
-          },
-          currency: {
-            $first: "$itemPrice.currency",
-          },
-          items: {
-            $push: "$items",
-          },
-        },
-      },
-    ]);
+    // const cart = await cartModel.aggregate([
+    //   {
+    //     $match: {
+    //       user: new mongoose.Types.ObjectId(user.id),
+    //     },
+    //   },
+    //   {
+    //     $unwind: {
+    //       path: "$items",
+    //     },
+    //   },
+    //   {
+    //     $lookup: {
+    //       from: "products",
+    //       localField: "items.product",
+    //       foreignField: "_id",
+    //       as: "items.product",
+    //     },
+    //   },
+    //   {
+    //     $unwind: {
+    //       path: "$items.product",
+    //     },
+    //   },
+    //   {
+    //     $unwind: {
+    //       path: "$items.product.variants",
+    //     },
+    //   },
+    //   {
+    //     $match: {
+    //       $expr: {
+    //         $eq: ["$items.variant", "$items.product.variants._id"],
+    //       },
+    //     },
+    //   },
+    //   {
+    //     $addFields: {
+    //       itemPrice: {
+    //         price: {
+    //           $multiply: [
+    //             "$items.quantity",
+    //             "$items.product.variants.price.amount",
+    //           ],
+    //         },
+    //         currency: "$items.product.variants.price.currency",
+    //       },
+    //     },
+    //   },
+    //   {
+    //     $group: {
+    //       _id: "$_id",
+    //       totalPrice: {
+    //         $sum: "$itemPrice.price",
+    //       },
+    //       currency: {
+    //         $first: "$itemPrice.currency",
+    //       },
+    //       items: {
+    //         $push: "$items",
+    //       },
+    //     },
+    //   },
+    // ]);
+
+    const cart = await getCartDetails(user.id);
 
     if (!cart) {
       await cartModel.create({ user: user.id });
@@ -185,7 +257,7 @@ export const getCart = async (req: Request, res: Response) => {
     return res.status(200).json({
       message: "Cart fetched successfully",
       success: true,
-      cart: cart[0] || null,
+      cart: cart,
     });
   } catch (error) {
     return res.status(500).json({ message: "Server error" });
@@ -386,6 +458,33 @@ export const deleteCartItem = async (req: Request, res: Response) => {
     return res.status(200).json({
       message: "Cart item deleted successfully",
       success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const createOrderController = async (req: Request, res: Response) => {
+  const user = req.user as JwtUser;
+  try {
+    const cart = await getCartDetails(user.id);
+
+    if (!cart) {
+      return res.status(400).json({
+        message: "Cart is empty",
+        success: false,
+      });
+    }
+
+    const order = await createOrder({
+      amount: cart.totalPrice,
+      currency: cart.currency,
+    });
+
+    return res.status(200).json({
+      message: "Order created successfully",
+      success: true,
+      order,
     });
   } catch (error) {
     return res.status(500).json({ message: "Server error" });

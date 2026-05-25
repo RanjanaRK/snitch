@@ -4,6 +4,7 @@ import type { RootState } from "../../../app/app.store";
 import { useCart } from "../hooks/useCart";
 import { Link, useNavigate } from "react-router";
 import type { Product, Variant } from "../../products/utils/productTypes";
+import CheckoutButton from "../components/CheckoutButton";
 
 const tokens = {
   surface: "#fbf9f6",
@@ -473,13 +474,14 @@ const Cart = () => {
                 </div>
 
                 {/* Primary CTA */}
-                <button
+                {/* <button
                   id="proceed-checkout"
                   className="mb-3 w-full bg-[#1b1c1a] py-4 text-[11px] font-medium tracking-[0.25em] text-[#fbf9f6] uppercase transition-all duration-300 hover:bg-[#C9A96E] hover:text-[#1b1c1a]"
                 >
                   Proceed to Checkout
-                </button>
+                </button> */}
 
+                <CheckoutButton />
                 <button
                   id="continue-shopping"
                   className="w-full border border-[#d0c5b5] bg-transparent py-4 text-[11px] font-medium tracking-[0.25em] text-[#1b1c1a] uppercase transition-all duration-300 hover:border-[#C9A96E]"

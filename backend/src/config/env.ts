@@ -26,6 +26,16 @@ if (!process.env.IMAGEKIT_PRIVATE_KEY) {
   );
 }
 
+if (!process.env.RAZORPAY_KEY_ID) {
+  throw new Error("RAZORPAY_KEY_ID is not defined in environment variables");
+}
+
+if (!process.env.RAZORPAY_KEY_SECRET) {
+  throw new Error(
+    "RAZORPAY_KEY_SECRET is not defined in environment variables",
+  );
+}
+
 type Iconfig = {
   readonly MONGO_URI: string;
   readonly JWT_SECRET: string;
@@ -33,6 +43,8 @@ type Iconfig = {
   readonly GOOGLE_CLIENT_SECRET: string;
   readonly NODE_ENV: string;
   readonly IMAGEKIT_PRIVATE_KEY: string;
+  readonly RAZORPAY_KEY_ID: string;
+  readonly RAZORPAY_KEY_SECRET: string;
 };
 export const env: Iconfig = {
   MONGO_URI: process.env.MONGO_URI,
@@ -41,6 +53,8 @@ export const env: Iconfig = {
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
   NODE_ENV: process.env.NODE_ENV || "development",
   IMAGEKIT_PRIVATE_KEY: process.env.IMAGEKIT_PRIVATE_KEY,
+  RAZORPAY_KEY_ID: process.env.RAZORPAY_KEY_ID,
+  RAZORPAY_KEY_SECRET: process.env.RAZORPAY_KEY_SECRET,
 };
 
 export default env;

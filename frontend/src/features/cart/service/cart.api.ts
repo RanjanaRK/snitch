@@ -74,3 +74,8 @@ export const removeCartItem = async ({
 
   return response.data;
 };
+
+export const createCartOrder = async () => {
+  const response = await cartApiInstance.post("/payment/create/order");
+  return response.data;
+};

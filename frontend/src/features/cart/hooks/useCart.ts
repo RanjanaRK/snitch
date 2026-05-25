@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import {
   addToCart,
+  createCartOrder,
   decreamentCartItemQauntity,
   getCart,
   increamentCartItemQuantity,
@@ -74,11 +75,17 @@ export const useCart = () => {
     return data;
   };
 
+  const handleCreateCartOrder = async () => {
+    const data = await createCartOrder();
+    return data.order;
+  };
+
   return {
     handleAddItem,
     handleGetCartItem,
     handleIncreamentCartItem,
     handleDecreamentCartItem,
     handleRemoveCartItem,
+    handleCreateCartOrder,
   };
 };
