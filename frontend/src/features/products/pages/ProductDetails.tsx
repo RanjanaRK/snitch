@@ -1,8 +1,12 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
 import { useParams } from "react-router";
+import type { RootState } from "../../../app/app.store";
+import { useCart } from "../../cart/hooks/useCart";
+import WishlistButton from "../../like/components/WishlistButton";
+import { useWishlist } from "../../like/hooks/useWishlist";
 import { useProduct } from "../hooks/useProduct";
 import type { Product } from "../utils/productTypes";
-import { useCart } from "../../cart/hooks/useCart";
 
 type VariantAttributes = Record<string, string>;
 
@@ -18,6 +22,10 @@ const ProductDetail = () => {
   // const navigate = useNavigate();
   const { handleGetProductDetails } = useProduct();
   const { handleAddItem } = useCart();
+  const { handleGetWishlist } = useWishlist();
+  const wishlistItems = useSelector((state: RootState) => state.wishlist.items);
+
+  console.log(wishlistItems);
 
   async function fetchProductDetails() {
     try {
@@ -29,6 +37,10 @@ const ProductDetail = () => {
       console.error("Failed to fetch product details", error);
     }
   }
+
+  useEffect(() => {
+    handleGetWishlist();
+  }, []);
 
   useEffect(() => {
     fetchProductDetails();
@@ -54,8 +66,6 @@ const ProductDetail = () => {
       return vKeys.length === sKeys.length && isMatch;
     });
   }, [product, selectedAttributes]);
-
-  console.log({ product, activeVariant });
 
   const availableAttributes = useMemo<AvailableAttributes>(() => {
     if (!product?.variants) return {};
@@ -116,6 +126,26 @@ const ProductDetail = () => {
     }
   };
 
+  const isWishlisted = !!(
+    activeVariant?._id &&
+    Array.isArray(wishlistItems) &&
+    wishlistItems.some((item) => {
+      const currentVariantId =
+        typeof item.variant === "string" ? item.variant : item.variant?._id;
+
+      console.log({
+        wishlistProductId: item.product?._id,
+        currentProductId: productId,
+        wishlistVariantId: currentVariantId,
+        activeVariantId: activeVariant?._id,
+      });
+
+      return (
+        item.product?._id === productId &&
+        currentVariantId === activeVariant._id
+      );
+    })
+  );
   if (!product) {
     return (
       <div
@@ -131,8 +161,6 @@ const ProductDetail = () => {
       </div>
     );
   }
-
-  console.log(product);
 
   // Fallbacks
   const displayImages =
@@ -359,6 +387,14 @@ const ProductDetail = () => {
                   {product.description}
                 </p>
               </div>
+
+              {productId && activeVariant?._id && (
+                <WishlistButton
+                  productId={productId}
+                  variantId={activeVariant._id}
+                  isWishlisted={isWishlisted}
+                />
+              )}
 
               {/* Actions */}
               <div className="mt-auto flex flex-col gap-4">

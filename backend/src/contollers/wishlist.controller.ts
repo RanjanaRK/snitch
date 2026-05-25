@@ -3,6 +3,62 @@ import type { JwtUser } from "../utils/types.js";
 import productModel from "../model/product.model.js";
 import { wishlistModel } from "../model/wishlist.model.js";
 
+// export const createWishlist = async (req: Request, res: Response) => {
+//   try {
+//     const { productId, variantId } = req.params;
+//     const user = req.user as JwtUser;
+
+//     const product = await productModel.findById(productId);
+
+//     if (!product) {
+//       return res.status(404).json({ message: "Product not found" });
+//     }
+
+//     const wishlist =
+//       (await wishlistModel.findOne({ user: user.id })) ||
+//       (await wishlistModel.create({ user: user.id }));
+
+//     const alreadyExists = wishlist.items.some(
+//       (item) =>
+//         item.product.toString() === productId &&
+//         item.variant?.toString() === variantId,
+//     );
+
+//     if (alreadyExists) {
+//       wishlist.set(
+//         "items",
+//         wishlist.items.filter(
+//           (item) =>
+//             !(
+//               item.product.toString() === productId &&
+//               item.variant?.toString() === variantId
+//             ),
+//         ),
+//       );
+
+//       await wishlist.save();
+
+//       return res.status(200).json({
+//         success: true,
+//         message: "Removed from wishlist",
+//         wishlist,
+//       });
+//     }
+
+//     wishlist.items.push({ product: productId, variant: variantId });
+
+//     await wishlist.save();
+
+//     return res.status(200).json({
+//       success: true,
+//       message: "Added to wishlist",
+//       wishlist,
+//     });
+//   } catch (error) {
+//     return res.status(500).json({ success: false, message: "Server error" });
+//   }
+// };
+
 export const createWishlist = async (req: Request, res: Response) => {
   try {
     const { productId, variantId } = req.params;
@@ -11,10 +67,13 @@ export const createWishlist = async (req: Request, res: Response) => {
     const product = await productModel.findById(productId);
 
     if (!product) {
-      return res.status(404).json({ message: "Product not found" });
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
     }
 
-    const wishlist =
+    let wishlist =
       (await wishlistModel.findOne({ user: user.id })) ||
       (await wishlistModel.create({ user: user.id, items: [] }));
 
@@ -24,36 +83,42 @@ export const createWishlist = async (req: Request, res: Response) => {
         item.variant?.toString() === variantId,
     );
 
+    // REMOVE from wishlist
     if (alreadyExists) {
       wishlist.set(
         "items",
         wishlist.items.filter(
           (item) =>
-            item.product.toString() !== productId &&
-            item.variant?.toString() !== variantId,
+            !(
+              item.product.toString() === productId &&
+              item.variant?.toString() === variantId
+            ),
         ),
       );
-
-      await wishlist.save();
-
-      return res.status(200).json({
-        success: true,
-        message: "Removed from wishlist",
-        wishlist,
+    }
+    // ADD to wishlist
+    else {
+      wishlist.items.push({
+        product: productId,
+        variant: variantId,
       });
     }
 
-    wishlist.items.push({ product: productId, variant: variantId });
-
+    //  save updated wishlist
     await wishlist.save();
+
+    await wishlist.populate("items.product");
 
     return res.status(200).json({
       success: true,
-      message: "Added to wishlist",
-      wishlist,
+      message: alreadyExists ? "Removed from wishlist" : "Added to wishlist",
+      wishlist: wishlist.items,
     });
   } catch (error) {
-    return res.status(500).json({ success: false, message: "Server error" });
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };
 
@@ -68,7 +133,7 @@ export const getWishlist = async (req: Request, res: Response) => {
     return res.status(200).json({
       success: true,
       message: "fetched wishlist",
-      wishlist: wishItems,
+      wishlist: wishItems[0]?.items || [],
     });
   } catch (error) {
     return res.status(500).json({ success: false, message: "Server error" });

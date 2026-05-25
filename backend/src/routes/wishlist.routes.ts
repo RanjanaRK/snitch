@@ -20,6 +20,6 @@ likeRoute.patch(
   deleteWishlist,
 );
 
-likeRoute.post("/", authenticateRole(["buyer"]), getWishlist);
+likeRoute.get("/", authenticateRole(["buyer"]), getWishlist);
 
 export default likeRoute;
