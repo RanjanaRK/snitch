@@ -472,6 +472,8 @@ export const createOrderController = async (req: Request, res: Response) => {
   try {
     const cart = await getCartDetails(user.id);
 
+    console.log(cart, "cart:");
+
     if (!cart) {
       return res.status(400).json({
         message: "Cart is empty",
@@ -484,9 +486,11 @@ export const createOrderController = async (req: Request, res: Response) => {
       currency: cart.currency,
     });
 
+    console.log(order, ":order");
+
     const payment = await paymentModel.create({
       user: user.id,
-      payment: {
+      razorpay: {
         orderId: order.id,
       },
       price: {
@@ -509,13 +513,17 @@ export const createOrderController = async (req: Request, res: Response) => {
       })),
     } as any);
 
+    console.log(payment, ":payment");
+
     return res.status(200).json({
       message: "Order created successfully",
       success: true,
       order,
     });
   } catch (error) {
-    return res.status(500).json({ message: "Server error", success: false });
+    return res
+      .status(500)
+      .json({ message: "Server error payment failed", success: false });
   }
 };
 
@@ -528,6 +536,8 @@ export const verifyOrderController = async (req: Request, res: Response) => {
       "razorpay.orderId": razorpay_order_id,
       status: "pending",
     });
+
+    console.log(payment);
 
     if (!payment) {
       return res.status(400).json({
@@ -577,3 +587,72 @@ export const verifyOrderController = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Server error", success: false });
   }
 };
+
+// export const verifyOrderController = async (req: Request, res: Response) => {
+//   try {
+//     console.log(req.body);
+
+//     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+//       req.body;
+
+//     const payment = await paymentModel.findOne({
+//       "razorpay.orderId": razorpay_order_id,
+//       status: "pending",
+//     });
+
+//     console.log(payment, "PAYMENT");
+
+//     if (!payment) {
+//       console.log("PAYMENT NOT FOUND");
+
+//       return res.status(400).json({
+//         message: "Payment not found",
+//         success: false,
+//       });
+//     }
+
+//     const isPaymentValid = validatePaymentVerification(
+//       {
+//         order_id: razorpay_order_id,
+//         payment_id: razorpay_payment_id,
+//       },
+//       razorpay_signature,
+//       env.RAZORPAY_KEY_SECRET,
+//     );
+
+//     console.log(isPaymentValid, "IS PAYMENT VALID");
+
+//     if (!isPaymentValid) {
+//       console.log("SIGNATURE FAILED");
+
+//       payment.status = "failed";
+//       await payment.save();
+
+//       return res.status(400).json({
+//         message: "Payment verification failed",
+//         success: false,
+//       });
+//     }
+
+//     console.log("PAYMENT SUCCESS");
+
+//     payment.status = "paid";
+
+//     payment.razorpay.paymentId = razorpay_payment_id;
+//     payment.razorpay.signature = razorpay_signature;
+
+//     await payment.save();
+
+//     return res.status(200).json({
+//       message: "Payment verified successfully",
+//       success: true,
+//     });
+//   } catch (error) {
+//     console.log(error);
+
+//     return res.status(500).json({
+//       message: "Server error",
+//       success: false,
+//     });
+//   }
+// };

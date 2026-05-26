@@ -78,6 +78,9 @@ export const useCart = () => {
 
   const handleCreateCartOrder = async () => {
     const data = await createCartOrder();
+
+    console.log(data);
+
     return data.order;
   };
 
@@ -95,6 +98,9 @@ export const useCart = () => {
       razorpay_payment_id,
       razorpay_signature,
     });
+
+    console.log(data);
+
     return data.success;
   };
 

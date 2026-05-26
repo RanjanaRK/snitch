@@ -1,13 +1,11 @@
-import { useRazorpay, type RazorpayOrderOptions } from "react-razorpay";
+import { useNavigate } from "react-router";
+import { useCart } from "../hooks/useCart";
+import { useRazorpay } from "react-razorpay";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../app/app.store";
-import { useCart } from "../hooks/useCart";
-import type { CartProduct } from "../utils/types";
-import { useNavigate } from "react-router";
-
-interface Props {
-  order: CartProduct[];
-}
+// interface Props {
+//   order: CartProduct[];
+// }
 
 const CheckoutButton = () => {
   const navigate = useNavigate();
@@ -23,8 +21,6 @@ const CheckoutButton = () => {
 
     console.log(order);
 
-    console.log();
-
     const options = {
       key: import.meta.env.VITE_RAZORPAY_KEY_ID,
       amount: order.amount, // Amount in paise
@@ -35,6 +31,7 @@ const CheckoutButton = () => {
       handler: async (response: any) => {
         console.log(response);
         const isValid = await handleVerifyCartOrder(response);
+        console.log(isValid);
 
         if (isValid) {
           navigate(`/order-success?order_id=${response?.razorpay_order_id}`);
@@ -52,32 +49,6 @@ const CheckoutButton = () => {
 
     const razorpayInstance = new Razorpay(options);
     razorpayInstance.open();
-
-    console.log(razorpayInstance);
-
-    // const options: RazorpayOrderOptions = {
-    //   key: "rzp_test_Stdp2SEQoWzF5l",
-    //   amount: order.amount, // Amount in paise
-    //   currency: order.currency,
-    //   name: "Test Company",
-    //   description: "Test Transaction",
-    //   order_id: "order_9A33XWu170gUtm", // Generate order_id on server
-    //   handler: (response) => {
-    //     console.log(response);
-    //     alert("Payment Successful!");
-    //   },
-    //   prefill: {
-    //     name: "John Doe",
-    //     email: "john.doe@example.com",
-    //     contact: "9999999999",
-    //   },
-    //   theme: {
-    //     color: "#F37254",
-    //   },
-    // };
-
-    // const razorpayInstance = new Razorpay(options);
-    // razorpayInstance.open();
   };
 
   return (
