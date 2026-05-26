@@ -472,8 +472,6 @@ export const createOrderController = async (req: Request, res: Response) => {
   try {
     const cart = await getCartDetails(user.id);
 
-    console.log(cart, "cart:");
-
     if (!cart) {
       return res.status(400).json({
         message: "Cart is empty",
@@ -485,8 +483,6 @@ export const createOrderController = async (req: Request, res: Response) => {
       amount: cart.totalPrice,
       currency: cart.currency,
     });
-
-    console.log(order, ":order");
 
     const payment = await paymentModel.create({
       user: user.id,
@@ -537,8 +533,6 @@ export const verifyOrderController = async (req: Request, res: Response) => {
       status: "pending",
     });
 
-    console.log(payment);
-
     if (!payment) {
       return res.status(400).json({
         message: "Payment not found",
@@ -546,6 +540,7 @@ export const verifyOrderController = async (req: Request, res: Response) => {
       });
     }
 
+    // payment verification
     const isPaymentValid = validatePaymentVerification(
       {
         order_id: razorpay_order_id,
@@ -571,6 +566,48 @@ export const verifyOrderController = async (req: Request, res: Response) => {
         success: false,
       });
     }
+
+    // deduct stock
+
+    for (const item of payment.orderItems) {
+      const updatedProduct = await productModel.findOneAndUpdate(
+        {
+          _id: item._id,
+          "variants._id": item.variantId,
+          "variants.stock": { $gte: item.quantity },
+        } as any,
+        {
+          $inc: {
+            "variants.$.stock": -(item.quantity ?? 1),
+          },
+        },
+        {
+          new: true,
+        },
+      );
+
+      if (!updatedProduct) {
+        return res.status(400).json({
+          message: `${item.title} is out of stock`,
+          success: false,
+        });
+      }
+    }
+
+    //clear cart
+    await cartModel.findOneAndUpdate(
+      {
+        user: payment.user,
+      },
+      {
+        $pull: {
+          items: [],
+        },
+      },
+      {
+        new: true,
+      },
+    );
 
     payment.status = "paid";
 
