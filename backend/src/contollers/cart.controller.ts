@@ -569,12 +569,39 @@ export const verifyOrderController = async (req: Request, res: Response) => {
 
     // deduct stock
 
+    // for (const item of payment.orderItems) {
+    //   const updatedProduct = await productModel.findOneAndUpdate(
+    //     {
+    //       _id: item.productId,
+    //       "variants._id": item.variantId,
+    //       "variants.stock": { $gte: item.quantity },
+    //     } as any,
+    //     {
+    //       $inc: {
+    //         "variants.$.stock": -(item.quantity ?? 1),
+    //       },
+    //     },
+    //     {
+    //       new: true,
+    //     },
+    //   );
+
+    //   if (!updatedProduct) {
+    //     return res.status(400).json({
+    //       message: `${item.title} is out of stock`,
+    //       success: false,
+    //     });
+    //   }
+    // }
+
     for (const item of payment.orderItems) {
       const updatedProduct = await productModel.findOneAndUpdate(
         {
-          _id: item._id,
+          _id: item.productId,
           "variants._id": item.variantId,
-          "variants.stock": { $gte: item.quantity },
+          "variants.stock": {
+            $gte: item.quantity,
+          },
         } as any,
         {
           $inc: {
@@ -582,7 +609,7 @@ export const verifyOrderController = async (req: Request, res: Response) => {
           },
         },
         {
-          new: true,
+          returnDocument: "after",
         },
       );
 
@@ -592,6 +619,8 @@ export const verifyOrderController = async (req: Request, res: Response) => {
           success: false,
         });
       }
+
+      // console.log(updatedProduct, ":updated product");
     }
 
     //clear cart
@@ -600,12 +629,12 @@ export const verifyOrderController = async (req: Request, res: Response) => {
         user: payment.user,
       },
       {
-        $pull: {
+        $set: {
           items: [],
         },
       },
       {
-        new: true,
+        returnDocument: "after",
       },
     );
 
@@ -621,6 +650,8 @@ export const verifyOrderController = async (req: Request, res: Response) => {
       success: true,
     });
   } catch (error) {
+    // console.log(error);
+
     return res.status(500).json({ message: "Server error", success: false });
   }
 };

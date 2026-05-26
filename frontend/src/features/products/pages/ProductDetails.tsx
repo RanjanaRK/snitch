@@ -7,6 +7,8 @@ import WishlistButton from "../../like/components/WishlistButton";
 import { useWishlist } from "../../like/hooks/useWishlist";
 import { useProduct } from "../hooks/useProduct";
 import type { Product } from "../utils/productTypes";
+import { success } from "zod";
+import { toast } from "sonner";
 
 type VariantAttributes = Record<string, string>;
 
@@ -25,7 +27,24 @@ const ProductDetail = () => {
   const { handleGetWishlist } = useWishlist();
   const wishlistItems = useSelector((state: RootState) => state.wishlist.items);
 
-  console.log(wishlistItems);
+  // console.log(wishlistItems);
+
+  const handleAddToCart = async () => {
+    if (!activeVariant || !product) {
+      return;
+    }
+
+    const res = await handleAddItem({
+      productId: product._id,
+      variantId: activeVariant._id,
+    });
+
+    if (res.success) {
+      toast.success(res.message);
+    } else {
+      toast.error(res.message);
+    }
+  };
 
   async function fetchProductDetails() {
     try {
@@ -414,13 +433,7 @@ const ProductDetail = () => {
                     e.currentTarget.style.color = "#fbf9f6";
                   }}
                   disabled={!isVariantAvailable}
-                  onClick={() => {
-                    if (!activeVariant) return;
-                    handleAddItem({
-                      productId: product._id,
-                      variantId: activeVariant._id,
-                    });
-                  }}
+                  onClick={() => handleAddToCart()}
                 >
                   Add to Cart
                 </button>

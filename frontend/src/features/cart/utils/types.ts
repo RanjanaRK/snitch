@@ -23,3 +23,8 @@ export type CartResponse = {
   message: string;
   cart: Cart;
 };
+
+export interface QuantityResponse {
+  success: boolean;
+  message: string;
+}
