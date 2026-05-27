@@ -10,6 +10,7 @@ import app from "./server.js";
 import productRouter from "./routes/product.routes.js";
 import cartRouter from "./routes/cart.routes.js";
 import likeRoute from "./routes/wishlist.routes.js";
+import categoryRouter from "./routes/category.routes.js";
 
 connectDB();
 
@@ -43,6 +44,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/products", productRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/wishlist", likeRoute);
+app.use("/api/category", categoryRouter);
 
 const PORT = process.env.PORT || 3000;
 
