@@ -11,10 +11,15 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
     seller: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
       required: true,
+    },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "category",
     },
     price: {
       type: priceSchema,
