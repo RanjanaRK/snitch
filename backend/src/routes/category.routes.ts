@@ -2,6 +2,6 @@ import { Router } from "express";
 
 const categoryRouter = Router();
 
-categoryRouter.get("/");
+// categoryRouter.get("/");
 
 export default categoryRouter;
