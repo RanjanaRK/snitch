@@ -3,12 +3,19 @@ import { categoryModel } from "../model/category.model.js";
 
 export const getCategoryController = async (req: Request, res: Response) => {
   try {
+    const categories = await categoryModel.find();
 
-
-    const categories= await categoryModel.find()
-
-
+    return res.status(200).json({
+      success: true,
+      message: "category fetched",
+      categories,
+    });
   } catch (error) {
     return res.status(500).json({ message: "Server error" });
   }
 };
+
+export const getSubCatgeoriesController = async (
+  req: Request,
+  res: Response,
+) => {};

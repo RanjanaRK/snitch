@@ -44,7 +44,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/products", productRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/wishlist", likeRoute);
-app.use("/api/category", categoryRouter);
+app.use("/api/categories", categoryRouter);
 
 const PORT = process.env.PORT || 3000;
 
