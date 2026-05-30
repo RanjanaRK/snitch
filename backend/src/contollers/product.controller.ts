@@ -91,7 +91,14 @@ export const getProductById = async (req: Request, res: Response) => {
 
 export const getAllProducts = async (req: Request, res: Response) => {
   try {
-    const products = await productModel.find();
+    const { category } = req.query;
+    let filter: any = {};
+
+    if (category) {
+      filter.category = category;
+    }
+
+    const products = await productModel.find(filter).populate("category");
 
     return res.status(200).json({
       message: "Products fetched successfully",

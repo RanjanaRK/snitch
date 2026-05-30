@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import { categoryModel } from "../model/category.model.js";
+import slugify from "slugify";
 
 export const getCategoryController = async (req: Request, res: Response) => {
   try {
@@ -13,6 +14,29 @@ export const getCategoryController = async (req: Request, res: Response) => {
       categories,
     });
   } catch (error) {
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+export const addCategoryController = async (req: Request, res: Response) => {
+  try {
+    const { name, parentCategory } = req.body;
+
+    const slug = slugify(name, { lower: true, strict: true });
+
+    const categories = await categoryModel.create({
+      name,
+      slug,
+      parentCategory: parentCategory || null,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Category added",
+      categories,
+    });
+  } catch (error) {
+    console.log(error);
+
     return res.status(500).json({ message: "Server error" });
   }
 };
