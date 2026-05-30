@@ -15,6 +15,10 @@ categoryRouter.get(
 );
 
 categoryRouter.get("/subcategories/:parentId", getSubCatgeoriesController);
-categoryRouter.post("/add", addCategoryController);
+categoryRouter.post(
+  "/add",
+  authenticateRole(["seller"]),
+  addCategoryController,
+);
 
 export default categoryRouter;
