@@ -1,8 +1,9 @@
+import { Heart } from "lucide-react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
 import type { RootState } from "../../../app/app.store";
 import LogoutButton from "../../auth/components/LogoutButton";
-import { Heart } from "lucide-react";
+import CategoryMenu from "./CategoryMenu";
 
 const Nav = () => {
   const user = useSelector((state: RootState) => state.auth.user);
@@ -25,6 +26,9 @@ const Nav = () => {
         >
           Snitch.
         </Link>
+
+        <CategoryMenu />
+
         <div
           className="flex items-center gap-6 text-[10px] font-medium tracking-[0.2em] uppercase"
           style={{ color: "#7A6E63" }}

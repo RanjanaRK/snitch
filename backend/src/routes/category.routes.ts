@@ -8,11 +8,7 @@ import { authenticateRole } from "../middlewares/auth.middleware.js";
 
 const categoryRouter = Router();
 
-categoryRouter.get(
-  "/",
-  authenticateRole(["buyer,seller"]),
-  getCategoryController,
-);
+categoryRouter.get("/", getCategoryController);
 
 categoryRouter.get("/subcategories/:parentId", getSubCatgeoriesController);
 

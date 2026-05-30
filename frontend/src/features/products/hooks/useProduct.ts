@@ -22,10 +22,10 @@ export const useProduct = () => {
     return data.products;
   };
 
-  const handleGetProducts = async () => {
-    const data = await getAllProducts();
+  const handleGetProducts = async (category?: string) => {
+    const data = await getAllProducts(category);
+
     dispatch(setProducts(data.products));
-    // console.log(data);
 
     return data.products;
   };

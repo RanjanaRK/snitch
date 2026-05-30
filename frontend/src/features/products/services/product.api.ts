@@ -27,8 +27,12 @@ export const getSellerProducts = async (): Promise<ProductsResponse> => {
   return res.data;
 };
 
-export const getAllProducts = async (): Promise<ProductsResponse> => {
-  const res = await productApiInstance.get<ProductsResponse>("/");
+export const getAllProducts = async (
+  category?: string,
+): Promise<ProductsResponse> => {
+  const res = await productApiInstance.get<ProductsResponse>("/", {
+    params: category,
+  });
 
   console.log(res);
 

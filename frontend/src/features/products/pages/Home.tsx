@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router";
+import { useNavigate, useSearchParams } from "react-router";
 import type { RootState } from "../../../app/app.store";
 import { useProduct } from "../hooks/useProduct";
 import { useEffect } from "react";
@@ -7,16 +7,17 @@ import type { Product } from "../utils/productTypes";
 
 const Home = () => {
   const products = useSelector((state: RootState) => state.product.products);
-  // const user = useSelector((state: RootState) => state.auth.user);
+
   const navigate = useNavigate();
+
+  const [searchParam] = useSearchParams();
+  const category = searchParam.get("category");
 
   const { handleGetProducts } = useProduct();
 
-  console.log(products);
-
   useEffect(() => {
-    handleGetProducts();
-  }, []);
+    handleGetProducts(category || undefined);
+  }, [category]);
 
   return (
     <>
