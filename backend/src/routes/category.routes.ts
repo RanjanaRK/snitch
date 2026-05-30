@@ -15,6 +15,7 @@ categoryRouter.get(
 );
 
 categoryRouter.get("/subcategories/:parentId", getSubCatgeoriesController);
+
 categoryRouter.post(
   "/add",
   authenticateRole(["seller"]),
