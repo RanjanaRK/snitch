@@ -97,6 +97,8 @@ export const getAllProducts = async (req: Request, res: Response) => {
     if (category) {
       filter.category = category;
     }
+    console.log(filter, "filter");
+    console.log(category, "category");
 
     const products = await productModel.find(filter).populate("category");
 
@@ -106,6 +108,8 @@ export const getAllProducts = async (req: Request, res: Response) => {
       products,
     });
   } catch (error) {
+    console.log(error);
+
     return res.status(500).json({ message: "Error fetching products" });
   }
 };
