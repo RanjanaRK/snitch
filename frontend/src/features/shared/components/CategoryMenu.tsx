@@ -60,7 +60,7 @@ const CategoryMenu = () => {
     }));
   };
   return (
-    <div className="flex border-b border-[#e4e2df] bg-[#fbf9f6]">
+    <div className="flex gap-8">
       {categories.map((category) => (
         <DropdownMenu key={category._id}>
           <DropdownMenuTrigger asChild>
