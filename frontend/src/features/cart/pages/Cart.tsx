@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router";
 import type { RootState } from "../../../app/app.store";
-import { useCart } from "../hooks/useCart";
-import { Link, useNavigate } from "react-router";
 import type { Product, Variant } from "../../products/utils/productTypes";
 import CheckoutButton from "../components/CheckoutButton";
+import { useCart } from "../hooks/useCart";
 
 const tokens = {
   surface: "#fbf9f6",
@@ -32,9 +32,7 @@ const Cart = () => {
     handleRemoveCartItem,
   } = useCart();
 
-  const navigate = useNavigate();
-
-  const [quantities, setQuantities] = useState<Record<string, number>>({});
+  const [quantities] = useState<Record<string, number>>({});
 
   useEffect(() => {
     handleGetCartItem();

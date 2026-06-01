@@ -2,12 +2,11 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
+import { toast } from "sonner";
 import { useAuth } from "../hooks/useAuth";
 import { registerSchema, type RegisterFormData } from "../utils/zodSchema";
 import ContinueWithGoogle from "./ContinueWithGoogle";
-import { useNavigate } from "react-router";
-import { toast } from "sonner";
-import { id } from "zod/v4/locales";
 
 const RegisterForm = () => {
   const { handleRegister } = useAuth();

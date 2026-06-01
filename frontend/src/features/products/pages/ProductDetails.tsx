@@ -1,14 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
+import { toast } from "sonner";
 import type { RootState } from "../../../app/app.store";
 import { useCart } from "../../cart/hooks/useCart";
 import WishlistButton from "../../like/components/WishlistButton";
 import { useWishlist } from "../../like/hooks/useWishlist";
 import { useProduct } from "../hooks/useProduct";
 import type { Product } from "../utils/productTypes";
-import { success } from "zod";
-import { toast } from "sonner";
 
 type VariantAttributes = Record<string, string>;
 
@@ -21,7 +20,7 @@ const ProductDetail = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedAttributes, setSelectedAttributes] =
     useState<VariantAttributes>({});
-  // const navigate = useNavigate();
+
   const { handleGetProductDetails } = useProduct();
   const { handleAddItem } = useCart();
   const { handleGetWishlist } = useWishlist();

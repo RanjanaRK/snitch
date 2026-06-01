@@ -1,16 +1,13 @@
-import { useNavigate } from "react-router";
-import { useCart } from "../hooks/useCart";
 import { useRazorpay } from "react-razorpay";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 import type { RootState } from "../../../app/app.store";
-// interface Props {
-//   order: CartProduct[];
-// }
+import { useCart } from "../hooks/useCart";
 
 const CheckoutButton = () => {
   const navigate = useNavigate();
 
-  const { Razorpay, error, isLoading } = useRazorpay();
+  const { Razorpay } = useRazorpay();
 
   const { handleCreateCartOrder, handleVerifyCartOrder } = useCart();
 
