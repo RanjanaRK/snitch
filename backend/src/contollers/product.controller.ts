@@ -103,12 +103,24 @@ export const getProductById = async (req: Request, res: Response) => {
 
 export const getAllProducts = async (req: Request, res: Response) => {
   try {
-    const { category } = req.query;
+    const { parentCategory, category } = req.query;
     let filter: any = {};
 
+    if (parentCategory) {
+      const subCategories = await categoryModel.find({
+        parentCategory: parentCategory as string,
+      });
+
+      filter.category = {
+        $in: subCategories.map((sub) => sub._id),
+      };
+    }
+
+    // Filter by subcategory (T-Shirts/Shirts)
     if (category) {
       filter.category = category;
     }
+
     console.log(filter, "filter");
     console.log(category, "category");
 

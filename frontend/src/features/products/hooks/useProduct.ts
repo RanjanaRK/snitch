@@ -22,8 +22,11 @@ export const useProduct = () => {
     return data.products;
   };
 
-  const handleGetProducts = async (category?: string) => {
-    const data = await getAllProducts(category);
+  const handleGetProducts = async (
+    category?: string,
+    parentCategory?: string,
+  ) => {
+    const data = await getAllProducts(category, parentCategory);
 
     dispatch(setProducts(data.products));
 

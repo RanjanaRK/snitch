@@ -10,14 +10,16 @@ const Home = () => {
 
   const navigate = useNavigate();
 
-  const [searchParam] = useSearchParams();
-  const category = searchParam.get("category");
+  const [searchParams] = useSearchParams();
+
+  const category = searchParams.get("category");
+  const parentCategory = searchParams.get("parentCategory");
 
   const { handleGetProducts } = useProduct();
 
   useEffect(() => {
-    handleGetProducts(category || undefined);
-  }, [category]);
+    handleGetProducts(category || undefined, parentCategory || undefined);
+  }, [category, parentCategory]);
 
   return (
     <>

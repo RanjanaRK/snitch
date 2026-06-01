@@ -29,9 +29,13 @@ export const getSellerProducts = async (): Promise<ProductsResponse> => {
 
 export const getAllProducts = async (
   category?: string,
+  parentCategory?: string,
 ): Promise<ProductsResponse> => {
   const res = await productApiInstance.get<ProductsResponse>("/", {
-    params: category,
+    params: {
+      category,
+      parentCategory,
+    },
   });
 
   console.log(res);
