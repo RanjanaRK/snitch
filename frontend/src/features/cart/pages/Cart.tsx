@@ -65,30 +65,6 @@ const Cart = () => {
             fontFamily: "'Inter', sans-serif",
           }}
         >
-          {/* Nav */}
-          <nav
-            className="flex items-center justify-between px-8 pt-10 pb-6 lg:px-16 xl:px-24"
-            style={{ borderBottom: `1px solid ${tokens.surfaceHighest}` }}
-          >
-            <Link
-              to="/"
-              className="text-sm font-medium tracking-[0.35em] uppercase transition-opacity hover:opacity-80"
-              style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                color: tokens.primary,
-              }}
-            >
-              Snitch.
-            </Link>
-            <button
-              onClick={() => navigate(-1)}
-              className="text-[10px] font-medium tracking-[0.22em] uppercase transition-colors hover:opacity-70"
-              style={{ color: tokens.secondary }}
-            >
-              Return to Archive
-            </button>
-          </nav>
-
           <div className="flex flex-1 flex-col items-center justify-center gap-6 px-8 pb-24">
             <p
               className="text-5xl leading-tight font-light md:text-6xl"
