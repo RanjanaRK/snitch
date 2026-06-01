@@ -8,6 +8,8 @@ export const productSchema = z.object({
   priceAmount: z.number().min(1, "Price is required"),
 
   priceCurrency: z.string().min(1),
+
+  category: z.string().min(1),
 });
 
 export type ProductFormDataType = z.infer<typeof productSchema>;

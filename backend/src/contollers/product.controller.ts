@@ -2,10 +2,12 @@ import type { Request, Response } from "express";
 import productModel from "../model/product.model.js";
 import { uploadImage } from "../service/storage.service.js";
 import type { JwtUser } from "../utils/types.js";
+import { categoryModel } from "../model/category.model.js";
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
-    const { title, description, priceAmount, priceCurrency } = req.body;
+    const { title, description, priceAmount, priceCurrency, category } =
+      req.body;
 
     const seller = req.user as JwtUser;
 
@@ -25,6 +27,15 @@ export const createProduct = async (req: Request, res: Response) => {
       }),
     );
 
+    const categoryExists = await categoryModel.findById(category);
+
+    if (!categoryExists) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid category",
+      });
+    }
+
     const product = await productModel.create({
       title,
       description,
@@ -33,6 +44,7 @@ export const createProduct = async (req: Request, res: Response) => {
         currency: priceCurrency || "INR",
       },
       images,
+      category,
       seller: seller.id,
     });
 

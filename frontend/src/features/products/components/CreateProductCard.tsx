@@ -8,6 +8,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRef, useState } from "react";
 import { useProduct } from "../hooks/useProduct";
 import { toast } from "sonner";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../../app/app.store";
 
 const CURRENCIES = ["INR", "USD", "EUR", "GBP"];
 const MAX_IMAGES = 7;
@@ -38,6 +40,10 @@ const CreateProductCard = () => {
       priceCurrency: "INR",
     },
   });
+
+  const categories = useSelector(
+    (state: RootState) => state.category.categories,
+  );
 
   const addImages = (files: FileList | File[]) => {
     const remainingSlots = MAX_IMAGES - images.length;
@@ -101,6 +107,8 @@ const CreateProductCard = () => {
 
       formData.append("priceCurrency", data.priceCurrency);
 
+      formData.append("category", data.category);
+
       images.forEach((img) => {
         formData.append("images", img.file);
       });
@@ -120,22 +128,22 @@ const CreateProductCard = () => {
   return (
     <>
       <div
-        className="min-h-screen flex flex-col lg:flex-row justify-center selection:bg-[#C9A96E]/30"
+        className="flex min-h-screen flex-col justify-center selection:bg-[#C9A96E]/30 lg:flex-row"
         style={{
           backgroundColor: "#fbf9f6",
           fontFamily: "'Inter', sans-serif",
         }}
       >
         {/* RIGHT PANEL */}
-        <div className="w-full lg:w-1/2 flex items-center justify-center min-h-screen px-8 sm:px-14 lg:px-20 py-16">
+        <div className="flex min-h-screen w-full items-center justify-center px-8 py-16 sm:px-14 lg:w-1/2 lg:px-20">
           <div className="w-full max-w-lg">
             {/* HEADER */}
             <div className="mb-14">
-              <p className="text-[10px] uppercase tracking-[0.22em] mb-4 font-medium text-[#C9A96E]">
+              <p className="mb-4 text-[10px] font-medium tracking-[0.22em] text-[#C9A96E] uppercase">
                 Seller Dashboard
               </p>
 
-              <h1 className="text-[2.6rem] xl:text-5xl font-light leading-[1.1] text-[#1b1c1a]">
+              <h1 className="text-[2.6rem] leading-[1.1] font-light text-[#1b1c1a] xl:text-5xl">
                 Create Product
               </h1>
             </div>
@@ -148,7 +156,7 @@ const CreateProductCard = () => {
             >
               {/* TITLE */}
               <div className="flex flex-col gap-2">
-                <label className="text-[10px] uppercase tracking-[0.18em] font-medium text-[#7A6E63]">
+                <label className="text-[10px] font-medium tracking-[0.18em] text-[#7A6E63] uppercase">
                   Product Title
                 </label>
 
@@ -156,7 +164,7 @@ const CreateProductCard = () => {
                   type="text"
                   placeholder="Oversized Linen Shirt"
                   {...register("title")}
-                  className="w-full bg-transparent outline-none py-3 text-sm border-b border-[#d0c5b5]"
+                  className="w-full border-b border-[#d0c5b5] bg-transparent py-3 text-sm outline-none"
                 />
 
                 {errors.title && (
@@ -168,7 +176,7 @@ const CreateProductCard = () => {
 
               {/* DESCRIPTION */}
               <div className="flex flex-col gap-2">
-                <label className="text-[10px] uppercase tracking-[0.18em] font-medium text-[#7A6E63]">
+                <label className="text-[10px] font-medium tracking-[0.18em] text-[#7A6E63] uppercase">
                   Description
                 </label>
 
@@ -176,7 +184,7 @@ const CreateProductCard = () => {
                   rows={4}
                   placeholder="Describe your product..."
                   {...register("description")}
-                  className="w-full bg-transparent outline-none py-3 text-sm border-b border-[#d0c5b5] resize-none"
+                  className="w-full resize-none border-b border-[#d0c5b5] bg-transparent py-3 text-sm outline-none"
                 />
 
                 {errors.description && (
@@ -190,7 +198,7 @@ const CreateProductCard = () => {
               <div className="grid grid-cols-2 gap-6">
                 {/* AMOUNT */}
                 <div className="flex flex-col gap-2">
-                  <label className="text-[10px] uppercase tracking-[0.18em] font-medium text-[#7A6E63]">
+                  <label className="text-[10px] font-medium tracking-[0.18em] text-[#7A6E63] uppercase">
                     Price
                   </label>
 
@@ -200,7 +208,7 @@ const CreateProductCard = () => {
                     {...register("priceAmount", {
                       valueAsNumber: true,
                     })}
-                    className="w-full bg-transparent outline-none py-3 text-sm border-b border-[#d0c5b5]"
+                    className="w-full border-b border-[#d0c5b5] bg-transparent py-3 text-sm outline-none"
                   />
 
                   {errors.priceAmount && (
@@ -212,13 +220,13 @@ const CreateProductCard = () => {
 
                 {/* CURRENCY */}
                 <div className="flex flex-col gap-2">
-                  <label className="text-[10px] uppercase tracking-[0.18em] font-medium text-[#7A6E63]">
+                  <label className="text-[10px] font-medium tracking-[0.18em] text-[#7A6E63] uppercase">
                     Currency
                   </label>
 
                   <select
                     {...register("priceCurrency")}
-                    className="w-full bg-transparent outline-none py-3 text-sm border-b border-[#d0c5b5]"
+                    className="w-full border-b border-[#d0c5b5] bg-transparent py-3 text-sm outline-none"
                   >
                     {CURRENCIES.map((currency) => (
                       <option key={currency} value={currency}>
@@ -231,10 +239,19 @@ const CreateProductCard = () => {
                 </div>
               </div>
 
+              {/* category */}
+
+              <select {...register("category")}>
+                {categories.map((category) => (
+                  <option key={category._id} value={category._id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
               {/* IMAGE UPLOAD */}
               <div className="flex flex-col gap-3">
                 <div className="flex items-center justify-between">
-                  <label className="text-[10px] uppercase tracking-[0.18em] font-medium text-[#7A6E63]">
+                  <label className="text-[10px] font-medium tracking-[0.18em] text-[#7A6E63] uppercase">
                     Product Images
                   </label>
 
@@ -249,14 +266,14 @@ const CreateProductCard = () => {
                   onDragOver={handleDragOver}
                   onDragLeave={handleDragLeave}
                   onClick={() => fileInputRef.current?.click()}
-                  className="border border-dashed border-[#d0c5b5] px-6 py-12 flex flex-col items-center justify-center gap-3 cursor-pointer transition-all duration-300"
+                  className="flex cursor-pointer flex-col items-center justify-center gap-3 border border-dashed border-[#d0c5b5] px-6 py-12 transition-all duration-300"
                   style={{
                     backgroundColor: isDragging
                       ? "rgba(201,169,110,0.06)"
                       : "transparent",
                   }}
                 >
-                  <div className="w-10 h-10 border border-[#d0c5b5] flex items-center justify-center text-[#B5ADA3]">
+                  <div className="flex h-10 w-10 items-center justify-center border border-[#d0c5b5] text-[#B5ADA3]">
                     +
                   </div>
 
@@ -266,7 +283,7 @@ const CreateProductCard = () => {
                       <span className="text-[#C9A96E] underline">browse</span>
                     </p>
 
-                    <p className="text-[10px] uppercase tracking-[0.15em] mt-2 text-[#B5ADA3]">
+                    <p className="mt-2 text-[10px] tracking-[0.15em] text-[#B5ADA3] uppercase">
                       Maximum {MAX_IMAGES} images
                     </p>
                   </div>
@@ -283,22 +300,22 @@ const CreateProductCard = () => {
 
                 {/* PREVIEW */}
                 {images.length > 0 && (
-                  <div className="grid grid-cols-3 gap-3 mt-2">
+                  <div className="mt-2 grid grid-cols-3 gap-3">
                     {images.map((img, index) => (
                       <div
                         key={index}
-                        className="relative group overflow-hidden"
+                        className="group relative overflow-hidden"
                       >
                         <img
                           src={img.preview}
                           alt="preview"
-                          className="w-full h-28 object-cover"
+                          className="h-28 w-full object-cover"
                         />
 
                         <button
                           type="button"
                           onClick={() => removeImage(index)}
-                          className="absolute inset-0 bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-[10px] uppercase tracking-widest"
+                          className="absolute inset-0 bg-black/50 text-[10px] tracking-widest text-white uppercase opacity-0 transition-opacity duration-200 group-hover:opacity-100"
                         >
                           Remove
                         </button>
@@ -312,7 +329,7 @@ const CreateProductCard = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-4 text-[11px] hover:bg-[#8e7e61] uppercase tracking-[0.25em] font-medium transition-all duration-300 mt-2 bg-[#1b1c1a] text-[#fbf9f6]"
+                className="mt-2 w-full bg-[#1b1c1a] py-4 text-[11px] font-medium tracking-[0.25em] text-[#fbf9f6] uppercase transition-all duration-300 hover:bg-[#8e7e61]"
               >
                 {isSubmitting ? "Publishing..." : "Publish Product"}
               </button>
