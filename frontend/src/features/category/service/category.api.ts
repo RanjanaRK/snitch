@@ -10,3 +10,15 @@ export const getCategories = async () => {
 
   return response.data;
 };
+
+export const getAllSubCategories = async () => {
+  const response = await catApiInstance.get("/subcategories");
+
+  return response.data;
+};
+
+export const getSubCategories = async (parentId: string) => {
+  const res = await catApiInstance.get(`/subcategories/${parentId}`);
+
+  return res.data;
+};

@@ -10,6 +10,8 @@ import { useProduct } from "../hooks/useProduct";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../app/app.store";
+import type { Category } from "../../category/utils/types";
+import { useCategory } from "../../category/hooks/useCategory";
 
 const CURRENCIES = ["INR", "USD", "EUR", "GBP"];
 const MAX_IMAGES = 7;
@@ -25,6 +27,9 @@ const CreateProductCard = () => {
   const [images, setImages] = useState<ImageType[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [selectedParent, setSelectedParent] = useState("");
+  const [subCategories, setSubCategories] = useState<Category[]>([]);
 
   const { handleCreateProduct } = useProduct();
   const {
@@ -44,6 +49,8 @@ const CreateProductCard = () => {
   const categories = useSelector(
     (state: RootState) => state.category.categories,
   );
+
+  const { handleGetSubCategories } = useCategory();
 
   const addImages = (files: FileList | File[]) => {
     const remainingSlots = MAX_IMAGES - images.length;
@@ -241,13 +248,43 @@ const CreateProductCard = () => {
 
               {/* category */}
 
-              <select {...register("category")}>
+              <select
+                value={selectedParent}
+                onChange={async (e) => {
+                  const parentId = e.target.value;
+
+                  setSelectedParent(parentId);
+
+                  if (!parentId) {
+                    setSubCategories([]);
+                    return;
+                  }
+
+                  const data = await handleGetSubCategories(parentId);
+
+                  setSubCategories(data);
+                }}
+              >
+                <option value="">Select Gender</option>
+
                 {categories.map((category) => (
                   <option key={category._id} value={category._id}>
                     {category.name}
                   </option>
                 ))}
               </select>
+
+              {/* sub category */}
+              <select {...register("category")}>
+                <option value="">Select Category</option>
+
+                {subCategories.map((subcategory: any) => (
+                  <option key={subcategory._id} value={subcategory._id}>
+                    {subcategory.name}
+                  </option>
+                ))}
+              </select>
+
               {/* IMAGE UPLOAD */}
               <div className="flex flex-col gap-3">
                 <div className="flex items-center justify-between">

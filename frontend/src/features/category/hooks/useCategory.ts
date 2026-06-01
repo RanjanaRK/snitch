@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { getCategories } from "../service/category.api";
+import { getCategories, getSubCategories } from "../service/category.api";
 import { setCategories } from "../slice/category.slice";
 
 export const useCategory = () => {
@@ -12,8 +12,13 @@ export const useCategory = () => {
 
     return data.categories;
   };
+  const handleGetSubCategories = async (parentId: string) => {
+    const data = await getSubCategories(parentId);
 
+    return data.subCategories;
+  };
   return {
     handleGetCategories,
+    handleGetSubCategories,
   };
 };

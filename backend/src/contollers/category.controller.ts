@@ -61,3 +61,23 @@ export const getSubCatgeoriesController = async (
     return res.status(500).json({ message: "Server error" });
   }
 };
+
+export const getAllSubCategoriesController = async (
+  req: Request,
+  res: Response,
+) => {
+  try {
+    const subCategories = await categoryModel.find({
+      parentCategory: { $ne: null },
+    });
+
+    return res.status(200).json({
+      success: true,
+      subCategories,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Server error",
+    });
+  }
+};
