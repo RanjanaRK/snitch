@@ -97,7 +97,7 @@ PORT=5000
 ### Frontend (.env)
 
 ```env
-VITE_API_URL=http://localhost:5000/api
+VITE_API_URL=http://localhost:5000/
 VITE_GOOGLE_CLIENT_ID=
 RAZORPAY_KEY_ID=
 ```
