@@ -13,6 +13,8 @@ A modern full-stack e-commerce application inspired by Snitch, built using raect
 - Admin Dashboard
 - Responsive Design
 
+---
+
 ## Tech Stack
 
 ### Frontend
@@ -32,6 +34,8 @@ A modern full-stack e-commerce application inspired by Snitch, built using raect
 - JWT Authentication
 - Imagekit.io
 - Razorpay
+
+---
 
 ## Project Structure
 
@@ -63,3 +67,40 @@ cd frontend
 npm install
 npm run dev
 ```
+
+## Environment Variables
+
+### Backend (.env)
+
+PORT=5000
+
+MONGODB_URI=
+
+JWT_SECRET=
+
+IMAGEKIT_PUBLIC_KEY=
+IMAGEKIT_PRIVATE_KEY=
+IMAGEKIT_URL_ENDPOINT=
+
+RAZORPAY_KEY_ID=
+RAZORPAY_KEY_SECRET=
+
+### Frontend (.env)
+
+## VITE_API_URL=http://localhost:3000/api
+
+---
+
+## Future Enhancements
+
+Product Reviews & Ratings
+Coupon & Discount System
+Order Tracking
+Email Notifications
+Advanced Product Filters
+
+---
+
+## Author
+
+Ranjana Kumari
