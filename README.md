@@ -105,10 +105,10 @@ RAZORPAY_KEY_ID=
 
 ## Future Enhancements
 
--Product Reviews & Ratings
--Order Tracking
-Email Notifications
-Advanced Product Filters
+- Product Reviews & Ratings
+- Order Tracking
+- Email Notifications
+- Advanced Product Filters
 
 ---
 
