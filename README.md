@@ -1,6 +1,6 @@
 # Snitch - Full Stack E-Commerce Platform
 
-A modern full-stack e-commerce application inspired by Snitch, built using raect, Node.js, Express, MongoDB, and TypeScript.
+A modern full-stack e-commerce application inspired by Snitch, built using React, Node.js, Express, MongoDB, and TypeScript.
 
 ## Features
 
@@ -72,22 +72,35 @@ npm run dev
 
 ### Backend (.env)
 
-PORT=5000
+### Backend (.env)
 
-MONGODB_URI=
+```env
+MONGO_URI=
 
 JWT_SECRET=
 
-IMAGEKIT_PUBLIC_KEY=
+GOOGLE_CLIENT_ID=
+
+GOOGLE_CLIENT_SECRET=
+
 IMAGEKIT_PRIVATE_KEY=
-IMAGEKIT_URL_ENDPOINT=
 
 RAZORPAY_KEY_ID=
+
 RAZORPAY_KEY_SECRET=
+
+NODE_ENV=development
+
+PORT=5000
+```
 
 ### Frontend (.env)
 
-## VITE_API_URL=http://localhost:3000/api
+```env
+VITE_API_URL=http://localhost:5000/api
+VITE_GOOGLE_CLIENT_ID=
+RAZORPAY_KEY_ID=
+```
 
 ---
 
