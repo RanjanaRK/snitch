@@ -91,13 +91,13 @@ RAZORPAY_KEY_SECRET=
 
 NODE_ENV=development
 
-PORT=5000
+PORT=3000
 ```
 
 ### Frontend (.env)
 
 ```env
-VITE_API_URL=http://localhost:5000/
+VITE_API_URL=http://localhost:3000/
 VITE_GOOGLE_CLIENT_ID=
 RAZORPAY_KEY_ID=
 ```
