@@ -41,3 +41,25 @@ snitch/
 ├── backend/
 └── README.md
 ```
+
+## Setup
+
+Clone Repository
+git clone <repo-url>
+cd snitch
+
+### Backend Setup
+
+```
+cd backend
+npm install
+npm run dev
+```
+
+### Frontend Setup
+
+```
+cd frontend
+npm install
+npm run dev
+```
