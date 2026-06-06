@@ -11,11 +11,18 @@ import SellerProductDetails from "../features/products/pages/SellerProductDetail
 import AppLayout from "./AppLayout";
 import WishList from "../features/like/pages/WishList";
 import OrderSuccess from "../features/cart/pages/OrderSuccess";
+import { lazy, Suspense } from "react";
+import { Loader } from "lucide-react";
 
+const login = lazy(() => import("../features/auth/pages/Login"));
 export const routes = createBrowserRouter([
   {
     path: "/login",
-    element: <Login />,
+    element: (
+      <Suspense fallback={<Loader />}>
+        <Login />
+      </Suspense>
+    ),
   },
   {
     path: "/register",
