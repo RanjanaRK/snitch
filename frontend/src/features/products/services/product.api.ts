@@ -4,9 +4,10 @@ import type {
   ProductsResponse,
   Variant,
 } from "../utils/productTypes";
+import { env } from "../../shared/utils/env";
 
 const productApiInstance = axios.create({
-  baseURL: "http://localhost:3000/api/products",
+  baseURL: `${env.VITE_BACKEND_URL}/api/products`,
   withCredentials: true,
 });
 

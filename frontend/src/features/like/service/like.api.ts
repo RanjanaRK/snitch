@@ -1,8 +1,9 @@
 import axios from "axios";
 import type { WishlistResponse } from "../utils/types";
+import { env } from "../../shared/utils/env";
 
 const likeApiInstance = axios.create({
-  baseURL: "http://localhost:3000/api/wishlist",
+  baseURL: `${env.VITE_BACKEND_URL}/api/wishlist`,
   withCredentials: true,
 });
 
