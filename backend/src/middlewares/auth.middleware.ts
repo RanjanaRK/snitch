@@ -4,7 +4,7 @@ import type { JwtUser } from "../utils/types.js";
 import env from "../config/env.js";
 
 export const authenticateRole = (allowedRoles: string[]) => {
-  const middlware = (req: Request, res: Response, next: NextFunction) => {
+  const middleware = (req: Request, res: Response, next: NextFunction) => {
     const token = req.cookies.token;
 
     if (!token) {
@@ -26,5 +26,5 @@ export const authenticateRole = (allowedRoles: string[]) => {
     }
   };
 
-  return middlware;
+  return middleware;
 };
