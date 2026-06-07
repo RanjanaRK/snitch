@@ -1,9 +1,10 @@
 import axios from "axios";
 import type { LoginFormData, RegisterFormData } from "../utils/zodSchema";
 import type { AuthResponse } from "../utils/authTypes";
+import { env } from "../../shared/utils/env";
 
 const authApiInstance = axios.create({
-  baseURL: `env.VITE_BACKEND_URL/api/auth`,
+  baseURL: `${env.VITE_BACKEND_URL}/api/auth`,
   withCredentials: true,
 });
 
