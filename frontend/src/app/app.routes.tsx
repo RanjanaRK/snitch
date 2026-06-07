@@ -7,7 +7,7 @@ import AppLayout from "./AppLayout";
 
 // Lazy loaded pages
 const Login = lazy(() => import("../features/auth/pages/Login"));
-const Register = lazy(() => import("../features/auth/pages/Register"));
+const Register = lazy(() => import("../features/auth/pages/RegisterPage"));
 
 const Home = lazy(() => import("../features/products/pages/Home"));
 const ProductDetails = lazy(

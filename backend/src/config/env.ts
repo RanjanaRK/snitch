@@ -35,6 +35,11 @@ if (!process.env.RAZORPAY_KEY_SECRET) {
     "RAZORPAY_KEY_SECRET is not defined in environment variables",
   );
 }
+if (!process.env.FRONTEND_URL) {
+  throw new Error(
+    "RAZORPAY_KEY_SECRET is not defined in environment variables",
+  );
+}
 
 type Iconfig = {
   readonly MONGO_URI: string;
@@ -45,6 +50,7 @@ type Iconfig = {
   readonly IMAGEKIT_PRIVATE_KEY: string;
   readonly RAZORPAY_KEY_ID: string;
   readonly RAZORPAY_KEY_SECRET: string;
+  readonly FRONTEND_URL: string;
 };
 export const env: Iconfig = {
   MONGO_URI: process.env.MONGO_URI,
@@ -55,6 +61,7 @@ export const env: Iconfig = {
   IMAGEKIT_PRIVATE_KEY: process.env.IMAGEKIT_PRIVATE_KEY,
   RAZORPAY_KEY_ID: process.env.RAZORPAY_KEY_ID,
   RAZORPAY_KEY_SECRET: process.env.RAZORPAY_KEY_SECRET,
+  FRONTEND_URL: process.env.FRONTEND_URL,
 };
 
 export default env;
