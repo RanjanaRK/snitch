@@ -29,7 +29,7 @@ const WishlistButton = ({
 
       toast.success(data.message);
     } catch (error: any) {
-      toast.error(error);
+      toast.error(error.response.data.message);
     } finally {
       setLoading(false);
     }
