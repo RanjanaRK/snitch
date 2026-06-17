@@ -28,8 +28,8 @@ const WishlistButton = ({
       });
 
       toast.success(data.message);
-    } catch (error) {
-      toast.error("Something went wrong");
+    } catch (error: any) {
+      toast.error(error);
     } finally {
       setLoading(false);
     }
