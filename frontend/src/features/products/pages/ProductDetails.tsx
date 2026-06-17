@@ -29,19 +29,17 @@ const ProductDetail = () => {
   // console.log(wishlistItems);
 
   const handleAddToCart = async () => {
-    if (!activeVariant || !product) {
-      return;
-    }
-
-    const res = await handleAddItem({
-      productId: product._id,
-      variantId: activeVariant._id,
-    });
-
-    if (res.success) {
+    try {
+      if (!activeVariant || !product) {
+        return;
+      }
+      const res = await handleAddItem({
+        productId: product._id,
+        variantId: activeVariant._id,
+      });
       toast.success(res.message);
-    } else {
-      toast.error(res.message);
+    } catch (error: any) {
+      toast.error(error.response.data.message);
     }
   };
 
