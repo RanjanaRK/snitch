@@ -89,31 +89,31 @@ export const deleteWishlist = async (req: Request, res: Response) => {
     const { productId, variantId } = req.params;
     const user = req.user as JwtUser;
 
-    const wishlist = await wishlistModel.findOneAndUpdate(
-      { user: user.id },
-      {
-        $pull: {
-          items: {
-            product: productId,
-            variant: variantId,
+    const wishlist = await wishlistModel
+      .findOneAndUpdate(
+        { user: user.id },
+        {
+          $pull: {
+            items: {
+              product: productId,
+              variant: variantId,
+            },
           },
         },
-      },
-      {
-        new: true,
-      },
-    );
+        {
+          new: true,
+        },
+      )
+      .populate("items.product");
 
     if (!wishlist) {
       return res.status(404).json({ message: "Wishlist not found" });
     }
-    return res
-      .status(200)
-      .json({
-        success: true,
-        message: "Removed from wishlist",
-        wishlist: wishlist.items,
-      });
+    return res.status(200).json({
+      success: true,
+      message: "Removed from wishlist",
+      wishlist: wishlist.items,
+    });
   } catch (error) {
     return res.status(500).json({ success: false, message: "Server error" });
   }
