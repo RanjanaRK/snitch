@@ -14,8 +14,8 @@ const WishListItemcart = ({ product, variantId }: Props) => {
 
   const imageUrl = product.images?.[0]?.url || "/snitch_editorial_warm.png";
 
-  const handleRemove = async () => {
-    // e.stopPropagation(); // important → prevents navigation
+  const handleRemove = async (e: React.MouseEvent) => {
+    e.stopPropagation();
 
     await handleRemoveWishlist({
       productId: product._id,
