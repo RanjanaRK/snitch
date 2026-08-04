@@ -45,7 +45,8 @@ export const useCart = () => {
   }) => {
     const data = await increamentCartItemQuantity({ productId, variantId });
 
-    dispatch(increamentCartItem({ productId, variantId }));
+    // dispatch(increamentCartItem({ productId, variantId }));
+    dispatch(setCart(data.cart));
     return data;
   };
 
