@@ -16,7 +16,9 @@ const LogoutButton = () => {
 
   return (
     <>
-      <button onClick={handleSubmit}>Logout</button>
+      <button onClick={handleSubmit} className="hover:underline">
+        Logout
+      </button>
     </>
   );
 };

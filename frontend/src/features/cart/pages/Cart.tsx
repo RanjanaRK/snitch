@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import type { RootState } from "../../../app/app.store";
 import type { Product, Variant } from "../../products/utils/productTypes";
 import CheckoutButton from "../components/CheckoutButton";
@@ -23,6 +23,7 @@ const tokens = {
 };
 
 const Cart = () => {
+  const navigate = useNavigate();
   const cart = useSelector((state: RootState) => state.cart);
 
   const {
@@ -458,7 +459,8 @@ const Cart = () => {
                 <CheckoutButton />
                 <button
                   id="continue-shopping"
-                  className="w-full border border-[#d0c5b5] bg-transparent py-4 text-[11px] font-medium tracking-[0.25em] text-[#1b1c1a] uppercase transition-all duration-300 hover:border-[#C9A96E]"
+                  onClick={() => navigate("/")}
+                  className="hover:text-foreground/50 w-full border border-[#d0c5b5] bg-transparent py-4 text-[11px] font-medium tracking-[0.25em] text-[#1b1c1a] uppercase transition-all duration-300 hover:border-[#C9A96E]"
                 >
                   Continue Shopping
                 </button>

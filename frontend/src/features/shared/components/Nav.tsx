@@ -40,7 +40,7 @@ const Nav = () => {
               {user.role === "buyer" && (
                 <>
                   <Link to="/wishlist">
-                    <Heart />
+                    <Heart className="transition-colors duration-200 hover:text-red-500" />
                   </Link>
 
                   <Link
