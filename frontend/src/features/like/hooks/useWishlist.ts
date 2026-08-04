@@ -39,7 +39,9 @@ export const useWishlist = () => {
       productId,
       variantId,
     });
-
+    console.log(data);
+    console.log(data.wishlist);
+    console.log(Array.isArray(data.wishlist));
     dispatch(setWishlistItem(data.wishlist));
 
     return data;

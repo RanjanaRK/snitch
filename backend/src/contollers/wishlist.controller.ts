@@ -109,7 +109,11 @@ export const deleteWishlist = async (req: Request, res: Response) => {
     }
     return res
       .status(200)
-      .json({ success: true, message: "Removed from wishlist", wishlist });
+      .json({
+        success: true,
+        message: "Removed from wishlist",
+        wishlist: wishlist.items,
+      });
   } catch (error) {
     return res.status(500).json({ success: false, message: "Server error" });
   }
