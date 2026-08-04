@@ -12,7 +12,7 @@ const WishListItemcart = ({ product, variantId }: Props) => {
   const navigate = useNavigate();
   const { handleRemoveWishlist } = useWishlist();
 
-  const imageUrl = product.images?.[0]?.url || "/snitch_editorial_warm.png";
+  const imageUrl = product.images?.[0]?.url;
 
   const handleRemove = async (e: React.MouseEvent) => {
     e.stopPropagation();
