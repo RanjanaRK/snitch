@@ -59,6 +59,15 @@ const cartSlice = createSlice({
         }
         return item;
       });
+
+      state.totalPrice = state.items.reduce((total, item) => {
+        const price =
+          typeof item.variant === "string"
+            ? item.product.price.amount
+            : item.variant.price.amount;
+
+        return (total = total + price * item.quantity);
+      }, 0);
     },
   },
 });
