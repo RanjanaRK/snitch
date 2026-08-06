@@ -5,13 +5,14 @@ import {
   type ProductFormDataType,
 } from "../utils/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useProduct } from "../hooks/useProduct";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../../app/app.store";
 import type { Category } from "../../category/utils/types";
 import { useCategory } from "../../category/hooks/useCategory";
+import { OCCASIONS, STYLES } from "../../../constants/product";
 
 const CURRENCIES = ["INR", "USD", "EUR", "GBP"];
 const MAX_IMAGES = 7;
@@ -52,7 +53,7 @@ const CreateProductCard = () => {
 
   console.log({ categories });
 
-  const { handleGetSubCategories } = useCategory();
+  const { handleGetSubCategories, handleGetCategories } = useCategory();
 
   const addImages = (files: FileList | File[]) => {
     const remainingSlots = MAX_IMAGES - images.length;
@@ -133,6 +134,13 @@ const CreateProductCard = () => {
       setIsSubmitting(false);
     }
   };
+
+  useEffect(() => {
+    if (categories.length === 0) {
+      handleGetCategories();
+    }
+    // handleGetSubCategories(selectedParent);
+  }, []);
 
   return (
     <>
@@ -286,6 +294,51 @@ const CreateProductCard = () => {
                   </option>
                 ))}
               </select>
+
+              <div className="space-y-2">
+                <label>Style</label>
+
+                <select
+                  {...register("style")}
+                  className="w-full rounded-md border p-2"
+                >
+                  <option value="">Select Style</option>
+
+                  {STYLES.map((style) => (
+                    <option key={style} value={style}>
+                      {style.charAt(0).toUpperCase() + style.slice(1)}
+                    </option>
+                  ))}
+                </select>
+
+                {errors.style && (
+                  <p className="text-sm text-red-500">{errors.style.message}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <label>Occasions</label>
+
+                <div className="grid grid-cols-2 gap-3">
+                  {OCCASIONS.map((occasion) => (
+                    <label key={occasion} className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        value={occasion}
+                        {...register("occasions")}
+                      />
+
+                      {occasion.charAt(0).toUpperCase() + occasion.slice(1)}
+                    </label>
+                  ))}
+                </div>
+
+                {errors.occasions && (
+                  <p className="text-sm text-red-500">
+                    {errors.occasions.message}
+                  </p>
+                )}
+              </div>
 
               {/* IMAGE UPLOAD */}
               <div className="flex flex-col gap-3">

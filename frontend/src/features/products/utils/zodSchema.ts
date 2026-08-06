@@ -10,6 +10,12 @@ export const productSchema = z.object({
   priceCurrency: z.string().min(1),
 
   category: z.string().min(1),
+
+  style: z.string().min(1, "Style is required"),
+
+  occasions: z.array(z.string()).min(1, "Select at least one occasion"),
+
+  images: z.any(),
 });
 
 export type ProductFormDataType = z.infer<typeof productSchema>;
