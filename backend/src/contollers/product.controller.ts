@@ -16,6 +16,16 @@ export const createProduct = async (req: Request, res: Response) => {
       occasions,
     } = req.body;
 
+    console.log({
+      title,
+      description,
+      priceAmount,
+      priceCurrency,
+      catgeory,
+      style,
+      occasions,
+    });
+
     const seller = req.user as JwtUser;
 
     if (!seller) {
