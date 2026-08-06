@@ -6,8 +6,15 @@ import { categoryModel } from "../model/category.model.js";
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
-    const { title, description, priceAmount, priceCurrency, category } =
-      req.body;
+    const {
+      title,
+      description,
+      priceAmount,
+      priceCurrency,
+      category,
+      style,
+      occasions,
+    } = req.body;
 
     const seller = req.user as JwtUser;
 
@@ -36,6 +43,12 @@ export const createProduct = async (req: Request, res: Response) => {
       });
     }
 
+    let parsedOccasions: string[] = [];
+
+    if (occasions) {
+      parsedOccasions = Array.isArray(occasions) ? occasions : [occasions];
+    }
+
     const product = await productModel.create({
       title,
       description,
@@ -46,6 +59,8 @@ export const createProduct = async (req: Request, res: Response) => {
       images,
       category,
       seller: seller.id,
+      style: style.trim().toLowerCase(),
+      occasions: parsedOccasions,
     });
 
     return res.status(201).json({

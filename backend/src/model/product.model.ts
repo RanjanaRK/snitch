@@ -33,6 +33,26 @@ const productSchema = new mongoose.Schema(
         },
       },
     ],
+    style: {
+      type: String,
+      enum: ["casual", "formal", "party", "ethnic", "streetwear", "sports"],
+    },
+    occasions: [
+      {
+        type: String,
+        enum: [
+          "interview",
+          "office",
+          "college",
+          "wedding",
+          "party",
+          "birthday",
+          "travel",
+          "gym",
+          "daily",
+        ],
+      },
+    ],
     variants: [
       {
         images: [
