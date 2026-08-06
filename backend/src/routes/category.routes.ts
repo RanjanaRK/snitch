@@ -11,8 +11,6 @@ const categoryRouter = Router();
 
 categoryRouter.get("/", getCategoryController);
 
-categoryRouter.get("/subcategories/:parentId", getSubCatgeoriesController);
-
 categoryRouter.post(
   "/add",
   authenticateRole(["seller"]),
@@ -20,5 +18,6 @@ categoryRouter.post(
 );
 
 categoryRouter.post("/subCategories", getAllSubCategoriesController);
+categoryRouter.get("/subcategories/:parentId", getSubCatgeoriesController);
 
 export default categoryRouter;

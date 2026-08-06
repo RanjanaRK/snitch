@@ -50,6 +50,8 @@ const CreateProductCard = () => {
     (state: RootState) => state.category.categories,
   );
 
+  console.log({ categories });
+
   const { handleGetSubCategories } = useCategory();
 
   const addImages = (files: FileList | File[]) => {

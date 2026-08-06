@@ -10,6 +10,8 @@ export const useCategory = () => {
 
     dispatch(setCategories(data.categories));
 
+    console.log(data.categories);
+
     return data.categories;
   };
   const handleGetSubCategories = async (parentId: string) => {
