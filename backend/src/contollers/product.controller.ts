@@ -21,7 +21,7 @@ export const createProduct = async (req: Request, res: Response) => {
       description,
       priceAmount,
       priceCurrency,
-      catgeory,
+      category,
       style,
       occasions,
     });
