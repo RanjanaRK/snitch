@@ -36,6 +36,7 @@ const CreateProductCard = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<ProductFormDataType>({
     resolver: zodResolver(productSchema),
@@ -119,6 +120,12 @@ const CreateProductCard = () => {
 
       formData.append("category", data.category);
 
+      formData.append("style", data.style);
+
+      data.occasions.forEach((occasion) => {
+        formData.append("occasions", occasion);
+      });
+
       images.forEach((img) => {
         formData.append("images", img.file);
       });
@@ -126,6 +133,8 @@ const CreateProductCard = () => {
       const res = await handleCreateProduct(formData);
 
       setImages([]);
+
+      reset();
 
       toast.success(res.message);
     } catch (error: any) {
