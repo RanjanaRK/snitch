@@ -41,6 +41,9 @@ if (!process.env.BACKEND_URL) {
 if (!process.env.FRONTEND_URL) {
   throw new Error("FRONTEND_URL is not defined in environment variables");
 }
+if (!process.env.GEMINI_API_KEY) {
+  throw new Error("GEMINI_API_KEY is not defined in environment variables");
+}
 
 type Iconfig = {
   readonly MONGO_URI: string;
@@ -53,6 +56,7 @@ type Iconfig = {
   readonly RAZORPAY_KEY_SECRET: string;
   readonly FRONTEND_URL: string;
   readonly BACKEND_URL: string;
+  readonly GEMINI_API_KEY: string;
 };
 export const env: Iconfig = {
   MONGO_URI: process.env.MONGO_URI,
@@ -65,6 +69,7 @@ export const env: Iconfig = {
   RAZORPAY_KEY_SECRET: process.env.RAZORPAY_KEY_SECRET,
   FRONTEND_URL: process.env.FRONTEND_URL,
   BACKEND_URL: process.env.BACKEND_URL,
+  GEMINI_API_KEY: process.env.GEMINI_API_KEY,
 };
 
 export default env;
