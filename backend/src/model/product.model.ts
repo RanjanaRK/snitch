@@ -51,6 +51,7 @@ const productSchema = new mongoose.Schema(
           "daily",
           "festive",
           "ethnic",
+          "casual",
         ],
       },
     ],

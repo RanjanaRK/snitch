@@ -17,4 +17,6 @@ export const OCCASIONS = [
   "daily",
   "festive",
   "ethnic",
+  "casual",
+  "sports",
 ] as const;
