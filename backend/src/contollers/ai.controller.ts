@@ -3,6 +3,7 @@ import { uploadImage } from "../service/storage.service.js";
 import { analyzeFashionImage } from "../service/ai.service.js";
 import { categoryModel } from "../model/category.model.js";
 import { getCategoriesForAI } from "../dao/category.dao.js";
+import productModel from "../model/product.model.js";
 
 export const recommendOutfitController = async (
   req: Request,
@@ -46,9 +47,38 @@ export const recommendOutfitController = async (
 
     console.log("AI result:", aiResult);
 
+    const cleanJson = aiResult
+      ?.replace(/```json/g, "")
+      .replace(/```/g, "")
+      .trim();
+
+    const recommendation = JSON.parse(cleanJson || "{}");
+
+    const categoryIds = recommendation.recommendation.categoryIds;
+    const style = recommendation.recommendation.formality;
+    const occasions = recommendation.recommendation.occasion;
+
+    const products = await productModel
+      .find({
+        category: { $in: categoryIds },
+
+        "price.amount": {
+          $lte: Number(budget),
+        },
+
+        style: style,
+
+        occasions: {
+          $in: [occasion],
+        },
+      })
+      .populate("category")
+      .limit(10);
+
     return res.status(200).json({
       success: true,
       message: "Data received successfully",
+      products,
     });
   } catch (error) {
     return res.status(500).json({ message: "Server error" });

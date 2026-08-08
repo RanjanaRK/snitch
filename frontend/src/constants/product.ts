@@ -10,9 +10,11 @@ export const OCCASIONS = [
   "interview",
   "office",
   "college",
-  "party",
   "wedding",
+  "party",
   "travel",
+  "gym",
   "daily",
-  "festival",
+  "festive",
+  "ethnic",
 ] as const;
