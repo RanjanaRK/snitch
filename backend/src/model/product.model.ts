@@ -58,6 +58,10 @@ const productSchema = new mongoose.Schema(
         ],
       },
     ],
+    keywords: {
+      type: [String],
+      default: [],
+    },
     variants: [
       {
         images: [

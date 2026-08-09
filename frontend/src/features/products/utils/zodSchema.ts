@@ -15,6 +15,8 @@ export const productSchema = z.object({
 
   occasions: z.array(z.string()).min(1, "Select at least one occasion"),
 
+  keywords: z.string(),
+
   images: z.any(),
 });
 

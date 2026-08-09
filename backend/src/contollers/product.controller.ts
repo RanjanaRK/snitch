@@ -14,6 +14,7 @@ export const createProduct = async (req: Request, res: Response) => {
       category,
       style,
       occasions,
+      keywords,
     } = req.body;
 
     console.log({
@@ -59,6 +60,29 @@ export const createProduct = async (req: Request, res: Response) => {
       parsedOccasions = Array.isArray(occasions) ? occasions : [occasions];
     }
 
+    let parsedKeywords: string[] = [];
+
+    if (keywords) {
+      if (Array.isArray(keywords)) {
+        parsedKeywords = keywords;
+      } else {
+        try {
+          const parsed = JSON.parse(keywords);
+
+          if (Array.isArray(parsed)) {
+            parsedKeywords = parsed
+              .map((keyword: string) => keyword.trim().toLowerCase())
+              .filter(Boolean);
+          }
+        } catch {
+          parsedKeywords = keywords
+            .split(",")
+            .map((keyword: string) => keyword.trim().toLowerCase())
+            .filter(Boolean);
+        }
+      }
+    }
+
     const product = await productModel.create({
       title,
       description,
@@ -71,6 +95,7 @@ export const createProduct = async (req: Request, res: Response) => {
       seller: seller.id,
       style: style.trim().toLowerCase(),
       occasions: parsedOccasions,
+      keywords: parsedKeywords,
     });
 
     return res.status(201).json({

@@ -1,26 +1,21 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import { toast } from "sonner";
+import type { RootState } from "../../../app/app.store";
+import { OCCASIONS, STYLES } from "../../../constants/product";
+import { useCategory } from "../../category/hooks/useCategory";
+import type { Category } from "../../category/utils/types";
+import { useProduct } from "../hooks/useProduct";
 import {
   productSchema,
   type ImageType,
   type ProductFormDataType,
 } from "../utils/zodSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect, useRef, useState } from "react";
-import { useProduct } from "../hooks/useProduct";
-import { toast } from "sonner";
-import { useSelector } from "react-redux";
-import type { RootState } from "../../../app/app.store";
-import type { Category } from "../../category/utils/types";
-import { useCategory } from "../../category/hooks/useCategory";
-import { OCCASIONS, STYLES } from "../../../constants/product";
 
 const CURRENCIES = ["INR", "USD", "EUR", "GBP"];
 const MAX_IMAGES = 7;
-
-// type ImageType = {
-//   file: File;
-//   preview: string;
-// };
 
 const CreateProductCard = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -45,6 +40,11 @@ const CreateProductCard = () => {
       description: "",
       priceAmount: 0,
       priceCurrency: "INR",
+      category: "",
+      style: "",
+      occasions: [],
+      keywords: "",
+      images: [],
     },
   });
 
@@ -126,7 +126,14 @@ const CreateProductCard = () => {
         formData.append("occasions", occasion);
       });
 
-      images.forEach((img) => {
+      const keywordArray = data.keywords
+        .split(",")
+        .map((keyword) => keyword.trim().toLowerCase())
+        .filter(Boolean);
+
+      formData.append("keywords", JSON.stringify(keywordArray));
+
+      data.images.forEach((img: ImageType) => {
         formData.append("images", img.file);
       });
 
@@ -347,6 +354,16 @@ const CreateProductCard = () => {
                     {errors.occasions.message}
                   </p>
                 )}
+              </div>
+
+              <div className="">
+                <label>Keywords</label>
+
+                <input
+                  type="text"
+                  placeholder="eg. denim, high waist, straight fit, casual, ribbed, A-line"
+                  {...register("keywords")}
+                />
               </div>
 
               {/* IMAGE UPLOAD */}
