@@ -58,27 +58,93 @@ export const recommendOutfitController = async (
     const style = recommendation.recommendation.formality;
     const occasions = recommendation.recommendation.occasion;
 
+    const calculateProductScore = (product: any, recommendation: any) => {
+      let score = 0;
+
+      const categoryId = product.category?._id?.toString();
+
+      if (recommendation.categoryIds?.some((id: string) => id === categoryId)) {
+        score += 40;
+      }
+
+      if (
+        product.style?.toLowerCase() === recommendation.formality?.toLowerCase()
+      ) {
+        score += 20;
+      }
+
+      // Occasion
+      if (
+        product.occasions?.some(
+          (item: string) =>
+            item.toLowerCase() === recommendation.occasion?.toLowerCase(),
+        )
+      ) {
+        score += 15;
+      }
+
+      // Keywords
+      const productKeywords = (product.keywords || []).map((keyword: string) =>
+        keyword.toLowerCase(),
+      );
+
+      const aiKeywords = (recommendation.keywords || []).map(
+        (keyword: string) => keyword.toLowerCase(),
+      );
+
+      const keywordMatches = aiKeywords.filter((keyword: string) =>
+        productKeywords.includes(keyword),
+      );
+
+      score += Math.min(keywordMatches.length * 5, 25);
+
+      // Color matching
+      const productColors = (product.variants || [])
+        .map((variant: any) => variant.attributes?.color)
+        .filter(Boolean)
+        .flatMap((color: string) =>
+          color
+            .toLowerCase()
+            .split(",")
+            .map((c) => c.trim()),
+        );
+
+      const preferredColors = (recommendation.preferredColors || []).map(
+        (color: string) => color.toLowerCase().trim(),
+      );
+
+      const colorMatches = preferredColors.filter((preferred: string) =>
+        productColors.some(
+          (productColor: string) =>
+            productColor.includes(preferred) ||
+            preferred.includes(productColor),
+        ),
+      );
+
+      score += Math.min(colorMatches.length * 5, 10);
+      return score;
+    };
+
     const products = await productModel
       .find({
         category: { $in: categoryIds },
-
-        "price.amount": {
-          $lte: Number(budget),
-        },
-
-        style: style,
-
-        occasions: {
-          $in: [occasion],
-        },
+        "price.amount": { $lte: Number(budget) },
       })
       .populate("category")
-      .limit(10);
+      .limit(30);
+
+    const scoredProducts = products
+      .map((product) => ({
+        product,
+        score: calculateProductScore(product, recommendation.recommendation),
+      }))
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 10);
 
     return res.status(200).json({
       success: true,
       message: "Data received successfully",
-      products,
+      products: scoredProducts,
     });
   } catch (error) {
     console.log(error);
