@@ -55,73 +55,116 @@ export const recommendOutfitController = async (
     const recommendation = JSON.parse(cleanJson || "{}");
 
     const categoryIds = recommendation.recommendation.categoryIds;
-    const style = recommendation.recommendation.formality;
-    const occasions = recommendation.recommendation.occasion;
 
     const calculateProductScore = (product: any, recommendation: any) => {
       let score = 0;
 
-      const categoryId = product.category?._id?.toString();
+      const normalize = (value: string) =>
+        value?.toLowerCase().trim().replace(/[-_]/g, " ").replace(/\s+/g, " ");
 
-      if (recommendation.categoryIds?.some((id: string) => id === categoryId)) {
-        score += 40;
+      // 1. CATEGORY — 30 points
+
+      const productCategoryId = product.category?._id?.toString();
+
+      const categoryMatch = recommendation.categoryIds?.some(
+        (id: string) => id === productCategoryId,
+      );
+
+      if (categoryMatch) {
+        score += 30;
       }
 
-      if (
-        product.style?.toLowerCase() === recommendation.formality?.toLowerCase()
-      ) {
-        score += 20;
-      }
+      // 2. STYLE — 15 points
 
-      // Occasion
+      const productStyle = normalize(product.style);
+      const recommendedStyle = normalize(recommendation.formality);
+
       if (
-        product.occasions?.some(
-          (item: string) =>
-            item.toLowerCase() === recommendation.occasion?.toLowerCase(),
-        )
+        productStyle &&
+        recommendedStyle &&
+        productStyle === recommendedStyle
       ) {
         score += 15;
       }
 
-      // Keywords
-      const productKeywords = (product.keywords || []).map((keyword: string) =>
-        keyword.toLowerCase(),
+      // 3. OCCASION — 15 points
+
+      const productOccasions = (product.occasions || []).map(
+        (occasion: string) => normalize(occasion),
       );
 
-      const aiKeywords = (recommendation.keywords || []).map(
-        (keyword: string) => keyword.toLowerCase(),
-      );
+      const recommendedOccasion = normalize(recommendation.occasion);
 
-      const keywordMatches = aiKeywords.filter((keyword: string) =>
-        productKeywords.includes(keyword),
-      );
+      if (productOccasions.includes(recommendedOccasion)) {
+        score += 15;
+      }
 
-      score += Math.min(keywordMatches.length * 5, 25);
+      // 4. COLOR — 20 points
 
-      // Color matching
-      const productColors = (product.variants || [])
-        .map((variant: any) => variant.attributes?.color)
+      const productColors = [
+        product.color,
+        ...(product.variants || []).map(
+          (variant: any) => variant.attributes?.color,
+        ),
+      ]
         .filter(Boolean)
         .flatMap((color: string) =>
           color
             .toLowerCase()
             .split(",")
-            .map((c) => c.trim()),
+            .map((c) => normalize(c)),
         );
 
       const preferredColors = (recommendation.preferredColors || []).map(
-        (color: string) => color.toLowerCase().trim(),
+        (color: string) => normalize(color),
       );
 
-      const colorMatches = preferredColors.filter((preferred: string) =>
-        productColors.some(
-          (productColor: string) =>
+      let colorScore = 0;
+
+      for (const preferred of preferredColors) {
+        const matched = productColors.some((productColor: string) => {
+          return (
+            productColor === preferred ||
             productColor.includes(preferred) ||
-            preferred.includes(productColor),
-        ),
+            preferred.includes(productColor)
+          );
+        });
+
+        if (matched) {
+          colorScore += 5;
+        }
+      }
+
+      score += Math.min(colorScore, 20);
+
+      // 5. KEYWORDS — 20 points
+
+      const productKeywords = (product.keywords || []).map((keyword: string) =>
+        normalize(keyword),
       );
 
-      score += Math.min(colorMatches.length * 5, 10);
+      const aiKeywords = (recommendation.keywords || []).map(
+        (keyword: string) => normalize(keyword),
+      );
+
+      let keywordScore = 0;
+
+      for (const aiKeyword of aiKeywords) {
+        const matched = productKeywords.some((productKeyword: string) => {
+          return (
+            productKeyword === aiKeyword ||
+            productKeyword.includes(aiKeyword) ||
+            aiKeyword.includes(productKeyword)
+          );
+        });
+
+        if (matched) {
+          keywordScore += 4;
+        }
+      }
+
+      score += Math.min(keywordScore, 20);
+
       return score;
     };
 
@@ -130,8 +173,7 @@ export const recommendOutfitController = async (
         category: { $in: categoryIds },
         "price.amount": { $lte: Number(budget) },
       })
-      .populate("category")
-      .limit(30);
+      .populate("category");
 
     const scoredProducts = products
       .map((product) => ({
@@ -144,6 +186,8 @@ export const recommendOutfitController = async (
     return res.status(200).json({
       success: true,
       message: "Data received successfully",
+      recommendation: recommendation.recommendation,
+      detected: recommendation.detected,
       products: scoredProducts,
     });
   } catch (error) {

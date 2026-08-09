@@ -17,6 +17,8 @@ export const productSchema = z.object({
 
   keywords: z.string(),
 
+  color: z.string(),
+
   images: z.any(),
 });
 

@@ -44,6 +44,7 @@ const CreateProductCard = () => {
       style: "",
       occasions: [],
       keywords: "",
+      color: "",
       images: [],
     },
   });
@@ -52,7 +53,7 @@ const CreateProductCard = () => {
     (state: RootState) => state.category.categories,
   );
 
-  console.log({ categories });
+  // console.log({ categories });
 
   const { handleGetSubCategories, handleGetCategories } = useCategory();
 
@@ -126,6 +127,8 @@ const CreateProductCard = () => {
         formData.append("occasions", occasion);
       });
 
+      formData.append("color", data.color);
+
       const keywordArray = data.keywords
         .split(",")
         .map((keyword) => keyword.trim().toLowerCase())
@@ -133,7 +136,7 @@ const CreateProductCard = () => {
 
       formData.append("keywords", JSON.stringify(keywordArray));
 
-      data.images.forEach((img: ImageType) => {
+      images.forEach((img: any) => {
         formData.append("images", img.file);
       });
 
@@ -356,11 +359,33 @@ const CreateProductCard = () => {
                 )}
               </div>
 
-              <div className="">
-                <label>Keywords</label>
+              <div className="flex flex-col gap-2">
+                <label className="text-[10px] font-medium tracking-[0.18em] text-[#7A6E63] uppercase">
+                  Color
+                </label>
 
                 <input
                   type="text"
+                  placeholder="eg. Red"
+                  {...register("color")}
+                  className="w-full border-b border-[#d0c5b5] bg-transparent py-3 text-sm outline-none"
+                />
+
+                {errors.color && (
+                  <span className="text-[10px] text-red-500">
+                    {errors.color.message}
+                  </span>
+                )}
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label className="text-[10px] font-medium tracking-[0.18em] text-[#7A6E63] uppercase">
+                  Keywords
+                </label>
+
+                <input
+                  type="text"
+                  className="w-full border-b border-[#d0c5b5] bg-transparent py-3 text-sm outline-none"
                   placeholder="eg. denim, high waist, straight fit, casual, ribbed, A-line"
                   {...register("keywords")}
                 />
