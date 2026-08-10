@@ -185,7 +185,7 @@ export const recommendOutfitController = async (
 
     return res.status(200).json({
       success: true,
-      message: "Data received successfully",
+      message: "Recommendation generated successfully",
       recommendation: recommendation.recommendation,
       detected: recommendation.detected,
       products: scoredProducts,
