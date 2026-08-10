@@ -29,12 +29,13 @@ export const recommendOutfitController = async (
       id: category._id.toString(),
       name: category.name,
     }));
-    const uploadedPhoto = await uploadImage({
-      folder: "ai-fashion",
-      buffer: file?.buffer,
-      fileName: file?.originalname,
-    });
-    console.log("ImageKit response:", uploadedPhoto);
+
+    // const uploadedPhoto = await uploadImage({
+    //   folder: "ai-fashion",
+    //   buffer: file?.buffer,
+    //   fileName: file?.originalname,
+    // });
+    // console.log("ImageKit response:", uploadedPhoto);
 
     const aiResult = await analyzeFashionImage({
       imageBuffer: file.buffer,
