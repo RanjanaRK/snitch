@@ -1,4 +1,5 @@
 import { Outlet } from "react-router";
+import AiFashionAssistant from "../features/ai/components/AiFashionAssistant";
 import Nav from "../features/shared/components/Nav";
 
 const AppLayout = () => {
@@ -6,6 +7,7 @@ const AppLayout = () => {
     <>
       <Nav />
       <Outlet />
+      <AiFashionAssistant />
     </>
   );
 };

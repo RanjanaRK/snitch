@@ -1,4 +1,4 @@
-import { Heart } from "lucide-react";
+import { Heart, Sparkle } from "lucide-react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
 import type { RootState } from "../../../app/app.store";
@@ -81,6 +81,10 @@ const Nav = () => {
                       </span>
                     )}
                   </Link>
+
+                  <button className="rounded-full bg-amber-100 px-2 py-2">
+                    <Sparkle />
+                  </button>
                 </>
               )}
 
