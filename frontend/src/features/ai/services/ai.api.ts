@@ -13,5 +13,6 @@ export const createAiRecommend = async (formdata: FormData) => {
     formdata,
   );
 
+  console.log(response.data);
   return response.data;
 };

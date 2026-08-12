@@ -1,4 +1,7 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { ImagePlus, Sparkles, Upload, X } from "lucide-react";
+import { useRef, useState } from "react";
+import { useForm } from "react-hook-form";
 import {
   Sheet,
   SheetContent,
@@ -7,34 +10,47 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../../../components/ui/sheet";
-import { useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import z from "zod";
-
-const formSchema = z.object({
-  occasion: z.string().min(1, "Please select an occasion"),
-  budget: z.number(),
-  prompt: z.string(),
-});
-
-type FormSchemaType = z.infer<typeof formSchema>;
+import { formSchema, type FormSchemaType } from "../utils/zodSchema";
+import useAi from "../hooks/useAi";
+import { toast } from "sonner";
+import AiRecommendedCard from "./AiRecommendedCard";
 
 const AiFashionAssistant = () => {
-  // IMAGE STATE
-
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // REACT HOOK FORM
+  const [showResults, setShowResults] = useState(false);
+
+  const [recommendations, setRecommendations] = useState([
+    {
+      id: 1,
+      name: "Classic Black Blazer",
+      price: 2499,
+      image: "https://images.unsplash.com/photo-1598808503746-f34c53b9323e",
+    },
+    {
+      id: 2,
+      name: "Slim Fit Black Shirt",
+      price: 1599,
+      image: "https://images.unsplash.com/photo-1596755389378-c31d21fd1273",
+    },
+    {
+      id: 3,
+      name: "Formal Black Trousers",
+      price: 1899,
+      image: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80",
+    },
+  ]);
+
+  const { createAiFashionRecommend } = useAi();
 
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
 
@@ -110,27 +126,38 @@ const AiFashionAssistant = () => {
 
   // SUBMIT
 
-  const onSubmit = (data: FormSchemaType) => {
-    if (!selectedFile) {
-      alert("Please upload an image.");
-      return;
+  const onSubmit = async (data: FormSchemaType) => {
+    try {
+      if (!selectedFile) {
+        alert("Please upload an image.");
+        return;
+      }
+
+      console.log(data);
+
+      // CREATE FORMDATA
+
+      const formData = new FormData();
+
+      // Image from React state
+      formData.append("photo", selectedFile);
+
+      // React Hook Form values
+      formData.append("occasion", data.occasion);
+
+      formData.append("budget", String(data.budget));
+
+      formData.append("prompt", data.prompt);
+
+      const res = await createAiFashionRecommend(formData);
+
+      console.log(res);
+      toast.success(res.message);
+    } catch (error: any) {
+      toast.error(error.response.data.message);
     }
-
-    console.log(data);
-
-    // CREATE FORMDATA
-
-    const formData = new FormData();
-
-    // Image from React state
-    formData.append("photo", selectedFile);
-
-    // React Hook Form values
-    formData.append("occasion", data.occasion);
-
-    formData.append("budget", String(data.budget));
-
-    formData.append("prompt", data.prompt);
+    // finally {
+    // }
   };
 
   return (
@@ -398,6 +425,13 @@ const AiFashionAssistant = () => {
             </p>
           </form>
         </div>
+
+        <AiRecommendedCard
+          // image={""}
+          occasion={"casual"}
+          budget={2444}
+          recommendations={recommendations}
+        />
       </SheetContent>
     </Sheet>
   );
