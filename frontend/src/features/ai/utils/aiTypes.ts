@@ -29,5 +29,5 @@ export interface AIRecommendResponse {
 
   recommendation: Recommendation;
   detected: Detected;
-  products: ScoredProduct;
+  products: ScoredProduct[];
 }

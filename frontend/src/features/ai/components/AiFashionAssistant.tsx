@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ImagePlus, Sparkles, Upload, X } from "lucide-react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import {
   Sheet,
   SheetContent,
@@ -10,9 +11,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../../../components/ui/sheet";
-import { formSchema, type FormSchemaType } from "../utils/zodSchema";
 import useAi from "../hooks/useAi";
-import { toast } from "sonner";
+import type { Detected, Recommendation, ScoredProduct } from "../utils/aiTypes";
+import { formSchema, type FormSchemaType } from "../utils/zodSchema";
 import AiRecommendedCard from "./AiRecommendedCard";
 
 const AiFashionAssistant = () => {
@@ -23,26 +24,13 @@ const AiFashionAssistant = () => {
 
   const [showResults, setShowResults] = useState(false);
 
-  const [recommendations, setRecommendations] = useState([
-    {
-      id: 1,
-      name: "Classic Black Blazer",
-      price: 2499,
-      image: "https://images.unsplash.com/photo-1598808503746-f34c53b9323e",
-    },
-    {
-      id: 2,
-      name: "Slim Fit Black Shirt",
-      price: 1599,
-      image: "https://images.unsplash.com/photo-1596755389378-c31d21fd1273",
-    },
-    {
-      id: 3,
-      name: "Formal Black Trousers",
-      price: 1899,
-      image: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80",
-    },
-  ]);
+  const [recommendations, setRecommendations] = useState<Recommendation | null>(
+    null,
+  );
+
+  const [detected, setDetected] = useState<Detected | null>(null);
+
+  const [products, setProducts] = useState<ScoredProduct[]>([]);
 
   const { createAiFashionRecommend } = useAi();
 
@@ -152,6 +140,11 @@ const AiFashionAssistant = () => {
       const res = await createAiFashionRecommend(formData);
 
       console.log(res);
+
+      setDetected(res.detected);
+      setRecommendations(res.recommendation);
+      setProducts(res.products);
+
       toast.success(res.message);
     } catch (error: any) {
       toast.error(error.response.data.message);
@@ -425,13 +418,14 @@ const AiFashionAssistant = () => {
             </p>
           </form>
         </div>
-
-        <AiRecommendedCard
-          // image={""}
-          occasion={"casual"}
-          budget={2444}
-          recommendations={recommendations}
-        />
+        {recommendations && detected && (
+          <AiRecommendedCard
+            recommendation={recommendations}
+            detected={detected}
+            previewUrl={previewUrl!}
+            products={products}
+          />
+        )}
       </SheetContent>
     </Sheet>
   );
