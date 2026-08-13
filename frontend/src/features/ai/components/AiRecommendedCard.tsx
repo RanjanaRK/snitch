@@ -1,352 +1,244 @@
-// import { ArrowLeft, Heart, Sparkles, ShoppingBag } from "lucide-react";
-
+import { CalendarDays, Check, Shirt, Sparkles, Wallet } from "lucide-react";
+import { useNavigate } from "react-router";
 import type { Detected, Recommendation, ScoredProduct } from "../utils/aiTypes";
 
-// type Recommendation = {
-//   id: number;
-//   name: string;
-//   price: number;
-//   image: string;
-// };
-
-// type FashionResultsProps = {
-//   //   image: string | null;
-//   occasion: string;
-//   budget: number;
-//   recommendations: Recommendation[];
-//   //   onBack: () => void;
-// };
-
-// function AiRecommendedCard({
-//   //   image,
-//   occasion,
-//   budget,
-//   recommendations,
-//   //   onBack,
-// }: FashionResultsProps) {
-//   return (
-//     <>
-//       <div className="">
-//         <div className="">
-//           <img src="" alt="" />
-//         </div>
-//         <div className=""></div>
-//       </div>
-
-//       <div className="flex h-full flex-col bg-[#faf9f7]">
-//         {/* Header */}
-//         <div className="border-b border-[#e4e2df] bg-white px-6 py-5">
-//           <button
-//             // onClick={onBack}
-//             className="mb-5 flex items-center gap-2 text-xs text-[#7a6e63] transition hover:text-[#1b1c1a]"
-//           >
-//             <ArrowLeft size={15} />
-//             Back
-//           </button>
-
-//           <div className="flex items-center gap-3">
-//             <div
-//               className="flex h-9 w-9 items-center justify-center rounded-full"
-//               style={{
-//                 backgroundColor: "#C9A96E",
-//               }}
-//             >
-//               <Sparkles size={17} color="white" />
-//             </div>
-
-//             <div>
-//               <h2
-//                 className="text-xl text-[#1b1c1a]"
-//                 style={{
-//                   fontFamily: "'Cormorant Garamond', serif",
-//                 }}
-//               >
-//                 Your Perfect Look
-//               </h2>
-
-//               <p className="text-[11px] text-[#8a8178]">Curated just for you</p>
-//             </div>
-//           </div>
-//         </div>
-
-//         {/* Content */}
-//         <div className="flex-1 overflow-y-auto px-6 py-6">
-//           {/* Style Summary */}
-//           <div className="mb-7 rounded-2xl border border-[#e7e2dc] bg-white p-4">
-//             <div className="flex gap-4">
-//               {/* Uploaded image */}
-//               {/* <div className="h-28 w-24 shrink-0 overflow-hidden rounded-xl bg-[#f5f0e8]">
-//                 {image && (
-//                   <img
-//                     src={image}
-//                     alt="Your inspiration"
-//                     className="h-full w-full object-cover"
-//                   />
-//                 )}
-//               </div> */}
-
-//               {/* Details */}
-//               <div className="py-1">
-//                 <p className="mb-1 text-[10px] font-medium tracking-[0.16em] text-[#9a9188] uppercase">
-//                   Your style
-//                 </p>
-
-//                 <h3
-//                   className="text-xl text-[#1b1c1a]"
-//                   style={{
-//                     fontFamily: "'Cormorant Garamond', serif",
-//                   }}
-//                 >
-//                   Elegant & Modern
-//                 </h3>
-
-//                 <p className="mt-2 text-xs leading-5 text-[#7a6e63]">
-//                   Perfect pieces selected for your {occasion || "occasion"}.
-//                 </p>
-
-//                 <div className="mt-3 flex gap-2">
-//                   <span className="rounded-full bg-[#f5f0e8] px-3 py-1 text-[10px] text-[#7a6e63]">
-//                     {occasion}
-//                   </span>
-
-//                   <span className="rounded-full bg-[#f5f0e8] px-3 py-1 text-[10px] text-[#7a6e63]">
-//                     ₹{budget.toLocaleString("en-IN")}
-//                   </span>
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-
-//           {/* Recommendation heading */}
-//           <div className="mb-4 flex items-end justify-between">
-//             <div>
-//               <p className="text-[10px] font-medium tracking-[0.18em] text-[#9a9188] uppercase">
-//                 AI curated
-//               </p>
-
-//               <h3
-//                 className="mt-1 text-2xl text-[#1b1c1a]"
-//                 style={{
-//                   fontFamily: "'Cormorant Garamond', serif",
-//                 }}
-//               >
-//                 Recommended for you
-//               </h3>
-//             </div>
-
-//             <span className="text-xs text-[#aaa29a]">
-//               {recommendations.length} items
-//             </span>
-//           </div>
-
-//           {/* Products */}
-//           <div className="grid grid-cols-2 gap-3">
-//             {recommendations.map((product) => (
-//               <div
-//                 key={product.id}
-//                 className="group overflow-hidden rounded-2xl border border-[#e7e2dc] bg-white"
-//               >
-//                 {/* Product image */}
-//                 <div className="relative aspect-[4/5] overflow-hidden bg-[#f5f0e8]">
-//                   <img
-//                     src={product.image}
-//                     alt={product.name}
-//                     className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-//                   />
-
-//                   <button
-//                     type="button"
-//                     className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 shadow-sm"
-//                   >
-//                     <Heart
-//                       size={15}
-//                       strokeWidth={1.6}
-//                       className="text-[#7a6e63]"
-//                     />
-//                   </button>
-//                 </div>
-
-//                 {/* Product info */}
-//                 <div className="p-3">
-//                   <p className="line-clamp-1 text-xs font-medium text-[#3d3935]">
-//                     {product.name}
-//                   </p>
-
-//                   <div className="mt-2 flex items-center justify-between">
-//                     <span className="text-sm font-medium text-[#1b1c1a]">
-//                       ₹{product.price.toLocaleString("en-IN")}
-//                     </span>
-
-//                     <button
-//                       type="button"
-//                       className="flex h-8 w-8 items-center justify-center rounded-full bg-[#1b1c1a] text-white transition hover:bg-[#C9A96E]"
-//                     >
-//                       <ShoppingBag size={14} />
-//                     </button>
-//                   </div>
-//                 </div>
-//               </div>
-//             ))}
-//           </div>
-
-//           {/* Why recommendation */}
-//           <div className="mt-7 rounded-2xl bg-[#f5f0e8] p-5">
-//             <div className="mb-4 flex items-center gap-2">
-//               <Sparkles size={16} className="text-[#C9A96E]" />
-
-//               <h4 className="text-sm font-medium text-[#3d3935]">
-//                 Why this look?
-//               </h4>
-//             </div>
-
-//             <div className="space-y-3">
-//               <div className="flex gap-3">
-//                 <span className="text-[#C9A96E]">✦</span>
-
-//                 <p className="text-xs leading-5 text-[#7a6e63]">
-//                   Selected to complement your uploaded style.
-//                 </p>
-//               </div>
-
-//               <div className="flex gap-3">
-//                 <span className="text-[#C9A96E]">✦</span>
-
-//                 <p className="text-xs leading-5 text-[#7a6e63]">
-//                   Suitable for your selected occasion.
-//                 </p>
-//               </div>
-
-//               <div className="flex gap-3">
-//                 <span className="text-[#C9A96E]">✦</span>
-
-//                 <p className="text-xs leading-5 text-[#7a6e63]">
-//                   Recommendations stay within your budget.
-//                 </p>
-//               </div>
-//             </div>
-//           </div>
-
-//           {/* Bottom button */}
-//           <button
-//             type="button"
-//             className="mt-6 flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#1b1c1a] text-sm font-medium text-white transition hover:opacity-90"
-//           >
-//             <ShoppingBag size={16} />
-//             View All Recommendations
-//           </button>
-
-//           <p className="mt-4 text-center text-[10px] tracking-wide text-[#aaa29a]">
-//             Powered by Snitch AI
-//           </p>
-//         </div>
-//       </div>
-//     </>
-//   );
-// }
-
-// export default AiRecommendedCard;
-
-interface AiRecommendedCardProps {
+interface Props {
   recommendation: Recommendation;
   detected: Detected;
   products: ScoredProduct[];
   previewUrl: string;
 }
 
+const colorMap: Record<string, string> = {
+  White: "#ffffff",
+  Black: "#000000",
+  Navy: "#001f54",
+  Blue: "#60a5fa",
+  "Light Blue": "#93c5fd",
+  Beige: "#d6c0a1",
+  Grey: "#9ca3af",
+  Green: "#65a30d",
+};
+
 const AiRecommendedCard = ({
   recommendation,
   detected,
   products,
   previewUrl,
-}: AiRecommendedCardProps) => {
+}: Props) => {
+  const navigate = useNavigate();
+  // const sortedProducts = [...products].sort((a, b) => b.score - a.score);
+
   return (
-    <>
-      {/* Detected Card */}
-      <div className="rounded-3xl border border-stone-200 bg-white p-5 shadow-sm">
-        <div className="flex gap-4">
+    <div className="space-y-6 p-4">
+      {/* TOP SECTION */}
+      <div className="gap-5 rounded-3xl shadow md:flex">
+        {/* Uploaded Outfit */}
+        <div className="rounded-3xl border border-stone-200 bg-white p-4 shadow-sm md:border-0 md:shadow-none">
+          <h3 className="mb-4 text-lg font-semibold">Your Uploaded Outfit</h3>
+
           <img
             src={previewUrl}
-            alt=""
-            className="h-32 w-28 rounded-2xl object-cover"
+            alt="Uploaded Outfit"
+            className="aspect-4/5 w-full rounded-2xl object-cover md:aspect-3/4 md:h-40 md:w-40"
           />
 
-          <div>
-            <p className="text-xs tracking-wider text-stone-500 uppercase">
-              Detected Style
-            </p>
+          <div className="mt-4 rounded-2xl bg-stone-50 p-4">
+            <p className="text-xs text-stone-500">Looks Like</p>
 
-            <h2 className="mt-1 font-serif text-2xl">{detected.category}</h2>
+            <p className="mt-1 font-medium text-[#C9A96E]">
+              {detected.category}
+            </p>
 
             <p className="mt-2 text-sm text-stone-600">
               {detected.garmentStyle}
             </p>
+          </div>
+        </div>
 
-            <div className="mt-3 flex flex-wrap gap-2">
-              {detected.colors.map((color) => (
+        {/* AI Recommendation */}
+        <div className="rounded-3xl border border-stone-200 bg-white p-5 shadow-sm md:border-0 md:shadow-none">
+          <div className="mb-4 flex items-center gap-2">
+            <Sparkles size={18} className="text-[#C9A96E]" />
+
+            <h2 className="text-xl font-semibold">AI Style Recommendation</h2>
+          </div>
+
+          {/* AI Reason */}
+          <div className="rounded-2xl bg-[#f7f2eb] p-4">
+            <p className="leading-7 text-stone-700">{recommendation.reason}</p>
+          </div>
+
+          {/* Stats */}
+          <div className="mt-5 grid grid-cols-3 gap-3">
+            <div className="rounded-2xl border p-3">
+              <Shirt size={18} className="mb-2 text-[#C9A96E]" />
+
+              <p className="text-xs text-stone-500">Style</p>
+
+              <p className="font-medium">{recommendation.formality}</p>
+            </div>
+
+            <div className="rounded-2xl border p-3">
+              <CalendarDays size={18} className="mb-2 text-[#C9A96E]" />
+
+              <p className="text-xs text-stone-500">Occasion</p>
+
+              <p className="font-medium">{recommendation.occasion}</p>
+            </div>
+
+            <div className="rounded-2xl border p-3">
+              <Wallet size={18} className="mb-2 text-[#C9A96E]" />
+
+              <p className="text-xs text-stone-500">Budget</p>
+
+              <p className="font-medium">₹{recommendation.maxBudget}</p>
+            </div>
+          </div>
+
+          {/* Colors */}
+          <div className="mt-6">
+            <h3 className="mb-3 font-medium">Recommended Colors</h3>
+
+            <div className="flex flex-wrap gap-4">
+              {recommendation.preferredColors.map((color: any) => (
+                <div key={color} className="flex flex-col items-center gap-2">
+                  <div
+                    className="h-10 w-10 rounded-full border"
+                    style={{
+                      backgroundColor: colorMap[color] || "#e5e7eb",
+                    }}
+                  />
+
+                  <span className="text-xs">{color}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Keywords */}
+          <div className="mt-6">
+            <h3 className="mb-3 font-medium">Recommended Styles</h3>
+
+            <div className="flex flex-wrap gap-2">
+              {recommendation.keywords.map((keyword: any) => (
                 <span
-                  key={color}
-                  className="rounded-full bg-stone-100 px-3 py-1 text-xs"
+                  key={keyword}
+                  className="rounded-full bg-stone-100 px-4 py-2 text-sm"
                 >
-                  {color}
+                  {keyword}
                 </span>
               ))}
             </div>
           </div>
+
+          {/* Why */}
+          <div className="mt-6 rounded-2xl border border-green-200 bg-green-50 p-4">
+            <h3 className="mb-3 font-semibold text-green-700">
+              Why we recommend this
+            </h3>
+
+            <div className="grid gap-2 text-sm text-green-800">
+              <div className="flex items-center gap-2">
+                <Check size={16} />
+                Matches your detected style
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Check size={16} />
+                Fits your occasion
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Check size={16} />
+                Within your budget
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Check size={16} />
+                Recommended color harmony
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Recommendation Card */}
+      {/* PRODUCTS */}
+      <div>
+        <div className="mb-5">
+          <h2 className="text-2xl font-semibold">Recommended Products</h2>
 
-      <div className="mt-5 rounded-3xl bg-[#f7f2eb] p-5">
-        <p className="text-xs tracking-widest text-stone-500 uppercase">
-          AI Recommendation
-        </p>
-
-        <h3 className="mt-2 font-serif text-3xl">{recommendation.occasion}</h3>
-
-        <div className="mt-4 grid grid-cols-2 gap-3">
-          <div>
-            <p className="text-xs text-stone-500">Formality</p>
-
-            <p className="font-medium">{recommendation.formality}</p>
-          </div>
-
-          <div>
-            <p className="text-xs text-stone-500">Item Type</p>
-
-            <p className="font-medium">{recommendation.itemType}</p>
-          </div>
+          <p className="text-sm text-stone-500">
+            Sorted by AI compatibility score
+          </p>
         </div>
-
-        <div className="mt-4 flex flex-wrap gap-2">
-          {recommendation.preferredColors.map((color) => (
-            <span key={color} className="rounded-full border px-3 py-1 text-xs">
-              {color}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* Product List */}
-      <div className="mt-6">
-        <h3 className="mb-4 text-xl font-semibold">Recommended Products</h3>
 
         <div className="grid grid-cols-2 gap-4">
-          {products.map((item) => (
-            <div key={item.product._id}>
-              <img
-                src={item.product.images?.[0]?.url}
-                alt={item.product.title}
-              />
+          {products.map((item, index) => {
+            const product = item.product;
 
-              <h4>{item.product.title}</h4>
+            return (
+              <div
+                key={product._id}
+                className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm"
+              >
+                <div className="relative">
+                  <img
+                    src={product.images?.[0]?.url}
+                    alt={product.title}
+                    className="aspect-4/5 w-full object-cover"
+                  />
 
-              <p>₹{item.product.price?.amount}</p>
-            </div>
-          ))}
+                  <div className="absolute top-3 left-3 rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
+                    {Math.round(item.score)}% Match
+                  </div>
+
+                  {index === 0 && (
+                    <div className="absolute top-3 right-3 rounded-full bg-black px-3 py-1 text-xs text-white">
+                      Best Match
+                    </div>
+                  )}
+                </div>
+
+                <div className="p-3">
+                  <h3 className="line-clamp-2 text-sm font-medium">
+                    {product.title}
+                  </h3>
+                  p
+                  <p className="mt-2 text-lg font-semibold">
+                    {product.price.currency === "INR" && "₹"}
+                    {product.price?.amount}
+                  </p>
+                  {/* Progress */}
+                  <div className="mt-3">
+                    <div className="mb-1 flex justify-between text-xs">
+                      <span>AI Match</span>
+
+                      <span>{Math.round(item.score)}%</span>
+                    </div>
+
+                    <div className="h-2 rounded-full bg-stone-200">
+                      <div
+                        className="h-full rounded-full bg-[#C9A96E]"
+                        style={{
+                          width: `${item.score}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => navigate(`/product/${product._id}`)}
+                    className="mt-4 w-full rounded-xl bg-black py-2 text-sm text-white transition hover:opacity-90"
+                  >
+                    View Details
+                  </button>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
