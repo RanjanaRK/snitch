@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ImagePlus, Sparkles, SplinePointer, Upload, X } from "lucide-react";
+import { ImagePlus, Sparkles, Upload, X } from "lucide-react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -14,9 +14,8 @@ import {
 import useAi from "../hooks/useAi";
 import type { Detected, Recommendation, ScoredProduct } from "../utils/aiTypes";
 import { formSchema, type FormSchemaType } from "../utils/zodSchema";
-import AiRecommendedCard from "./AiRecommendedCard";
-import { set } from "zod";
 import AiLoading from "./AiLoading";
+import AiRecommendedCard from "./AiRecommendedCard";
 
 const AiFashionAssistant = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
