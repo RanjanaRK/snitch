@@ -120,7 +120,7 @@ const AiFashionAssistant = () => {
     try {
       setIsLoading(true);
       if (!selectedFile) {
-        alert("Please upload an image.");
+        toast.warning("Please upload an image.");
         return;
       }
 
@@ -173,7 +173,7 @@ const AiFashionAssistant = () => {
 
       <SheetTrigger asChild>
         <button
-          className="fixed right-6 bottom-6 z-50 flex h-14 w-14 items-center justify-center rounded-full shadow-xl transition-all duration-300 hover:scale-105"
+          className="fixed right-6 bottom-6 z-50 flex h-14 w-14 items-center justify-center rounded-full shadow-[0_10px_30px_rgba(201,169,110,0.35)] transition-all duration-300 hover:-translate-y-1 hover:scale-110"
           style={{
             backgroundColor: "#C9A96E",
             color: "#fff",
@@ -202,248 +202,252 @@ const AiFashionAssistant = () => {
             />
           </div>
         ) : (
-          <div className="flex h-full flex-col">
-            {/* HEADER */}
+          !isLaoding && (
+            <div className="flex h-full flex-col">
+              {/* HEADER */}
 
-            <SheetHeader className="border-b border-[#e4e2df] bg-white px-6 py-6 text-left">
-              <div className="flex items-center gap-3">
-                <div
-                  className="flex h-10 w-10 items-center justify-center rounded-full"
-                  style={{
-                    backgroundColor: "#C9A96E",
-                  }}
-                >
-                  <Sparkles size={18} color="white" strokeWidth={1.7} />
+              <SheetHeader className="border-b border-[#e4e2df] bg-white px-6 py-6 text-left">
+                <div className="flex items-center gap-3">
+                  <div
+                    className="relative flex h-10 w-10 items-center justify-center rounded-full shadow-lg before:absolute before:inset-0 before:animate-ping before:rounded-full before:bg-[#C9A96E]/30"
+                    style={{
+                      backgroundColor: "#C9A96E",
+                    }}
+                  >
+                    <Sparkles size={18} color="white" strokeWidth={1.7} />
+                  </div>
+
+                  <div>
+                    <SheetTitle
+                      className="text-lg font-medium tracking-wide text-[#1b1c1a]"
+                      style={{
+                        fontFamily: "'Cormorant Garamond', serif",
+                      }}
+                    >
+                      Snitch
+                    </SheetTitle>
+
+                    <SheetDescription className="text-[11px] tracking-wide text-[#8a8178]">
+                      Your personal fashion assistant
+                    </SheetDescription>
+                  </div>
                 </div>
+              </SheetHeader>
 
-                <div>
-                  <SheetTitle
-                    className="text-lg font-medium tracking-wide text-[#1b1c1a]"
+              {/* FORM */}
+
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="flex-1 overflow-y-auto px-6 py-7"
+              >
+                {/* WELCOME */}
+
+                <div className="mb-7">
+                  <p
+                    className="mb-2 text-3xl leading-tight text-[#1b1c1a]"
                     style={{
                       fontFamily: "'Cormorant Garamond', serif",
                     }}
                   >
-                    Snitch
-                  </SheetTitle>
+                    <div className="animate-in fade-in slide-in-from-top-2 duration-700">
+                      Find your
+                      <br />
+                      perfect look.
+                    </div>
+                  </p>
 
-                  <SheetDescription className="text-[11px] tracking-wide text-[#8a8178]">
-                    Your personal fashion assistant
-                  </SheetDescription>
+                  <p className="max-w-95 text-sm leading-6 text-[#7a6e63]">
+                    Tell me a little about what you're looking for and I'll
+                    discover pieces that match your style, occasion, and budget.
+                  </p>
                 </div>
-              </div>
-            </SheetHeader>
 
-            {/* FORM */}
+                {/* IMAGE UPLOAD */}
 
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              className="flex-1 overflow-y-auto px-6 py-7"
-            >
-              {/* WELCOME */}
+                <div className="mb-6">
+                  <label className="mb-2 block text-[10px] font-medium tracking-[0.18em] text-[#7a6e63] uppercase">
+                    Inspiration
+                  </label>
 
-              <div className="mb-7">
-                <p
-                  className="mb-2 text-3xl leading-tight text-[#1b1c1a]"
-                  style={{
-                    fontFamily: "'Cormorant Garamond', serif",
-                  }}
-                >
-                  Find your
-                  <br />
-                  perfect look.
-                </p>
+                  {/* Hidden input */}
 
-                <p className="max-w-95 text-sm leading-6 text-[#7a6e63]">
-                  Tell me a little about what you're looking for and I'll
-                  discover pieces that match your style, occasion, and budget.
-                </p>
-              </div>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
 
-              {/* IMAGE UPLOAD */}
+                  {/* Upload card */}
 
-              <div className="mb-6">
-                <label className="mb-2 block text-[10px] font-medium tracking-[0.18em] text-[#7a6e63] uppercase">
-                  Inspiration
-                </label>
+                  <div
+                    onClick={handleCardClick}
+                    className="group cursor-pointer rounded-2xl border border-dashed border-[#d8d2cb] bg-white p-5 transition-all duration-300 hover:border-[#C9A96E] hover:shadow-xl"
+                  >
+                    <div className="flex items-center gap-4">
+                      {/* Image preview */}
 
-                {/* Hidden input */}
+                      <div className="flex h-25 w-25 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#f5f0e8] ring-4 ring-[#C9A96E]/10 transition-all duration-300 group-hover:ring-[#C9A96E]/30">
+                        {previewUrl ? (
+                          <img
+                            src={previewUrl}
+                            alt="Selected preview"
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          <ImagePlus
+                            size={20}
+                            className="text-[#C9A96E]"
+                            strokeWidth={1.6}
+                          />
+                        )}
+                      </div>
 
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileChange}
-                  className="hidden"
-                />
+                      {/* File information */}
 
-                {/* Upload card */}
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-medium text-[#3d3935]">
+                          {selectedFile?.name || "Upload an image"}
+                        </p>
 
-                <div
-                  onClick={handleCardClick}
-                  className="group cursor-pointer rounded-xl border border-dashed border-[#d8d2cb] bg-white p-5 transition-all hover:border-[#C9A96E]"
-                >
-                  <div className="flex items-center gap-4">
-                    {/* Image preview */}
+                        <p className="mt-1 text-xs text-[#9a9188]">
+                          {selectedFile
+                            ? `${(selectedFile.size / (1024 * 1024)).toFixed(2)} MB`
+                            : "Upload an outfit or style inspiration"}
+                        </p>
+                      </div>
 
-                    <div className="flex h-25 w-25 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#f5f0e8]">
-                      {previewUrl ? (
-                        <img
-                          src={previewUrl}
-                          alt="Selected preview"
-                          className="h-full w-full object-cover"
-                        />
+                      {/* Remove / Upload icon */}
+
+                      {selectedFile ? (
+                        <button
+                          type="button"
+                          onClick={handleRemoveImage}
+                          className="shrink-0 rounded-full p-1 text-[#9a9188] transition-colors hover:bg-[#f5f0e8] hover:text-[#3d3935]"
+                        >
+                          <X size={17} />
+                        </button>
                       ) : (
-                        <ImagePlus
-                          size={20}
-                          className="text-[#C9A96E]"
-                          strokeWidth={1.6}
+                        <Upload
+                          size={17}
+                          className="shrink-0 text-[#9a9188] transition-all duration-300 group-hover:scale-110 group-hover:text-[#C9A96E]"
                         />
                       )}
                     </div>
+                  </div>
 
-                    {/* File information */}
+                  {/* Image error */}
 
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium text-[#3d3935]">
-                        {selectedFile?.name || "Upload an image"}
-                      </p>
+                  {!selectedFile && (
+                    <p className="mt-2 text-[11px] text-[#9a9188]">
+                      Please upload an image to get recommendations.
+                    </p>
+                  )}
+                </div>
 
-                      <p className="mt-1 text-xs text-[#9a9188]">
-                        {selectedFile
-                          ? `${(selectedFile.size / (1024 * 1024)).toFixed(2)} MB`
-                          : "Upload an outfit or style inspiration"}
-                      </p>
-                    </div>
+                {/* OCCASION */}
 
-                    {/* Remove / Upload icon */}
+                <div className="mb-6">
+                  <label className="mb-2 block text-[10px] font-medium tracking-[0.18em] text-[#7a6e63] uppercase">
+                    Occasion
+                  </label>
 
-                    {selectedFile ? (
-                      <button
-                        type="button"
-                        onClick={handleRemoveImage}
-                        className="shrink-0 rounded-full p-1 text-[#9a9188] transition-colors hover:bg-[#f5f0e8] hover:text-[#3d3935]"
-                      >
-                        <X size={17} />
-                      </button>
-                    ) : (
-                      <Upload
-                        size={17}
-                        className="shrink-0 text-[#9a9188] transition-colors group-hover:text-[#C9A96E]"
-                      />
-                    )}
+                  <select
+                    {...register("occasion")}
+                    className="h-12 w-full rounded-xl border border-[#e4e2df] bg-white px-4 text-sm text-[#3d3935] transition-all outline-none focus:border-[#C9A96E] focus:ring-4 focus:ring-[#C9A96E]/10"
+                  >
+                    <option value="">Select an occasion</option>
+
+                    <option value="casual">Casual</option>
+
+                    <option value="office">Office</option>
+
+                    <option value="date-night">Date Night</option>
+
+                    <option value="party">Party</option>
+
+                    <option value="wedding">Wedding</option>
+
+                    <option value="vacation">Vacation</option>
+                  </select>
+
+                  {errors.occasion && (
+                    <p className="mt-2 text-xs text-red-500">
+                      {errors.occasion.message}
+                    </p>
+                  )}
+                </div>
+
+                {/* BUDGET */}
+
+                <div className="mb-6">
+                  <div className="mb-2 flex items-center justify-between">
+                    <label className="text-[10px] font-medium tracking-[0.18em] text-[#7a6e63] uppercase">
+                      Budget
+                    </label>
+
+                    <span className="text-xs font-medium text-[#C9A96E]">
+                      ₹{Number(budget).toLocaleString("en-IN")}
+                    </span>
+                  </div>
+
+                  <input
+                    type="range"
+                    min="1000"
+                    max="10000"
+                    step="500"
+                    {...register("budget", {
+                      valueAsNumber: true,
+                    })}
+                    className="w-full accent-[#C9A96E]"
+                  />
+
+                  <div className="mt-2 flex justify-between text-[10px] text-[#aaa29a]">
+                    <span>₹1,000</span>
+                    <span>₹10,000+</span>
                   </div>
                 </div>
 
-                {/* Image error */}
+                {/* PROMPT */}
 
-                {!selectedFile && (
-                  <p className="mt-2 text-[11px] text-[#9a9188]">
-                    Please upload an image to get recommendations.
-                  </p>
-                )}
-              </div>
-
-              {/* OCCASION */}
-
-              <div className="mb-6">
-                <label className="mb-2 block text-[10px] font-medium tracking-[0.18em] text-[#7a6e63] uppercase">
-                  Occasion
-                </label>
-
-                <select
-                  {...register("occasion")}
-                  className="h-12 w-full rounded-xl border border-[#e4e2df] bg-white px-4 text-sm text-[#3d3935] transition outline-none focus:border-[#C9A96E]"
-                >
-                  <option value="">Select an occasion</option>
-
-                  <option value="casual">Casual</option>
-
-                  <option value="office">Office</option>
-
-                  <option value="date-night">Date Night</option>
-
-                  <option value="party">Party</option>
-
-                  <option value="wedding">Wedding</option>
-
-                  <option value="vacation">Vacation</option>
-                </select>
-
-                {errors.occasion && (
-                  <p className="mt-2 text-xs text-red-500">
-                    {errors.occasion.message}
-                  </p>
-                )}
-              </div>
-
-              {/* BUDGET */}
-
-              <div className="mb-6">
-                <div className="mb-2 flex items-center justify-between">
-                  <label className="text-[10px] font-medium tracking-[0.18em] text-[#7a6e63] uppercase">
-                    Budget
+                <div className="mb-8">
+                  <label className="mb-2 block text-[10px] font-medium tracking-[0.18em] text-[#7a6e63] uppercase">
+                    Tell me what you need
+                    <span className="ml-1 text-[#aaa]">(optional)</span>
                   </label>
 
-                  <span className="text-xs font-medium text-[#C9A96E]">
-                    ₹{Number(budget).toLocaleString("en-IN")}
-                  </span>
+                  <textarea
+                    rows={4}
+                    placeholder="e.g. I need an elegant black outfit for a wedding..."
+                    {...register("prompt")}
+                    className="h-12 w-full rounded-xl border border-[#e4e2df] bg-white px-4 text-sm text-[#3d3935] transition-all outline-none focus:border-[#C9A96E] focus:ring-4 focus:ring-[#C9A96E]/10"
+                  />
                 </div>
 
-                <input
-                  type="range"
-                  min="1000"
-                  max="10000"
-                  step="500"
-                  {...register("budget", {
-                    valueAsNumber: true,
-                  })}
-                  className="w-full accent-[#C9A96E]"
-                />
+                {/* CTA */}
 
-                <div className="mt-2 flex justify-between text-[10px] text-[#aaa29a]">
-                  <span>₹1,000</span>
-                  <span>₹10,000+</span>
-                </div>
-              </div>
+                <button
+                  type="submit"
+                  className="flex h-13 w-full items-center justify-center gap-2 rounded-xl text-sm font-medium tracking-wide text-white shadow-lg transition-all duration-300 hover:bg-[#C9A96E] hover:shadow-2xl active:scale-[0.98]"
+                  style={{
+                    backgroundColor: "#1b1c1a",
+                  }}
+                >
+                  <Sparkles size={17} strokeWidth={1.7} />
+                  Find My Perfect Look
+                </button>
 
-              {/* PROMPT */}
-
-              <div className="mb-8">
-                <label className="mb-2 block text-[10px] font-medium tracking-[0.18em] text-[#7a6e63] uppercase">
-                  Tell me what you need
-                  <span className="ml-1 text-[#aaa]">(optional)</span>
-                </label>
-
-                <textarea
-                  rows={4}
-                  placeholder="e.g. I need an elegant black outfit for a wedding..."
-                  {...register("prompt")}
-                  className="w-full resize-none rounded-xl border border-[#e4e2df] bg-white px-4 py-3 text-sm leading-6 text-[#3d3935] outline-none placeholder:text-[#aaa29a] focus:border-[#C9A96E]"
-                />
-              </div>
-
-              {/* CTA */}
-
-              <button
-                type="submit"
-                className="flex h-13 w-full items-center justify-center gap-2 rounded-xl text-sm font-medium tracking-wide text-white shadow-sm transition-all hover:opacity-90"
-                style={{
-                  backgroundColor: "#1b1c1a",
-                }}
-              >
-                <Sparkles size={17} strokeWidth={1.7} />
-                Find My Perfect Look
-              </button>
-
-              {/* =========================
+                {/* =========================
                 FOOTER
             ========================= */}
 
-              <p className="mt-4 text-center text-[10px] tracking-wide text-[#aaa29a]">
-                Powered by Snitch
-              </p>
-            </form>
-          </div>
+                <p className="mt-4 text-center text-[10px] tracking-wide text-[#aaa29a]">
+                  Powered by Snitch
+                </p>
+              </form>
+            </div>
+          )
         )}
       </SheetContent>
     </Sheet>

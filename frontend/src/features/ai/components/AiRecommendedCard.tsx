@@ -30,17 +30,21 @@ const AiRecommendedCard = ({
   // const sortedProducts = [...products].sort((a, b) => b.score - a.score);
 
   return (
-    <div className="space-y-6 p-4">
+    <div className="animate-in fade-in space-y-6 p-4 duration-500">
       {/* TOP SECTION */}
       <div className="gap-5 rounded-3xl shadow md:flex">
         {/* Uploaded Outfit */}
-        <div className="rounded-3xl border border-stone-200 bg-white p-4 shadow-sm md:border-0 md:shadow-none">
+        <div
+          // className="rounded-3xl border border-stone-200 bg-white p-4 shadow-sm md:border-0 md:shadow-none"
+          className="rounded-3xl border border-stone-200 bg-white p-4 shadow-sm transition-all duration-300 hover:shadow-xl"
+        >
           <h3 className="mb-4 text-lg font-semibold">Your Uploaded Outfit</h3>
 
           <img
             src={previewUrl}
             alt="Uploaded Outfit"
             className="aspect-4/5 w-full rounded-2xl object-cover md:aspect-3/4 md:h-40 md:w-40"
+            // className="r aspect-4/5 w-full rounded-2xl object-cover transition-transform duration-700 hover:scale-105 md:aspect-3/4 md:h-40 md:w-40"
           />
 
           <div className="mt-4 rounded-2xl bg-stone-50 p-4">
@@ -59,19 +63,19 @@ const AiRecommendedCard = ({
         {/* AI Recommendation */}
         <div className="rounded-3xl border border-stone-200 bg-white p-5 shadow-sm md:border-0 md:shadow-none">
           <div className="mb-4 flex items-center gap-2">
-            <Sparkles size={18} className="text-[#C9A96E]" />
+            <Sparkles size={18} className="animate-pulse text-[#C9A96E]" />
 
             <h2 className="text-xl font-semibold">AI Style Recommendation</h2>
           </div>
 
           {/* AI Reason */}
-          <div className="rounded-2xl bg-[#f7f2eb] p-4">
+          <div className="rounded-2xl border border-[#eadfcf] bg-[#f7f2eb] p-4 shadow-sm">
             <p className="leading-7 text-stone-700">{recommendation.reason}</p>
           </div>
 
           {/* Stats */}
           <div className="mt-5 grid grid-cols-3 gap-3">
-            <div className="rounded-2xl border p-3">
+            <div className="rounded-2xl border p-3 transition-all duration-300 hover:-translate-y-1 hover:border-[#C9A96E] hover:shadow-md">
               <Shirt size={18} className="mb-2 text-[#C9A96E]" />
 
               <p className="text-xs text-stone-500">Style</p>
@@ -79,7 +83,7 @@ const AiRecommendedCard = ({
               <p className="font-medium">{recommendation.formality}</p>
             </div>
 
-            <div className="rounded-2xl border p-3">
+            <div className="rounded-2xl border p-3 transition-all duration-300 hover:-translate-y-1 hover:border-[#C9A96E] hover:shadow-md">
               <CalendarDays size={18} className="mb-2 text-[#C9A96E]" />
 
               <p className="text-xs text-stone-500">Occasion</p>
@@ -87,7 +91,7 @@ const AiRecommendedCard = ({
               <p className="font-medium">{recommendation.occasion}</p>
             </div>
 
-            <div className="rounded-2xl border p-3">
+            <div className="rounded-2xl border p-3 transition-all duration-300 hover:-translate-y-1 hover:border-[#C9A96E] hover:shadow-md">
               <Wallet size={18} className="mb-2 text-[#C9A96E]" />
 
               <p className="text-xs text-stone-500">Budget</p>
@@ -101,10 +105,10 @@ const AiRecommendedCard = ({
             <h3 className="mb-3 font-medium">Recommended Colors</h3>
 
             <div className="flex flex-wrap gap-4">
-              {recommendation.preferredColors.map((color: any) => (
+              {recommendation.preferredColors?.map((color: any) => (
                 <div key={color} className="flex flex-col items-center gap-2">
                   <div
-                    className="h-10 w-10 rounded-full border"
+                    className="h-10 w-10 rounded-full border-2 border-white shadow-md transition-transform duration-300"
                     style={{
                       backgroundColor: colorMap[color] || "#e5e7eb",
                     }}
@@ -121,10 +125,11 @@ const AiRecommendedCard = ({
             <h3 className="mb-3 font-medium">Recommended Styles</h3>
 
             <div className="flex flex-wrap gap-2">
-              {recommendation.keywords.map((keyword: any) => (
+              {recommendation.keywords?.map((keyword: any) => (
                 <span
                   key={keyword}
-                  className="rounded-full bg-stone-100 px-4 py-2 text-sm"
+                  // className="rounded-full bg-stone-100 px-4 py-2 text-sm"
+                  className="rounded-full border border-[#eadfcf] bg-[#f7f2eb] px-4 py-2 text-sm transition-all duration-300 hover:border-[#C9A96E] hover:bg-[#C9A96E] hover:text-white"
                 >
                   {keyword}
                 </span>
@@ -133,29 +138,29 @@ const AiRecommendedCard = ({
           </div>
 
           {/* Why */}
-          <div className="mt-6 rounded-2xl border border-green-200 bg-green-50 p-4">
+          <div className="mt-6 rounded-2xl border border-[#eadfcf] bg-[#f7f2eb] p-4 text-[#7A6E63]">
             <h3 className="mb-3 font-semibold text-green-700">
               Why we recommend this
             </h3>
 
             <div className="grid gap-2 text-sm text-green-800">
               <div className="flex items-center gap-2">
-                <Check size={16} />
+                <Check size={16} className="text-[#C9A96E]" />
                 Matches your detected style
               </div>
 
               <div className="flex items-center gap-2">
-                <Check size={16} />
+                <Check size={16} className="text-[#C9A96E]" />
                 Fits your occasion
               </div>
 
               <div className="flex items-center gap-2">
-                <Check size={16} />
+                <Check size={16} className="text-[#C9A96E]" />
                 Within your budget
               </div>
 
               <div className="flex items-center gap-2">
-                <Check size={16} />
+                <Check size={16} className="text-[#C9A96E]" />
                 Recommended color harmony
               </div>
             </div>
@@ -174,27 +179,28 @@ const AiRecommendedCard = ({
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          {products.map((item, index) => {
+          {products?.map((item, index) => {
             const product = item.product;
 
             return (
               <div
                 key={product._id}
-                className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm"
+                className="group overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl"
+                // className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm"
               >
                 <div className="relative">
                   <img
                     src={product.images?.[0]?.url}
                     alt={product.title}
-                    className="aspect-4/5 w-full object-cover"
+                    className="aspect-4/5 w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
 
-                  <div className="absolute top-3 left-3 rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700">
+                  <div className="absolute top-3 left-3 rounded-full border border-[#eadfcf] bg-[#f7f2eb] px-3 py-1 text-xs font-semibold text-[#C9A96E]">
                     {Math.round(item.score)}% Match
                   </div>
 
                   {index === 0 && (
-                    <div className="absolute top-3 right-3 rounded-full bg-black px-3 py-1 text-xs text-white">
+                    <div className="absolute top-3 right-3 rounded-full bg-linear-to-r from-[#C9A96E] to-[#D8B77B] px-3 py-1 text-xs font-medium text-white shadow-lg">
                       Best Match
                     </div>
                   )}
@@ -204,7 +210,7 @@ const AiRecommendedCard = ({
                   <h3 className="line-clamp-2 text-sm font-medium">
                     {product.title}
                   </h3>
-                  p
+
                   <p className="mt-2 text-lg font-semibold">
                     {product.price.currency === "INR" && "₹"}
                     {product.price?.amount}
@@ -219,7 +225,7 @@ const AiRecommendedCard = ({
 
                     <div className="h-2 rounded-full bg-stone-200">
                       <div
-                        className="h-full rounded-full bg-[#C9A96E]"
+                        className="h-full rounded-full bg-[#C9A96E] transition-all duration-1000 ease-out"
                         style={{
                           width: `${item.score}%`,
                         }}
@@ -228,7 +234,7 @@ const AiRecommendedCard = ({
                   </div>
                   <button
                     onClick={() => navigate(`/product/${product._id}`)}
-                    className="mt-4 w-full rounded-xl bg-black py-2 text-sm text-white transition hover:opacity-90"
+                    className="mt-4 w-full rounded-xl bg-[#1b1c1a] py-2 text-sm text-white transition-all duration-300 hover:bg-[#C9A96E] hover:shadow-lg"
                   >
                     View Details
                   </button>
