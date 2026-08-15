@@ -34,17 +34,13 @@ const AiRecommendedCard = ({
       {/* TOP SECTION */}
       <div className="gap-5 rounded-3xl shadow md:flex">
         {/* Uploaded Outfit */}
-        <div
-          // className="rounded-3xl border border-stone-200 bg-white p-4 shadow-sm md:border-0 md:shadow-none"
-          className="rounded-3xl border border-stone-200 bg-white p-4 shadow-sm transition-all duration-300 hover:shadow-xl"
-        >
+        <div className="rounded-3xl border border-stone-200 bg-white p-4 shadow-sm transition-all duration-300 hover:shadow-xl">
           <h3 className="mb-4 text-lg font-semibold">Your Uploaded Outfit</h3>
 
           <img
             src={previewUrl}
             alt="Uploaded Outfit"
             className="aspect-4/5 w-full rounded-2xl object-cover md:aspect-3/4 md:h-40 md:w-40"
-            // className="r aspect-4/5 w-full rounded-2xl object-cover transition-transform duration-700 hover:scale-105 md:aspect-3/4 md:h-40 md:w-40"
           />
 
           <div className="mt-4 rounded-2xl bg-stone-50 p-4">
@@ -75,7 +71,7 @@ const AiRecommendedCard = ({
 
           {/* Stats */}
           <div className="mt-5 grid grid-cols-3 gap-3">
-            <div className="rounded-2xl border p-3 transition-all duration-300 hover:-translate-y-1 hover:border-[#C9A96E] hover:shadow-md">
+            <div className="rounded-2xl border p-3 transition-all duration-300 hover:border-[#C9A96E] hover:shadow-md">
               <Shirt size={18} className="mb-2 text-[#C9A96E]" />
 
               <p className="text-xs text-stone-500">Style</p>
@@ -83,7 +79,7 @@ const AiRecommendedCard = ({
               <p className="font-medium">{recommendation.formality}</p>
             </div>
 
-            <div className="rounded-2xl border p-3 transition-all duration-300 hover:-translate-y-1 hover:border-[#C9A96E] hover:shadow-md">
+            <div className="rounded-2xl border p-3 transition-all duration-300 hover:border-[#C9A96E] hover:shadow-md">
               <CalendarDays size={18} className="mb-2 text-[#C9A96E]" />
 
               <p className="text-xs text-stone-500">Occasion</p>
@@ -91,7 +87,7 @@ const AiRecommendedCard = ({
               <p className="font-medium">{recommendation.occasion}</p>
             </div>
 
-            <div className="rounded-2xl border p-3 transition-all duration-300 hover:-translate-y-1 hover:border-[#C9A96E] hover:shadow-md">
+            <div className="rounded-2xl border p-3 transition-all duration-300 hover:border-[#C9A96E] hover:shadow-md">
               <Wallet size={18} className="mb-2 text-[#C9A96E]" />
 
               <p className="text-xs text-stone-500">Budget</p>
@@ -128,7 +124,6 @@ const AiRecommendedCard = ({
               {recommendation.keywords?.map((keyword: any) => (
                 <span
                   key={keyword}
-                  // className="rounded-full bg-stone-100 px-4 py-2 text-sm"
                   className="rounded-full border border-[#eadfcf] bg-[#f7f2eb] px-4 py-2 text-sm transition-all duration-300 hover:border-[#C9A96E] hover:bg-[#C9A96E] hover:text-white"
                 >
                   {keyword}
@@ -179,69 +174,74 @@ const AiRecommendedCard = ({
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          {products?.map((item, index) => {
-            const product = item.product;
+          {products.length === 0 ? (
+            <div className="rounded-2xl border p-8 text-center">
+              No matching products found
+            </div>
+          ) : (
+            products?.map((item, index) => {
+              const product = item.product;
 
-            return (
-              <div
-                key={product._id}
-                className="group overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl"
-                // className="overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm"
-              >
-                <div className="relative">
-                  <img
-                    src={product.images?.[0]?.url}
-                    alt={product.title}
-                    className="aspect-4/5 w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
+              return (
+                <div
+                  key={product._id}
+                  className="group overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm transition-all duration-300 hover:shadow-xl"
+                >
+                  <div className="relative">
+                    <img
+                      src={product.images?.[0]?.url}
+                      alt={product.title}
+                      className="aspect-4/5 w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
 
-                  <div className="absolute top-3 left-3 rounded-full border border-[#eadfcf] bg-[#f7f2eb] px-3 py-1 text-xs font-semibold text-[#C9A96E]">
-                    {Math.round(item.score)}% Match
+                    <div className="absolute top-3 left-3 rounded-full border border-[#eadfcf] bg-[#f7f2eb] px-3 py-1 text-xs font-semibold text-[#C9A96E]">
+                      {Math.round(item.score)}% Match
+                    </div>
+
+                    {index === 0 && (
+                      <div className="absolute top-3 right-3 rounded-full bg-linear-to-r from-[#C9A96E] to-[#D8B77B] px-3 py-1 text-xs font-medium text-white shadow-lg">
+                        Best Match
+                      </div>
+                    )}
                   </div>
 
-                  {index === 0 && (
-                    <div className="absolute top-3 right-3 rounded-full bg-linear-to-r from-[#C9A96E] to-[#D8B77B] px-3 py-1 text-xs font-medium text-white shadow-lg">
-                      Best Match
+                  <div className="p-3">
+                    <h3 className="line-clamp-2 text-sm font-medium">
+                      {product.title}
+                    </h3>
+
+                    <p className="mt-2 text-lg font-semibold">
+                      {product.price.currency === "INR" && "₹"}
+                      {product.price?.amount}
+                    </p>
+                    {/* Progress */}
+                    <div className="mt-3">
+                      <div className="mb-1 flex justify-between text-xs">
+                        <span>AI Match</span>
+
+                        <span>{Math.round(item.score)}%</span>
+                      </div>
+
+                      <div className="h-2 rounded-full bg-stone-200">
+                        <div
+                          className="h-full rounded-full bg-[#C9A96E] transition-all duration-1000 ease-out"
+                          style={{
+                            width: `${item.score}%`,
+                          }}
+                        />
+                      </div>
                     </div>
-                  )}
-                </div>
-
-                <div className="p-3">
-                  <h3 className="line-clamp-2 text-sm font-medium">
-                    {product.title}
-                  </h3>
-
-                  <p className="mt-2 text-lg font-semibold">
-                    {product.price.currency === "INR" && "₹"}
-                    {product.price?.amount}
-                  </p>
-                  {/* Progress */}
-                  <div className="mt-3">
-                    <div className="mb-1 flex justify-between text-xs">
-                      <span>AI Match</span>
-
-                      <span>{Math.round(item.score)}%</span>
-                    </div>
-
-                    <div className="h-2 rounded-full bg-stone-200">
-                      <div
-                        className="h-full rounded-full bg-[#C9A96E] transition-all duration-1000 ease-out"
-                        style={{
-                          width: `${item.score}%`,
-                        }}
-                      />
-                    </div>
+                    <button
+                      onClick={() => navigate(`/product/${product._id}`)}
+                      className="mt-4 w-full rounded-xl bg-[#1b1c1a] py-2 text-sm text-white transition-all duration-300 hover:bg-[#C9A96E] hover:shadow-lg"
+                    >
+                      View Details
+                    </button>
                   </div>
-                  <button
-                    onClick={() => navigate(`/product/${product._id}`)}
-                    className="mt-4 w-full rounded-xl bg-[#1b1c1a] py-2 text-sm text-white transition-all duration-300 hover:bg-[#C9A96E] hover:shadow-lg"
-                  >
-                    View Details
-                  </button>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })
+          )}
         </div>
       </div>
     </div>

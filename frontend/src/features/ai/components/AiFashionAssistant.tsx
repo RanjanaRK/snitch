@@ -119,6 +119,8 @@ const AiFashionAssistant = () => {
   const onSubmit = async (data: FormSchemaType) => {
     try {
       setIsLoading(true);
+      setRecommendations(null);
+
       if (!selectedFile) {
         toast.warning("Please upload an image.");
         return;
@@ -429,12 +431,13 @@ const AiFashionAssistant = () => {
 
                 <button
                   type="submit"
+                  disabled={isSubmitting}
                   className="flex h-13 w-full items-center justify-center gap-2 rounded-xl text-sm font-medium tracking-wide text-white shadow-lg transition-all duration-300 hover:bg-[#C9A96E] hover:shadow-2xl active:scale-[0.98]"
                   style={{
                     backgroundColor: "#1b1c1a",
                   }}
                 >
-                  <Sparkles size={17} strokeWidth={1.7} />
+                  <Sparkles size={17} strokeWidth={1.7} className="" />
                   Find My Perfect Look
                 </button>
 
