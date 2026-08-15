@@ -1,10 +1,10 @@
-import { loginSchema, type LoginFormData } from "../utils/zodSchema";
-import ContinueWithGoogle from "./ContinueWithGoogle";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAuth } from "../hooks/useAuth";
+import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
+import { useAuth } from "../hooks/useAuth";
+import { loginSchema, type LoginFormData } from "../utils/zodSchema";
+import ContinueWithGoogle from "./ContinueWithGoogle";
 const LoginForm = () => {
   const { handleLogin } = useAuth();
   const navigate = useNavigate();
