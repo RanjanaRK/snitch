@@ -3,7 +3,7 @@ import ContinueWithGoogle from "./ContinueWithGoogle";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "../hooks/useAuth";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
 const LoginForm = () => {
   const { handleLogin } = useAuth();
@@ -41,21 +41,17 @@ const LoginForm = () => {
         }}
       >
         {/* LEFT PANEL (UNCHANGED) */}
-        <div
-          className="relative hidden overflow-hidden lg:flex lg:w-1/2"
-          style={{ backgroundColor: "#f5f3f0" }}
-        >
+        <div className="group relative hidden overflow-hidden lg:flex lg:w-1/2">
           <img
             src="/snitch_editorial_warm.png"
-            alt="Snitch Fashion Editorial"
-            className="absolute inset-0 h-full w-full object-cover object-top"
-            style={{ filter: "brightness(0.97)" }}
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-6000 group-hover:scale-105"
           />
+
           <div
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(to top, rgba(27,24,20,0.62) 0%, rgba(27,24,20,0.08) 45%, transparent 100%)",
+                "linear-gradient(to top, rgba(27,24,20,0.75) 0%, rgba(27,24,20,0.15) 50%, transparent 100%)",
             }}
           />
         </div>
@@ -67,85 +63,96 @@ const LoginForm = () => {
               <p className="mb-4 text-[10px] font-medium tracking-[0.22em] text-[#C9A96E] uppercase">
                 Sign in to Snitch
               </p>
-              <h1 className="text-[2.6rem] leading-[1.1] font-light text-[#1b1c1a] xl:text-5xl">
+              <h1 className="text-[2.6rem] leading-[1.1] font-extralight tracking-tight text-[#1b1c1a] xl:text-5xl">
                 Enter the Vault
               </h1>
+
+              <div className="mt-4 h-px w-20 bg-[#C9A96E]" />
             </div>
 
             {/* ✅ FORM */}
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              className="flex flex-col gap-10"
-            >
-              {/* EMAIL */}
-              <div className="flex flex-col gap-2">
-                <label className="text-[10px] font-medium tracking-[0.18em] text-[#7A6E63] uppercase">
-                  Email Address
-                </label>
-
-                <input
-                  type="email"
-                  placeholder="hello@example.com"
-                  {...register("email")}
-                  className="w-full border-b border-[#d0c5b5] bg-transparent py-3 text-sm outline-none"
-                />
-
-                {errors.email && (
-                  <span className="text-[10px] text-red-500">
-                    {errors.email.message}
-                  </span>
-                )}
-              </div>
-
-              {/* PASSWORD */}
-              <div className="flex flex-col gap-2">
-                <label className="text-[10px] font-medium tracking-[0.18em] text-[#7A6E63] uppercase">
-                  Password
-                </label>
-
-                <input
-                  type="password"
-                  placeholder="••••••••"
-                  {...register("password")}
-                  className="w-full border-b border-[#d0c5b5] bg-transparent py-3 text-sm outline-none"
-                />
-
-                {errors.password && (
-                  <span className="text-[10px] text-red-500">
-                    {errors.password.message}
-                  </span>
-                )}
-              </div>
-
-              {/* BUTTON */}
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="mt-2 w-full bg-[#1b1c1a] py-4 text-[11px] font-medium tracking-[0.25em] text-[#fbf9f6] uppercase transition-all duration-300 hover:bg-[#8e7e61]"
+            <div className="animate-in fade-in slide-in-from-top-4 w-full max-w-sm duration-700">
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="flex flex-col gap-10"
               >
-                {isSubmitting ? "Signing In..." : "Sign In"}
-              </button>
+                {/* EMAIL */}
+                <div className="flex flex-col gap-2">
+                  <label className="text-[10px] font-medium tracking-[0.18em] text-[#7A6E63] uppercase">
+                    Email Address
+                  </label>
 
-              {/* DIVIDER */}
-              <div className="flex items-center gap-4">
-                <div className="h-px flex-1 bg-[#e4e2df]" />
-                <span className="text-[10px] tracking-[0.15em] text-[#B5ADA3] uppercase">
-                  or
-                </span>
-                <div className="h-px flex-1 bg-[#e4e2df]" />
-              </div>
+                  <input
+                    type="email"
+                    placeholder="hello@example.com"
+                    {...register("email")}
+                    className="w-full border-b border-[#d0c5b5] bg-transparent py-3 text-sm transition-all duration-300 outline-none focus:border-[#C9A96E]"
+                  />
 
-              {/* GOOGLE */}
-              <ContinueWithGoogle />
+                  {errors.email && (
+                    <span className="text-[10px] text-red-500">
+                      {errors.email.message}
+                    </span>
+                  )}
+                </div>
 
-              {/* FOOTER */}
-              <p className="text-center text-[11px] text-[#B5ADA3]">
-                Don&apos;t have an account?{" "}
-                <a href="/register" className="text-[#7A6E63] underline">
-                  Sign up
-                </a>
-              </p>
-            </form>
+                {/* PASSWORD */}
+                <div className="flex flex-col gap-2">
+                  <label className="text-[10px] font-medium tracking-[0.18em] text-[#7A6E63] uppercase">
+                    Password
+                  </label>
+
+                  <input
+                    type="password"
+                    placeholder="••••••••"
+                    {...register("password")}
+                    className="w-full border-b border-[#d0c5b5] bg-transparent py-3 text-sm transition-all duration-300 outline-none focus:border-[#C9A96E]"
+                  />
+
+                  {errors.password && (
+                    <span className="text-[10px] text-red-500">
+                      {errors.password.message}
+                    </span>
+                  )}
+                </div>
+
+                {/* BUTTON */}
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-[#1b1c1a] py-4 text-[11px] tracking-[0.25em] text-[#fbf9f6] uppercase transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#C9A96E] hover:shadow-lg"
+                >
+                  {isSubmitting ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                      Signing In...
+                    </span>
+                  ) : (
+                    "Sign In"
+                  )}
+                </button>
+
+                {/* DIVIDER */}
+                <div className="flex items-center gap-4">
+                  <div className="h-px flex-1 bg-[#e4e2df]" />
+                  <span className="text-[10px] tracking-[0.15em] text-[#B5ADA3] uppercase">
+                    or
+                  </span>
+                  <div className="h-px flex-1 bg-[#e4e2df]" />
+                </div>
+
+                {/* GOOGLE */}
+                <ContinueWithGoogle />
+
+                {/* FOOTER */}
+                <p className="text-center text-[11px] text-[#B5ADA3]">
+                  Don&apos;t have an account?{" "}
+                  <Link to="/register" className="text-[#7A6E63] underline">
+                    Sign up
+                  </Link>
+                </p>
+              </form>
+            </div>
           </div>
         </div>
       </div>
