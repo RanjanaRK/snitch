@@ -175,7 +175,7 @@ const Cart = () => {
                   return (
                     <div
                       key={product._id}
-                      className="group flex gap-6 border border-[#ece6dc] bg-[#fdfcf9] p-6 transition-all duration-500 hover:-translate-y-[2px] hover:border-[#d8c6a5] hover:shadow-[0_20px_60px_rgba(27,28,26,0.04)] hover:shadow-[0_30px_80px_rgba(27,28,26,0.08)] md:gap-8 md:p-8"
+                      className="group hover:-translate-y-2px hover:shadow-0_30px_80px_rgba(27,28,26,0.08) flex gap-6 border border-[#ece6dc] bg-[#fdfcf9] p-6 transition-all duration-500 hover:border-[#d8c6a5] hover:shadow-[0_20px_60px_rgba(27,28,26,0.04)] md:gap-8 md:p-8"
                       style={{ backgroundColor: tokens.surfaceLow }}
                     >
                       {/* Product Image */}
