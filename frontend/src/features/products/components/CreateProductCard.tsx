@@ -13,6 +13,13 @@ import {
   type ImageType,
   type ProductFormDataType,
 } from "../utils/zodSchema";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../../components/ui/select";
 
 const CURRENCIES = ["INR", "USD", "EUR", "GBP"];
 const MAX_IMAGES = 7;
@@ -32,6 +39,7 @@ const CreateProductCard = () => {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<ProductFormDataType>({
     resolver: zodResolver(productSchema),
@@ -175,13 +183,22 @@ const CreateProductCard = () => {
           <div className="w-full max-w-lg">
             {/* HEADER */}
             <div className="mb-14">
-              <p className="mb-4 text-[10px] font-medium tracking-[0.22em] text-[#C9A96E] uppercase">
+              <p className="mb-4 text-[10px] tracking-[0.22em] text-[#C9A96E] uppercase">
                 Seller Dashboard
               </p>
 
-              <h1 className="text-[2.6rem] leading-[1.1] font-light text-[#1b1c1a] xl:text-5xl">
-                Create Product
+              <h1
+                className="text-5xl font-light"
+                style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                }}
+              >
+                Create New Piece
               </h1>
+
+              <p className="mt-4 text-sm text-[#7A6E63]">
+                Add a product to your luxury collection.
+              </p>
             </div>
 
             {/* FORM */}
@@ -277,61 +294,104 @@ const CreateProductCard = () => {
 
               {/* category */}
 
-              <select
-                value={selectedParent}
-                onChange={async (e) => {
-                  const parentId = e.target.value;
+              {/* GENDER */}
 
-                  setSelectedParent(parentId);
+              <div className="flex flex-col gap-2">
+                <label className="text-[10px] font-medium tracking-[0.22em] text-[#7A6E63] uppercase">
+                  Gender
+                </label>
 
-                  if (!parentId) {
-                    setSubCategories([]);
-                    return;
-                  }
+                <Select
+                  value={selectedParent}
+                  onValueChange={async (parentId) => {
+                    setSelectedParent(parentId);
 
-                  const data = await handleGetSubCategories(parentId);
+                    if (!parentId) {
+                      setSubCategories([]);
+                      return;
+                    }
 
-                  setSubCategories(data);
-                }}
-              >
-                <option value="">Select Gender</option>
-
-                {categories.map((category) => (
-                  <option key={category._id} value={category._id}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
-
-              {/* sub category */}
-              <select {...register("category")}>
-                <option value="">Select Category</option>
-
-                {subCategories.map((subcategory: any) => (
-                  <option key={subcategory._id} value={subcategory._id}>
-                    {subcategory.name}
-                  </option>
-                ))}
-              </select>
-
-              <div className="space-y-2">
-                <label>Style</label>
-
-                <select
-                  {...register("style")}
-                  className="w-full rounded-md border p-2"
+                    const data = await handleGetSubCategories(parentId);
+                    setSubCategories(data);
+                  }}
                 >
-                  <option value="">Select Style</option>
+                  <SelectTrigger className="h-12 w-full rounded-none border-0 border-b border-[#d0c5b5] bg-transparent px-0 shadow-none focus:ring-0 focus:ring-offset-0">
+                    <SelectValue placeholder="Select Gender" />
+                  </SelectTrigger>
 
-                  {STYLES.map((style) => (
-                    <option key={style} value={style}>
-                      {style.charAt(0).toUpperCase() + style.slice(1)}
-                    </option>
-                  ))}
-                </select>
+                  <SelectContent
+                    className="border-[#e4e2df] bg-[#fbf9f6] shadow-[0_20px_60px_rgba(0,0,0,0.08)]"
+                    position="popper"
+                  >
+                    {categories.map((category) => (
+                      <SelectItem
+                        key={category._id}
+                        value={category._id}
+                        className="cursor-pointer text-[#1b1c1a] focus:bg-[#f3ede4] focus:text-[#1b1c1a]"
+                      >
+                        {category.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* CATEGORY */}
+
+              <div className="flex flex-col gap-2">
+                <label className="text-[10px] font-medium tracking-[0.22em] text-[#7A6E63] uppercase">
+                  Category
+                </label>
+
+                <Select onValueChange={(value) => setValue("category", value)}>
+                  <SelectTrigger className="h-12 w-full rounded-none border-0 border-b border-[#d0c5b5] bg-transparent px-0 shadow-none focus:ring-0 focus:ring-offset-0">
+                    <SelectValue placeholder="Select Category" />
+                  </SelectTrigger>
+
+                  <SelectContent
+                    className="border-[#e4e2df] bg-[#fbf9f6] shadow-[0_20px_60px_rgba(0,0,0,0.08)]"
+                    position="popper"
+                  >
+                    {subCategories.map((subcategory: any) => (
+                      <SelectItem
+                        key={subcategory._id}
+                        value={subcategory._id}
+                        className="cursor-pointer text-[#1b1c1a] focus:bg-[#f3ede4] focus:text-[#1b1c1a]"
+                      >
+                        {subcategory.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              {/* STYLE */}
+              <div className="flex flex-col gap-2">
+                <label className="text-[10px] font-medium tracking-[0.22em] text-[#7A6E63] uppercase">
+                  Style
+                </label>
+
+                <Select>
+                  <SelectTrigger className="w-full rounded-none border-b border-[#d0c5b5] bg-transparent">
+                    <SelectValue placeholder="Select Style" />
+                  </SelectTrigger>
+
+                  <SelectContent className="border-[#e4e2df] bg-[#fbf9f6]">
+                    {STYLES.map((style) => (
+                      <SelectItem
+                        key={style}
+                        value={style}
+                        className="cursor-pointer tracking-wide hover:bg-[#f3ede4] focus:bg-[#f3ede4]"
+                      >
+                        {style}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
 
                 {errors.style && (
-                  <p className="text-sm text-red-500">{errors.style.message}</p>
+                  <p className="text-[11px] text-red-500">
+                    {errors.style.message}
+                  </p>
                 )}
               </div>
 
@@ -340,14 +400,15 @@ const CreateProductCard = () => {
 
                 <div className="grid grid-cols-2 gap-3">
                   {OCCASIONS.map((occasion) => (
-                    <label key={occasion} className="flex items-center gap-2">
+                    <label className="flex cursor-pointer items-center gap-3">
                       <input
                         type="checkbox"
                         value={occasion}
                         {...register("occasions")}
+                        className="h-4 w-4 accent-[#C9A96E]"
                       />
 
-                      {occasion.charAt(0).toUpperCase() + occasion.slice(1)}
+                      <span className="text-sm text-[#1b1c1a]">{occasion}</span>
                     </label>
                   ))}
                 </div>
@@ -410,6 +471,7 @@ const CreateProductCard = () => {
                   onDragLeave={handleDragLeave}
                   onClick={() => fileInputRef.current?.click()}
                   className="flex cursor-pointer flex-col items-center justify-center gap-3 border border-dashed border-[#d0c5b5] px-6 py-12 transition-all duration-300"
+                  // className="border border-dashed border-[#d0c5b5] py-16 transition-all duration-300 hover:border-[#C9A96E]"
                   style={{
                     backgroundColor: isDragging
                       ? "rgba(201,169,110,0.06)"
@@ -447,12 +509,12 @@ const CreateProductCard = () => {
                     {images.map((img, index) => (
                       <div
                         key={index}
-                        className="group relative overflow-hidden"
+                        className="group relative border border-[#e4e2df]"
                       >
                         <img
                           src={img.preview}
                           alt="preview"
-                          className="h-28 w-full object-cover"
+                          className="h-32 w-full object-cover transition-transform duration-700 group-hover:scale-105"
                         />
 
                         <button
@@ -469,10 +531,11 @@ const CreateProductCard = () => {
               </div>
 
               {/* BUTTON */}
+
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="mt-2 w-full bg-[#1b1c1a] py-4 text-[11px] font-medium tracking-[0.25em] text-[#fbf9f6] uppercase transition-all duration-300 hover:bg-[#8e7e61]"
+                className="sticky bottom-6 w-full bg-[#1b1c1a] py-4 text-[11px] tracking-[0.25em] text-white uppercase transition-all duration-300 hover:bg-[#C9A96E] hover:text-[#1b1c1a]"
               >
                 {isSubmitting ? "Publishing..." : "Publish Product"}
               </button>

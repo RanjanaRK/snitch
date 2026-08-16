@@ -133,6 +133,15 @@ const Cart = () => {
                 >
                   Your Selection
                 </h1>
+                <div className="mt-5 h-px w-16 bg-[#C9A96E]" />
+                <p
+                  className="mt-4 max-w-md text-sm leading-relaxed"
+                  style={{ color: "#7A6E63" }}
+                >
+                  A curated selection of pieces reserved for your wardrobe.
+                  Review your collection before proceeding to checkout.
+                </p>
+
                 <p
                   className="text-[10px] font-medium tracking-[0.24em] uppercase"
                   style={{ color: tokens.muted }}
@@ -166,12 +175,12 @@ const Cart = () => {
                   return (
                     <div
                       key={product._id}
-                      className="flex gap-6 p-6 transition-all duration-300 md:gap-8 md:p-8"
+                      className="group flex gap-6 border border-[#ece6dc] bg-[#fdfcf9] p-6 transition-all duration-500 hover:-translate-y-[2px] hover:border-[#d8c6a5] hover:shadow-[0_20px_60px_rgba(27,28,26,0.04)] hover:shadow-[0_30px_80px_rgba(27,28,26,0.08)] md:gap-8 md:p-8"
                       style={{ backgroundColor: tokens.surfaceLow }}
                     >
                       {/* Product Image */}
                       <div
-                        className="shrink-0 overflow-hidden"
+                        className="shrink-0 overflow-hidden border border-[#ece6dc]"
                         style={{
                           width: "clamp(100px, 15vw, 160px)",
                           aspectRatio: "4/5",
@@ -180,9 +189,9 @@ const Cart = () => {
                       >
                         {imageUrl ? (
                           <img
-                            src={imageUrl}
-                            alt={product?.title}
-                            className="h-full w-full object-cover"
+                            src={item.product.images[0].url}
+                            alt={item.product.title}
+                            className="h-full w-full object-cover transition-all duration-700 group-hover:scale-[1.04]"
                           />
                         ) : (
                           <div
@@ -197,7 +206,7 @@ const Cart = () => {
                         <div>
                           {/* Title */}
                           <h2
-                            className="mb-3 leading-tight font-light"
+                            className="mb-3 transition-colors duration-300 group-hover:text-[#C9A96E]"
                             style={{
                               fontFamily: "'Cormorant Garamond', serif",
                               fontSize: "clamp(1.2rem, 2.5vw, 1.6rem)",
@@ -215,8 +224,9 @@ const Cart = () => {
                                   key={key}
                                   className="px-3 py-1 text-[9px] font-medium tracking-[0.18em] uppercase"
                                   style={{
-                                    backgroundColor: tokens.primary,
-                                    color: "#fff",
+                                    backgroundColor: "#f3ede4",
+                                    color: "#7A6E63",
+                                    border: "1px solid #e4e2df",
                                   }}
                                 >
                                   {val}
@@ -253,7 +263,7 @@ const Cart = () => {
                         <div className="flex flex-wrap items-center justify-between gap-4">
                           {/* Quantity Stepper */}
                           <div
-                            className="flex items-center"
+                            className="flex items-center border border-[#ece6dc] bg-white"
                             style={{
                               border: `1px solid ${tokens.outlineVariant}`,
                             }}
@@ -266,11 +276,7 @@ const Cart = () => {
                                   variantId,
                                 })
                               }
-                              className="flex h-9 w-9 items-center justify-center text-sm font-light transition-colors hover:opacity-60"
-                              style={{
-                                color: tokens.onSurface,
-                                borderRight: `1px solid ${tokens.outlineVariant}`,
-                              }}
+                              className="flex h-9 w-9 items-center justify-center border border-[#e4e2df] bg-white text-[#1b1c1a] transition-colors hover:bg-[#f8f4ee]"
                               aria-label="Decrease quantity"
                             >
                               −
@@ -289,11 +295,7 @@ const Cart = () => {
                                   variantId,
                                 })
                               }
-                              className="flex h-9 w-9 items-center justify-center text-sm font-light transition-colors hover:opacity-60"
-                              style={{
-                                color: tokens.onSurface,
-                                borderLeft: `1px solid ${tokens.outlineVariant}`,
-                              }}
+                              className="flex h-9 w-9 items-center justify-center border border-[#e4e2df] bg-white text-[#1b1c1a] transition-colors hover:bg-[#f8f4ee]"
                               aria-label="Increase quantity"
                             >
                               +
@@ -303,11 +305,11 @@ const Cart = () => {
                           {/* Remove */}
                           <button
                             id={`remove-${product._id}`}
-                            className="text-[10px] font-medium tracking-[0.22em] uppercase transition-all duration-200 hover:underline hover:opacity-70"
-                            style={{ color: tokens.muted }}
                             onClick={() =>
                               handleRemoveCartItem({ productId, variantId })
                             }
+                            // className="border border-transparent px-3 py-2 text-[10px] font-medium tracking-[0.22em] text-[#7A6E63] uppercase transition-all duration-300 hover:border-[#e4e2df] hover:bg-[#f8f4ee] hover:text-[#1b1c1a]"
+                            className="text-[10px] tracking-[0.25em] text-[#B5ADA3] uppercase transition-colors duration-300 hover:text-[#C9A96E]"
                           >
                             Remove
                           </button>
@@ -322,8 +324,11 @@ const Cart = () => {
               <div
                 className="mt-10 grid grid-cols-3 gap-4 pt-8 text-[10px] tracking-[0.12em] uppercase"
                 style={{
-                  borderTop: `1px solid ${tokens.surfaceHighest}`,
-                  color: tokens.muted,
+                  // borderTop: `1px solid ${tokens.surfaceHighest}`,
+                  // color: tokens.muted,
+                  backgroundColor: "#fdfcf9",
+                  border: "1px solid #ece6dc",
+                  boxShadow: "0 25px 80px rgba(27,28,26,0.05)",
                 }}
               >
                 <div>
@@ -358,25 +363,30 @@ const Cart = () => {
 
             <div className="w-full lg:sticky lg:top-28 lg:w-[35%]">
               <div
-                className="p-8"
+                className="border border-[#ece6dc] bg-[#fdfcf9] p-10"
                 style={{
-                  backgroundColor: tokens.surfaceLowest,
-                  boxShadow: "0 20px 40px rgba(27,28,26,0.04) ",
+                  boxShadow: "0 30px 80px rgba(27,28,26,0.06)",
                 }}
               >
                 {/* Heading */}
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="h-px w-10 bg-[#C9A96E]" />
+                  <span className="text-[10px] tracking-[0.25em] text-[#C9A96E] uppercase">
+                    Order Summary
+                  </span>
+                </div>
+
                 <h2
-                  className="mb-6 font-light"
+                  className="mb-8 text-[2.2rem] leading-none font-light"
                   style={{
                     fontFamily: "'Cormorant Garamond', serif",
-                    fontSize: "1.75rem",
                     color: tokens.onSurface,
                   }}
                 >
                   The Total
                 </h2>
 
-                {/* Tonal divider */}
+                {/* Total divider */}
                 <div
                   className="mb-6"
                   style={{ height: 1, backgroundColor: tokens.surfaceHighest }}
@@ -433,42 +443,46 @@ const Cart = () => {
                 </div>
 
                 {/* Total divider */}
-                <div className="mb-6 border-t border-[#e4e2df]" />
 
                 {/* Grand Total */}
-                <div className="mb-8 flex items-baseline justify-between">
+
+                <div className="mb-10 flex items-center justify-between border-t border-[#ece6dc] pt-6">
                   <span
-                    className="text-[10px] font-medium tracking-[0.22em] uppercase"
+                    className="text-[11px] tracking-[0.25em] uppercase"
                     style={{ color: tokens.onSurface }}
                   >
                     Total
                   </span>
-                  <span className="bg-[#f5f3f0] text-base font-medium tracking-[0.18em] uppercase">
+
+                  <span
+                    className="font-light"
+                    style={{
+                      fontFamily: "'Cormorant Garamond', serif",
+                      fontSize: "2rem",
+                      color: tokens.onSurface,
+                    }}
+                  >
                     {formatCurrency(cart.totalPrice)}
                   </span>
                 </div>
 
                 {/* Primary CTA */}
-                {/* <button
-                  id="proceed-checkout"
-                  className="mb-3 w-full bg-[#1b1c1a] py-4 text-[11px] font-medium tracking-[0.25em] text-[#fbf9f6] uppercase transition-all duration-300 hover:bg-[#C9A96E] hover:text-[#1b1c1a]"
-                >
-                  Proceed to Checkout
-                </button> */}
 
                 <CheckoutButton />
                 <button
                   id="continue-shopping"
                   onClick={() => navigate("/")}
-                  className="hover:text-foreground/50 w-full border border-[#d0c5b5] bg-transparent py-4 text-[11px] font-medium tracking-[0.25em] text-[#1b1c1a] uppercase transition-all duration-300 hover:border-[#C9A96E]"
+                  className="w-full border border-[#1b1c1a] bg-transparent py-4 text-[11px] tracking-[0.25em] uppercase transition-all duration-300 hover:bg-[#1b1c1a] hover:text-white"
                 >
                   Continue Shopping
                 </button>
 
                 {/* Policy footnote */}
-                <p className="mt-6 text-center text-[9px] leading-relaxed tracking-[0.14em] text-[#B5ADA3] uppercase">
-                  Free returns within 14 days · Authenticity guaranteed
-                </p>
+                <div className="mt-8 border-t border-[#ece6dc] pt-6">
+                  <p className="text-center text-[10px] tracking-[0.18em] text-[#B5ADA3] uppercase">
+                    Free Returns · Secure Checkout · Authenticity Guaranteed
+                  </p>
+                </div>
               </div>
             </div>
           </div>

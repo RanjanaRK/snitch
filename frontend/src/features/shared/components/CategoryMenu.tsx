@@ -2,15 +2,15 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
+import { ChevronDown } from "lucide-react";
 import type { RootState } from "../../../app/app.store";
-import { useCategory } from "../../category/hooks/useCategory";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../../../components/ui/dropdown-menu";
-import { ChevronDown } from "lucide-react";
+import { useCategory } from "../../category/hooks/useCategory";
 
 const CategoryMenu = () => {
   const navigate = useNavigate();
@@ -73,19 +73,36 @@ const CategoryMenu = () => {
             </button>
           </DropdownMenuTrigger>
 
-          <DropdownMenuContent align="start" className="w-56">
+          <DropdownMenuContent
+            align="start"
+            sideOffset={18}
+            className="w-64 border border-[#e8e2d9] bg-[#fbf9f6]/95 p-2 shadow-[0_25px_80px_rgba(0,0,0,0.08)] backdrop-blur-xl"
+          >
+            <div className="px-3 py-2">
+              <p className="text-[9px] tracking-[0.3em] text-[#C9A96E] uppercase">
+                Collection
+              </p>
+            </div>
             <DropdownMenuItem
               onClick={() => navigate(`/?parentCategory=${category._id}`)}
+              className="cursor-pointer border-b border-[#ece7de] py-3 text-[11px] tracking-[0.15em] text-[#1b1c1a] uppercase transition-all duration-300 hover:bg-[#f4eee5] hover:text-[#C9A96E]"
             >
-              All {category.name}
+              View All {category.name}
             </DropdownMenuItem>
 
             {subCategoriesMap[category._id]?.map((subcategory) => (
               <DropdownMenuItem
                 key={subcategory._id}
                 onClick={() => navigate(`/?category=${subcategory._id}`)}
+                className="group cursor-pointer py-3 text-sm text-[#7A6E63] transition-all duration-300 hover:bg-[#f4eee5] hover:text-[#1b1c1a]"
               >
-                {subcategory.name}
+                <span className="flex w-full items-center justify-between">
+                  {subcategory.name}
+
+                  <span className="translate-x-0 opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100">
+                    →
+                  </span>
+                </span>
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>

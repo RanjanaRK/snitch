@@ -25,32 +25,64 @@ const WishListItemcart = ({ product, variantId }: Props) => {
 
   return (
     <>
-      <div className="group relative overflow-hidden bg-[#f5f3f0]">
+      <div
+        className="group relative cursor-pointer border border-[#e4e2df] bg-[#fbf9f6] transition-all duration-500 hover:border-[#C9A96E]"
+        onClick={() => navigate(`/product/${product._id}`)}
+      >
         {/* IMAGE */}
-        <div className="aspect-4/5 overflow-hidden">
+        <div className="aspect-4/5 overflow-hidden bg-[#f5f3f0]">
           <img
             src={imageUrl}
             alt={product.title}
-            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+            className="h-full w-full object-cover transition-all duration-1000 ease-out group-hover:scale-[1.04]"
+            // className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
           />
         </div>
 
-        {/* REMOVE BUTTON */}
+        {/* REMOVE */}
         <button
           onClick={handleRemove}
-          className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center bg-white/80 text-black opacity-0 transition group-hover:opacity-100 hover:bg-white"
+          className="absolute top-4 right-4 flex h-9 w-9 items-center justify-center border border-[#e4e2df] bg-[#fbf9f6]/90 opacity-0 backdrop-blur-md transition-all duration-300 group-hover:opacity-100 hover:border-red-400 hover:text-red-500"
         >
-          <X size={16} />
+          <X size={15} />
         </button>
 
-        {/* OPTIONAL INFO */}
-        <div className="p-3">
+        {/* CONTENT */}
+        <div className="p-5">
+          <p
+            className="mb-2 text-[9px] tracking-[0.25em] uppercase"
+            style={{ color: "#C9A96E" }}
+          >
+            Saved Piece
+          </p>
+
           <h3
-            className="relative line-clamp-1 cursor-pointer overflow-hidden bg-[#f5f3f0] text-sm font-medium text-[#1b1c1a]"
-            onClick={() => navigate(`/product/${product._id}`)}
+            className="mb-3 line-clamp-1 text-xl transition-colors duration-300 group-hover:text-[#C9A96E]"
+            style={{
+              fontFamily: "'Cormorant Garamond', serif",
+              color: "#1b1c1a",
+            }}
           >
             {product.title}
           </h3>
+
+          <div className="h-px w-full bg-[#e4e2df]" />
+
+          <div className="mt-4 flex items-center justify-between">
+            <span
+              className="text-[10px] tracking-[0.2em] uppercase"
+              style={{ color: "#7A6E63" }}
+            >
+              Wishlist
+            </span>
+
+            <span
+              className="text-[10px] tracking-[0.2em] uppercase opacity-0 transition-all duration-300 group-hover:opacity-100"
+              style={{ color: "#C9A96E" }}
+            >
+              View →
+            </span>
+          </div>
         </div>
       </div>
     </>

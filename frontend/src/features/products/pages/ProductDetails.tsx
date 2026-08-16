@@ -236,8 +236,11 @@ const ProductDetail = () => {
 
               {/* Main Image */}
               <div
-                className="group relative aspect-4/5 w-full overflow-hidden rounded-2xl bg-[#f7f4ef]"
-                style={{ backgroundColor: "#f5f3f0" }}
+                className="group relative aspect-4/5 overflow-hidden border"
+                style={{
+                  backgroundColor: "#f5f3f0",
+                  borderColor: "#e4e2df",
+                }}
               >
                 <img
                   src={
@@ -326,12 +329,20 @@ const ProductDetail = () => {
             {/* ── RIGHT: Product Details ── */}
             <div className="flex w-full flex-col pt-4 lg:sticky lg:top-24 lg:w-[30%]">
               <div className="mb-8 flex items-center gap-2 text-[11px] tracking-[0.2em] text-[#B5ADA3] uppercase">
-                {/* <span>Home</span> */}
-                {/* <span>/</span> */}
-                <span>{product.category.name}</span>
+                <span>Home</span>
+                <span>/</span>
+                {/* <span>{product.category.name}</span> */}
               </div>
+
+              <span
+                className="mb-4 block text-[10px] tracking-[0.3em] uppercase"
+                style={{ color: "#C9A96E" }}
+              >
+                Exclusive Collection
+              </span>
+
               <h1
-                className="mb-6 text-4xl leading-[1.05] font-light md:text-5xl lg:text-6xl"
+                className="text-5xl tracking-tight md:text-6xl lg:text-7xl"
                 style={{
                   fontFamily: "'Cormorant Garamond', serif",
                   color: "#1b1c1a",
@@ -340,20 +351,12 @@ const ProductDetail = () => {
                 {product.title}
               </h1>
 
-              <div className="mb-8">
-                <span
-                  className="text-sm font-medium tracking-[0.2em] uppercase"
-                  style={{ color: "#1b1c1a" }}
-                >
-                  {displayPrice?.currency}{" "}
-                  {displayPrice?.amount?.toLocaleString()}
+              <div className="my-10 flex items-center gap-4">
+                <span className="text-xl font-light">
+                  {product.price.currency === "INR" && "₹"}
+                  {product.price?.amount}
                 </span>
               </div>
-
-              <div
-                className="mb-8 h-px w-full"
-                style={{ backgroundColor: "#e4e2df" }}
-              />
 
               {/* Options/Variants */}
               {Object.entries(availableAttributes).map(([attrName, values]) => (
@@ -371,7 +374,11 @@ const ProductDetail = () => {
                         <button
                           key={val}
                           onClick={() => handleAttributeChange(attrName, val)}
-                          className={`border px-4 py-2 text-[11px] font-medium tracking-[0.15em] uppercase transition-all duration-300 ${isSelected ? "border-[#1b1c1a] bg-[#1b1c1a] text-[#fbf9f6]" : "border-[#d0c5b5] text-[#1b1c1a] hover:border-[#1b1c1a]"}`}
+                          className={`border px-5 py-3 text-[11px] tracking-[0.2em] uppercase transition-all duration-300 hover:border-[#C9A96E] ${
+                            isSelected
+                              ? "border-[#1b1c1a] bg-[#1b1c1a] text-white"
+                              : "bg-white hover:bg-[#f7f4ef]"
+                          } `}
                           style={
                             isSelected ? {} : { backgroundColor: "transparent" }
                           }
@@ -423,7 +430,7 @@ const ProductDetail = () => {
               {/* Actions */}
               <div className="mt-auto flex flex-col gap-4">
                 <button
-                  className="w-full py-4 text-[11px] font-medium tracking-[0.25em] uppercase transition-all duration-300"
+                  className="hover:border-[#C9A96E]duration-300 w-full py-4 text-[11px] font-medium tracking-[0.25em] uppercase transition-all hover:bg-[#C9A96E]"
                   style={{
                     backgroundColor: "#1b1c1a",
                     color: "#fbf9f6",

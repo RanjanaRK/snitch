@@ -19,11 +19,13 @@ const WishlistButton = ({
 
   const { handleAddWishlist } = useWishlist();
 
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
+
+  const [liked, setLiked] = useState(isWishlisted);
 
   const handleSubmit = async () => {
     try {
-      setLoading(true);
+      setLiked(!liked);
 
       const data = await handleAddWishlist({
         productId,
@@ -32,12 +34,11 @@ const WishlistButton = ({
 
       toast.success(data.message);
     } catch (error: any) {
+      setLiked(liked);
       toast.error(error.response.data.message);
       if (error.status === 401) {
         navigate("/login");
       }
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -45,9 +46,20 @@ const WishlistButton = ({
     <button
       onClick={handleSubmit}
       disabled={loading}
-      className="disabled:opacity-50"
+      className="group disabled:cursor-not-allowed disabled:opacity-50"
     >
-      <Heart fill={isWishlisted ? "red" : "transparent"} color="red" />
+      {loading ? (
+        <div className="h-5 w-5 animate-spin rounded-full border-2 border-[#C9A96E] border-t-transparent" />
+      ) : (
+        <Heart
+          size={20}
+          className={`transition-all duration-300 ${
+            isWishlisted
+              ? "scale-110 fill-red-500 text-red-500"
+              : "text-[#7A6E63] hover:scale-110 hover:text-red-500"
+          }`}
+        />
+      )}
     </button>
   );
 };
