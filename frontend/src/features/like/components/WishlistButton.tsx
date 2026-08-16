@@ -2,6 +2,7 @@ import { Heart } from "lucide-react";
 import { useWishlist } from "../hooks/useWishlist";
 import { toast } from "sonner";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 interface WishlistButtonProps {
   productId: string;
@@ -14,6 +15,8 @@ const WishlistButton = ({
   variantId,
   isWishlisted = false,
 }: WishlistButtonProps) => {
+  const navigate = useNavigate();
+
   const { handleAddWishlist } = useWishlist();
 
   const [loading, setLoading] = useState(false);
@@ -30,6 +33,9 @@ const WishlistButton = ({
       toast.success(data.message);
     } catch (error: any) {
       toast.error(error.response.data.message);
+      if (error.status === 401) {
+        navigate("/login");
+      }
     } finally {
       setLoading(false);
     }

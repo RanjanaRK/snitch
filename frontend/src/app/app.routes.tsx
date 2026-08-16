@@ -28,10 +28,6 @@ const SellerProductDetails = lazy(
   () => import("../features/products/pages/SellerProductDetails"),
 );
 
-const AiFashionAssistant = lazy(
-  () => import("../features/ai/pages/AIFashionAssistant"),
-);
-
 const LoaderFallback = () => (
   <div className="flex min-h-screen items-center justify-center">
     <Loader className="animate-spin" />
@@ -101,10 +97,6 @@ export const routes = createBrowserRouter([
       {
         path: "/seller/product/:productId",
         element: withSuspense(<SellerProductDetails />),
-      },
-      {
-        path: "/ai-fashion-assistant",
-        element: withSuspense(<AiFashionAssistant />),
       },
     ],
   },

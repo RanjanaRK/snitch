@@ -133,7 +133,7 @@ export const getSellerProducts = async (req: Request, res: Response) => {
 export const getProductById = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
-    const product = await productModel.findById(id);
+    const product = await productModel.findById(id).populate("category");
 
     if (!product) {
       return res.status(404).json({

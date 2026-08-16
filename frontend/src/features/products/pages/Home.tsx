@@ -32,13 +32,21 @@ const Home = () => {
       >
         <div className="mx-auto max-w-7xl px-8 lg:px-16 xl:px-24">
           {/* ── Hero / Header ── */}
-          <div className="flex flex-col items-center pt-20 pb-20 text-center">
-            <span
-              className="mb-6 text-[10px] font-medium tracking-[0.24em] uppercase"
-              style={{ color: "#C9A96E" }}
-            >
-              The Collection
-            </span>
+
+          <div className="flex flex-col items-center pt-24 pb-24 text-center">
+            <div className="mb-8 flex items-center gap-4">
+              <div className="h-px w-12 bg-[#C9A96E]/50" />
+
+              <span
+                className="text-[10px] font-medium tracking-[0.24em] uppercase"
+                style={{ color: "#C9A96E" }}
+              >
+                The Collection
+              </span>
+
+              <div className="h-px w-12 bg-[#C9A96E]/50" />
+            </div>
+
             <h1
               className="mb-6 text-5xl leading-tight font-light lg:text-7xl"
               style={{
@@ -48,6 +56,7 @@ const Home = () => {
             >
               Curated Archive
             </h1>
+
             <p
               className="mx-auto max-w-xl text-sm leading-relaxed"
               style={{ color: "#7A6E63" }}
@@ -71,10 +80,10 @@ const Home = () => {
                   <div
                     onClick={() => navigate(`/product/${product._id}`)}
                     key={product._id}
-                    className="group flex cursor-pointer flex-col"
+                    className="group animate-in fade-in slide-in-from-bottom-4 flex cursor-pointer flex-col rounded-2xl transition-all duration-500 hover:-translate-y-2"
                   >
                     {/* Image Container */}
-                    <div
+                    {/* <div
                       className="mb-6 aspect-4/5 overflow-hidden"
                       style={{ backgroundColor: "#f5f3f0" }}
                     >
@@ -83,10 +92,28 @@ const Home = () => {
                         alt={product.title}
                         className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                       />
+                    </div> */}
+
+                    <div className="relative mb-6 aspect-[4/5] overflow-hidden">
+                      <img
+                        src={imageUrl}
+                        alt={product.title}
+                        className="h-full w-full object-cover transition-all duration-700 group-hover:scale-[1.03]"
+                      />
+
+                      <div className="absolute inset-0 bg-black/0 transition-colors duration-700 group-hover:bg-black/5" />
                     </div>
 
                     {/* Product Details */}
-                    <div className="flex flex-col gap-2">
+
+                    <div className="flex flex-col gap-3">
+                      <span
+                        className="text-[10px] tracking-[0.22em] uppercase"
+                        style={{ color: "#C9A96E" }}
+                      >
+                        Curated Piece
+                      </span>
+
                       <h3
                         className="text-xl leading-snug transition-colors duration-300 group-hover:text-[#C9A96E]"
                         style={{
@@ -104,13 +131,22 @@ const Home = () => {
                         {product.description}
                       </p>
 
-                      <div className="mt-2">
+                      <div className="mt-2 flex items-center justify-between">
                         <span
-                          className="text-[10px] font-medium tracking-[0.2em] uppercase"
+                          className="text-[12px] font-bold tracking-[0.2em] uppercase"
                           style={{ color: "#1b1c1a" }}
                         >
-                          {product.price?.currency}{" "}
-                          {product.price?.amount?.toLocaleString()}
+                          {/* {product.price?.currency}{" "}
+                          {product.price?.amount?.toLocaleString()} */}
+                          {product.price.currency === "INR" && "₹"}
+                          {product.price?.amount}
+                        </span>
+
+                        <span
+                          className="translate-x-2 text-[10px] tracking-[0.2em] uppercase opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100"
+                          style={{ color: "#C9A96E" }}
+                        >
+                          View Piece →
                         </span>
                       </div>
                     </div>

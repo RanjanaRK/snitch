@@ -170,18 +170,21 @@ const AiFashionAssistant = () => {
 
   return (
     <Sheet>
-      {/* FLOATING AI BUTTON */}
-
       <SheetTrigger asChild>
-        <button
-          className="fixed right-6 bottom-6 z-50 flex h-14 w-14 items-center justify-center rounded-full shadow-[0_10px_30px_rgba(201,169,110,0.35)] transition-all duration-300 hover:-translate-y-1 hover:scale-110"
-          style={{
-            backgroundColor: "#C9A96E",
-            color: "#fff",
-          }}
-          aria-label="Open AI Fashion Assistant"
-        >
-          <Sparkles size={22} strokeWidth={1.8} className="animate-pulse" />
+        <button className="group fixed right-5 bottom-5 z-50 flex items-center gap-3 rounded-full border border-[#E8DFCF] bg-white/95 px-5 py-3 shadow-[0_10px_40px_rgba(201,169,110,0.25)] backdrop-blur-xl transition-all duration-500 hover:border-[#C9A96E] hover:shadow-[0_20px_60px_rgba(201,169,110,0.4)]">
+          {/* Icon */}
+          <Sparkles
+            size={16}
+            className="text-[#C9A96E] transition-transform duration-500 group-hover:rotate-6"
+          />
+
+          {/* Text */}
+          <span className="absolute -top-2 -right-2 rounded-full bg-[#C9A96E] px-2 py-0.5 text-[8px] text-white">
+            AI
+          </span>
+          <span className="hidden text-[11px] font-medium tracking-[0.18em] text-[#7A6E63] uppercase transition-colors duration-500 group-hover:text-[#1b1c1a] sm:block">
+            Stylist
+          </span>
         </button>
       </SheetTrigger>
 

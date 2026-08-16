@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { toast } from "sonner";
 import type { RootState } from "../../../app/app.store";
 import { useCart } from "../../cart/hooks/useCart";
@@ -15,7 +15,7 @@ type AvailableAttributes = Record<string, string[]>;
 
 const ProductDetail = () => {
   const { productId } = useParams<{ productId: string }>();
-
+  const navigate = useNavigate();
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedAttributes, setSelectedAttributes] =
@@ -40,6 +40,9 @@ const ProductDetail = () => {
       toast.success(res.message);
     } catch (error: any) {
       toast.error(error.response.data.message);
+      if (error.status === 401) {
+        navigate("/login");
+      }
     }
   };
 
@@ -233,7 +236,7 @@ const ProductDetail = () => {
 
               {/* Main Image */}
               <div
-                className="group relative aspect-4/5 w-full overflow-hidden"
+                className="group relative aspect-4/5 w-full overflow-hidden rounded-2xl bg-[#f7f4ef]"
                 style={{ backgroundColor: "#f5f3f0" }}
               >
                 <img
@@ -241,7 +244,7 @@ const ProductDetail = () => {
                     displayImages[selectedImage]?.url || displayImages[0].url
                   }
                   alt={product.title}
-                  className="h-full w-full object-cover transition-opacity duration-500"
+                  className="h-full w-full object-cover transition-all duration-700 group-hover:scale-[1.03]"
                 />
                 {displayImages.length > 1 && (
                   <>
@@ -322,6 +325,11 @@ const ProductDetail = () => {
 
             {/* ── RIGHT: Product Details ── */}
             <div className="flex w-full flex-col pt-4 lg:sticky lg:top-24 lg:w-[30%]">
+              <div className="mb-8 flex items-center gap-2 text-[11px] tracking-[0.2em] text-[#B5ADA3] uppercase">
+                {/* <span>Home</span> */}
+                {/* <span>/</span> */}
+                <span>{product.category.name}</span>
+              </div>
               <h1
                 className="mb-6 text-4xl leading-[1.05] font-light md:text-5xl lg:text-6xl"
                 style={{

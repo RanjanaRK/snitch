@@ -1,3 +1,5 @@
+import type { Category } from "../../category/utils/types";
+
 type Image = {
   url: string;
   _id: string;
@@ -10,6 +12,7 @@ export type Product = {
   seller: string;
   price: Price;
   images: Image[];
+  category: Category;
   createdAt: string;
   updatedAt: string;
   variants: Variant[];
