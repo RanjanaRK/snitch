@@ -345,19 +345,24 @@ Rules:
 - Maximum 5 words.
 - Suggestions should help narrow or improve results.
 
+Generate suggestions that are DIFFERENT based on the detected outfit.
+
 Examples:
 
-For casual outfit:
-- "Show only denim options"
-- "More suitable for college"
-- "Make it more feminine"
-- "Winter-ready options"
+If recommendation contains jeans:
+- "Only wide leg styles"
+- "More relaxed fit"
+- "Dark wash denim"
 
-For formal outfit:
+If recommendation contains skirts:
+- "More feminine options"
+- "Midi length only"
+
+If recommendation is formal:
 - "More professional look"
-- "Suitable for interviews"
-- "Premium fabric options"
-- "Darker color palette"
+- "Darker colors"
+
+Avoid generic suggestions when possible.
 
 ==================================================
 OUTPUT FORMAT
@@ -390,7 +395,12 @@ Return exactly this structure:
     "keywords": [],
     "reason": ""
   },
-  "refineSuggestions": []
+  "refineSuggestions": [
+  "",
+  "",
+  "",
+  ""
+  ]
 }
 `;
 
