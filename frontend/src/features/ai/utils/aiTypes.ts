@@ -31,3 +31,10 @@ export interface AIRecommendResponse {
   detected: Detected;
   products: ScoredProduct[];
 }
+
+export interface AIRefineResponse {
+  success: boolean;
+  message: string;
+  recommendation: Recommendation;
+  products: ScoredProduct[];
+}

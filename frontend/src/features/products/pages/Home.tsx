@@ -94,7 +94,7 @@ const Home = () => {
                       />
                     </div> */}
 
-                    <div className="relative mb-6 aspect-[4/5] overflow-hidden">
+                    <div className="relative mb-6 aspect-4/5 overflow-hidden">
                       <img
                         src={imageUrl}
                         alt={product.title}

@@ -9,7 +9,9 @@ const useAi = () => {
     return response;
   };
 
-  return { createAiFashionRecommend };
+  const refineRecommendation = async (data: any) => {};
+
+  return { createAiFashionRecommend, refineRecommendation };
 };
 
 export default useAi;

@@ -334,6 +334,32 @@ Return the exact budget number in:
 recommendation.maxBudget
 
 ==================================================
+REFINE SUGGESTIONS
+==================================================
+
+Generate 4 short follow-up refinement suggestions.
+
+Rules:
+- Must be based on the detected outfit and recommendation.
+- Each suggestion should be a natural user request.
+- Maximum 5 words.
+- Suggestions should help narrow or improve results.
+
+Examples:
+
+For casual outfit:
+- "Show only denim options"
+- "More suitable for college"
+- "Make it more feminine"
+- "Winter-ready options"
+
+For formal outfit:
+- "More professional look"
+- "Suitable for interviews"
+- "Premium fabric options"
+- "Darker color palette"
+
+==================================================
 OUTPUT FORMAT
 ==================================================
 
@@ -363,7 +389,8 @@ Return exactly this structure:
     "maxBudget": 0,
     "keywords": [],
     "reason": ""
-  }
+  },
+  "refineSuggestions": []
 }
 `;
 

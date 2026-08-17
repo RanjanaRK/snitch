@@ -1,6 +1,6 @@
 import axios from "axios";
 import { env } from "../../shared/utils/env";
-import type { AIRecommendResponse } from "../utils/aiTypes";
+import type { AIRecommendResponse, AIRefineResponse } from "../utils/aiTypes";
 
 const aiApiInstance = axios.create({
   baseURL: `${env.VITE_BACKEND_URL}/api/ai`,
@@ -13,6 +13,12 @@ export const createAiRecommend = async (formdata: FormData) => {
     formdata,
   );
 
+  console.log(response.data);
+  return response.data;
+};
+
+export const refineRecommendation = async (data: any) => {
+  const response = await aiApiInstance.post<AIRefineResponse>("/refine", data);
   console.log(response.data);
   return response.data;
 };
