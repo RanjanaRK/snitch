@@ -174,7 +174,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
     console.log(filter, "filter");
     console.log(category, "category");
 
-    const products = await productModel.find(filter).populate("category");
+    const products = await productModel.find(filter);
 
     return res.status(200).json({
       message: "Products fetched successfully",
