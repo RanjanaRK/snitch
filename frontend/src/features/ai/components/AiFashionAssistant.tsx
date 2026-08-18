@@ -256,7 +256,7 @@ const AiFashionAssistant = () => {
                         fontFamily: "'Cormorant Garamond', serif",
                       }}
                     >
-                      Snitch
+                      Vestra
                     </SheetTitle>
 
                     <SheetDescription className="text-[11px] tracking-wide text-[#8a8178]">
@@ -476,7 +476,7 @@ const AiFashionAssistant = () => {
             ========================= */}
 
                 <p className="mt-4 text-center text-[10px] tracking-wide text-[#91877D]">
-                  Powered by Snitch
+                  Powered by Vestra
                 </p>
               </form>
             </div>
