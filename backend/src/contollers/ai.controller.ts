@@ -183,6 +183,7 @@ export const recommendOutfitController = async (
       message: "Recommendation generated successfully",
       recommendation: recommendation.recommendation,
       detected: recommendation.detected,
+      refineSuggestions: recommendation.refineSuggestions,
       products: scoredProducts,
     });
   } catch (error) {

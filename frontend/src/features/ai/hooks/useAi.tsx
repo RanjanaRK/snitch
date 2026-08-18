@@ -1,7 +1,7 @@
-import { createAiRecommend } from "../services/ai.api";
+import { createAiRecommend, refineRecommendation } from "../services/ai.api";
 
 const useAi = () => {
-  const createAiFashionRecommend = async (data: any) => {
+  const createAiFashionRecommend = async (data: FormData) => {
     const response = await createAiRecommend(data);
 
     console.log(response);
@@ -9,9 +9,15 @@ const useAi = () => {
     return response;
   };
 
-  const refineRecommendation = async (data: any) => {};
+  const createRefineRecommendation = async (data: any) => {
+    const response = await refineRecommendation(data);
 
-  return { createAiFashionRecommend, refineRecommendation };
+    console.log(response);
+
+    return response;
+  };
+
+  return { createAiFashionRecommend, createRefineRecommendation };
 };
 
 export default useAi;

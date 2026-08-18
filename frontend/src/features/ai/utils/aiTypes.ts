@@ -23,12 +23,15 @@ export interface ScoredProduct {
   score: number;
 }
 
+export interface RefineSuggestion {}
+
 export interface AIRecommendResponse {
   success: boolean;
   message: string;
 
   recommendation: Recommendation;
   detected: Detected;
+  refineSuggestion: string[];
   products: ScoredProduct[];
 }
 

@@ -16,6 +16,7 @@ import type { Detected, Recommendation, ScoredProduct } from "../utils/aiTypes";
 import { formSchema, type FormSchemaType } from "../utils/zodSchema";
 import AiLoading from "./AiLoading";
 import AiRecommendedCard from "./AiRecommendedCard";
+import AiRefinePanel from "./AiRefinePanel";
 
 const AiFashionAssistant = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -33,7 +34,11 @@ const AiFashionAssistant = () => {
 
   const [products, setProducts] = useState<ScoredProduct[]>([]);
 
-  const { createAiFashionRecommend } = useAi();
+  const [refineSuggestions, setRefineSuggestions] = useState<string[]>([]);
+
+  const [loadingRefine, setLoadingRefine] = useState(false);
+
+  const { createAiFashionRecommend, createRefineRecommendation } = useAi();
 
   const {
     register,
@@ -168,6 +173,24 @@ const AiFashionAssistant = () => {
     }
   };
 
+  const handleRefine = async (userPrompt: string) => {
+    try {
+      const result = await createRefineRecommendation({
+        recommendations,
+        detected,
+        userPrompt,
+        budget: recommendations?.maxBudget,
+      });
+
+      setRecommendations(result.recommendation);
+
+      setProducts(result.products);
+    } catch (error) {
+    } finally {
+      setLoadingRefine(false);
+    }
+  };
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -203,6 +226,10 @@ const AiFashionAssistant = () => {
               detected={detected}
               previewUrl={previewUrl!}
               products={products}
+            />
+            <AiRefinePanel
+              suggestions={refineSuggestions}
+              onRefine={handleRefine}
             />
           </div>
         ) : (
