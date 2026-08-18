@@ -174,7 +174,10 @@ export const getAllProducts = async (req: Request, res: Response) => {
     console.log(filter, "filter");
     console.log(category, "category");
 
-    const products = await productModel.find(filter);
+    const products = await productModel
+      .find(filter)
+      .select("_id title description price images")
+      .lean();
 
     return res.status(200).json({
       message: "Products fetched successfully",
