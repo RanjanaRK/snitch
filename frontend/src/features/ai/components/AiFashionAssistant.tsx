@@ -36,7 +36,7 @@ const AiFashionAssistant = () => {
 
   const [refineSuggestions, setRefineSuggestions] = useState<string[]>([]);
 
-  const [loadingRefine, setLoadingRefine] = useState(false);
+  const [, setLoadingRefine] = useState(false);
 
   const { createAiFashionRecommend, createRefineRecommendation } = useAi();
 
@@ -153,6 +153,7 @@ const AiFashionAssistant = () => {
       setDetected(res.detected);
       setRecommendations(res.recommendation);
       setProducts(res.products);
+      setRefineSuggestions(res.refineSuggestions);
 
       toast.success(res.message);
     } catch (error: any) {
@@ -194,18 +195,18 @@ const AiFashionAssistant = () => {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <button className="group fixed right-5 bottom-5 z-50 flex items-center gap-3 rounded-full border border-[#E8DFCF] bg-white/95 px-5 py-3 shadow-[0_10px_40px_rgba(201,169,110,0.25)] backdrop-blur-xl transition-all duration-500 hover:border-[#C9A96E] hover:shadow-[0_20px_60px_rgba(201,169,110,0.4)]">
+        <button className="group fixed right-5 bottom-5 z-50 flex items-center gap-3 rounded-full border border-[#E8DFCF] bg-white/95 px-5 py-3 shadow-[0_10px_40px_rgba(201,169,110,0.25)] backdrop-blur-xl transition-all duration-500 hover:border-[#A8874F] hover:shadow-[0_20px_60px_rgba(201,169,110,0.4)]">
           {/* Icon */}
           <Sparkles
             size={16}
-            className="text-[#C9A96E] transition-transform duration-500 group-hover:rotate-6"
+            className="text-[#A8874F] transition-transform duration-500 group-hover:rotate-6"
           />
 
           {/* Text */}
-          <span className="absolute -top-2 -right-2 rounded-full bg-[#C9A96E] px-2 py-0.5 text-[8px] text-white">
+          <span className="absolute -top-2 -right-2 rounded-full bg-[#A8874F] px-2 py-0.5 text-[8px] text-white">
             AI
           </span>
-          <span className="hidden text-[11px] font-medium tracking-[0.18em] text-[#7A6E63] uppercase transition-colors duration-500 group-hover:text-[#1b1c1a] sm:block">
+          <span className="hidden text-[11px] font-medium tracking-[0.18em] text-[#7A6E63] uppercase transition-colors duration-500 group-hover:text-[#2B2926] sm:block">
             Stylist
           </span>
         </button>
@@ -220,7 +221,7 @@ const AiFashionAssistant = () => {
         {isLaoding && <AiLoading />}
 
         {!isLaoding && recommendations && detected ? (
-          <div className="h-full overflow-y-auto p-6">
+          <div className="h-full overflow-y-auto p-5">
             <AiRecommendedCard
               recommendation={recommendations}
               detected={detected}
@@ -237,12 +238,12 @@ const AiFashionAssistant = () => {
             <div className="flex h-full flex-col">
               {/* HEADER */}
 
-              <SheetHeader className="border-b border-[#e4e2df] bg-white px-6 py-6 text-left">
+              <SheetHeader className="border-b border-[#e4e2df] bg-white px-5 py-6 text-left">
                 <div className="flex items-center gap-3">
                   <div
-                    className="relative flex h-10 w-10 items-center justify-center rounded-full shadow-lg before:absolute before:inset-0 before:animate-ping before:rounded-full before:bg-[#C9A96E]/30"
+                    className="relative flex h-10 w-10 items-center justify-center rounded-full shadow-lg before:absolute before:inset-0 before:animate-ping before:rounded-full before:bg-[#A8874F]/30"
                     style={{
-                      backgroundColor: "#C9A96E",
+                      backgroundColor: "#A8874F",
                     }}
                   >
                     <Sparkles size={18} color="white" strokeWidth={1.7} />
@@ -250,7 +251,7 @@ const AiFashionAssistant = () => {
 
                   <div>
                     <SheetTitle
-                      className="text-lg font-medium tracking-wide text-[#1b1c1a]"
+                      className="text-lg font-medium tracking-wide text-[#2B2926]"
                       style={{
                         fontFamily: "'Cormorant Garamond', serif",
                       }}
@@ -275,7 +276,7 @@ const AiFashionAssistant = () => {
 
                 <div className="mb-7">
                   <p
-                    className="mb-2 text-3xl leading-tight text-[#1b1c1a]"
+                    className="mb-2 text-3xl leading-tight text-[#2B2926]"
                     style={{
                       fontFamily: "'Cormorant Garamond', serif",
                     }}
@@ -287,7 +288,7 @@ const AiFashionAssistant = () => {
                     </div>
                   </p>
 
-                  <p className="max-w-95 text-sm leading-6 text-[#7a6e63]">
+                  <p className="max-w-95 text-sm leading-6 text-[#665E56]">
                     Tell me a little about what you're looking for and I'll
                     discover pieces that match your style, occasion, and budget.
                   </p>
@@ -296,7 +297,7 @@ const AiFashionAssistant = () => {
                 {/* IMAGE UPLOAD */}
 
                 <div className="mb-6">
-                  <label className="mb-2 block text-[10px] font-medium tracking-[0.18em] text-[#7a6e63] uppercase">
+                  <label className="mb-2 block text-[10px] font-medium tracking-[0.18em] text-[#665E56] uppercase">
                     Inspiration
                   </label>
 
@@ -314,12 +315,12 @@ const AiFashionAssistant = () => {
 
                   <div
                     onClick={handleCardClick}
-                    className="group cursor-pointer rounded-2xl border border-dashed border-[#d8d2cb] bg-white p-5 transition-all duration-300 hover:border-[#C9A96E] hover:shadow-xl"
+                    className="group cursor-pointer rounded-2xl border border-dashed border-[#d8d2cb] bg-white p-5 transition-all duration-300 hover:border-[#A8874F] hover:shadow-xl"
                   >
                     <div className="flex items-center gap-4">
                       {/* Image preview */}
 
-                      <div className="flex h-25 w-25 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#f5f0e8] ring-4 ring-[#C9A96E]/10 transition-all duration-300 group-hover:ring-[#C9A96E]/30">
+                      <div className="flex h-25 w-25 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#f5f0e8] ring-4 ring-[#B89455]/10 transition-all duration-300 group-hover:ring-[#B89455]/30">
                         {previewUrl ? (
                           <img
                             src={previewUrl}
@@ -329,7 +330,7 @@ const AiFashionAssistant = () => {
                         ) : (
                           <ImagePlus
                             size={20}
-                            className="text-[#C9A96E]"
+                            className="text-[#B89455]"
                             strokeWidth={1.6}
                           />
                         )}
@@ -338,11 +339,11 @@ const AiFashionAssistant = () => {
                       {/* File information */}
 
                       <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-medium text-[#3d3935]">
+                        <p className="truncate text-sm font-medium text-[#38342F]">
                           {selectedFile?.name || "Upload an image"}
                         </p>
 
-                        <p className="mt-1 text-xs text-[#9a9188]">
+                        <p className="mt-1 text-xs text-[#81776D]">
                           {selectedFile
                             ? `${(selectedFile.size / (1024 * 1024)).toFixed(2)} MB`
                             : "Upload an outfit or style inspiration"}
@@ -355,14 +356,14 @@ const AiFashionAssistant = () => {
                         <button
                           type="button"
                           onClick={handleRemoveImage}
-                          className="shrink-0 rounded-full p-1 text-[#9a9188] transition-colors hover:bg-[#f5f0e8] hover:text-[#3d3935]"
+                          className="shrink-0 rounded-full p-1 text-[#81776D] transition-colors hover:bg-[#f5f0e8] hover:text-[#38342F]"
                         >
                           <X size={17} />
                         </button>
                       ) : (
                         <Upload
                           size={17}
-                          className="shrink-0 text-[#9a9188] transition-all duration-300 group-hover:scale-110 group-hover:text-[#C9A96E]"
+                          className="shrink-0 text-[#81776D] transition-all duration-300 group-hover:scale-110 group-hover:text-[#B89455]"
                         />
                       )}
                     </div>
@@ -371,7 +372,7 @@ const AiFashionAssistant = () => {
                   {/* Image error */}
 
                   {!selectedFile && (
-                    <p className="mt-2 text-[11px] text-[#9a9188]">
+                    <p className="mt-2 text-[11px] text-[#81776D]">
                       Please upload an image to get recommendations.
                     </p>
                   )}
@@ -380,13 +381,13 @@ const AiFashionAssistant = () => {
                 {/* OCCASION */}
 
                 <div className="mb-6">
-                  <label className="mb-2 block text-[10px] font-medium tracking-[0.18em] text-[#7a6e63] uppercase">
+                  <label className="mb-2 block text-[10px] font-medium tracking-[0.18em] text-[#665E56] uppercase">
                     Occasion
                   </label>
 
                   <select
                     {...register("occasion")}
-                    className="h-12 w-full rounded-xl border border-[#e4e2df] bg-white px-4 text-sm text-[#3d3935] transition-all outline-none focus:border-[#C9A96E] focus:ring-4 focus:ring-[#C9A96E]/10"
+                    className="h-12 w-full rounded-xl border border-[#e4e2df] bg-white px-4 text-sm text-[#38342F] transition-all outline-none focus:border-[#B89455] focus:ring-4 focus:ring-[#B89455]/10"
                   >
                     <option value="">Select an occasion</option>
 
@@ -414,11 +415,11 @@ const AiFashionAssistant = () => {
 
                 <div className="mb-6">
                   <div className="mb-2 flex items-center justify-between">
-                    <label className="text-[10px] font-medium tracking-[0.18em] text-[#7a6e63] uppercase">
+                    <label className="text-[10px] font-medium tracking-[0.18em] text-[#665E56] uppercase">
                       Budget
                     </label>
 
-                    <span className="text-xs font-medium text-[#C9A96E]">
+                    <span className="text-xs font-medium text-[#B89455]">
                       ₹{Number(budget).toLocaleString("en-IN")}
                     </span>
                   </div>
@@ -431,10 +432,10 @@ const AiFashionAssistant = () => {
                     {...register("budget", {
                       valueAsNumber: true,
                     })}
-                    className="w-full accent-[#C9A96E]"
+                    className="w-full accent-[#B89455]"
                   />
 
-                  <div className="mt-2 flex justify-between text-[10px] text-[#aaa29a]">
+                  <div className="mt-2 flex justify-between text-[10px] text-[#91877D]">
                     <span>₹1,000</span>
                     <span>₹10,000+</span>
                   </div>
@@ -443,7 +444,7 @@ const AiFashionAssistant = () => {
                 {/* PROMPT */}
 
                 <div className="mb-8">
-                  <label className="mb-2 block text-[10px] font-medium tracking-[0.18em] text-[#7a6e63] uppercase">
+                  <label className="mb-2 block text-[10px] font-medium tracking-[0.18em] text-[#665E56] uppercase">
                     Tell me what you need
                     <span className="ml-1 text-[#aaa]">(optional)</span>
                   </label>
@@ -452,7 +453,7 @@ const AiFashionAssistant = () => {
                     rows={4}
                     placeholder="e.g. I need an elegant black outfit for a wedding..."
                     {...register("prompt")}
-                    className="h-12 w-full rounded-xl border border-[#e4e2df] bg-white px-4 text-sm text-[#3d3935] transition-all outline-none focus:border-[#C9A96E] focus:ring-4 focus:ring-[#C9A96E]/10"
+                    className="h-12 w-full rounded-xl border border-[#e4e2df] bg-white px-4 text-sm text-[#38342F] transition-all outline-none focus:border-[#C9A96E] focus:ring-4 focus:ring-[#C9A96E]/10"
                   />
                 </div>
 
@@ -463,7 +464,7 @@ const AiFashionAssistant = () => {
                   disabled={isSubmitting}
                   className="flex h-13 w-full items-center justify-center gap-2 rounded-xl text-sm font-medium tracking-wide text-white shadow-lg transition-all duration-300 hover:bg-[#C9A96E] hover:shadow-2xl active:scale-[0.98]"
                   style={{
-                    backgroundColor: "#1b1c1a",
+                    backgroundColor: "#2B2926",
                   }}
                 >
                   <Sparkles size={17} strokeWidth={1.7} className="" />
@@ -474,7 +475,7 @@ const AiFashionAssistant = () => {
                 FOOTER
             ========================= */}
 
-                <p className="mt-4 text-center text-[10px] tracking-wide text-[#aaa29a]">
+                <p className="mt-4 text-center text-[10px] tracking-wide text-[#91877D]">
                   Powered by Snitch
                 </p>
               </form>

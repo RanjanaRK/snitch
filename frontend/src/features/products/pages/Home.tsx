@@ -2,10 +2,13 @@ import { useSelector } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router";
 import type { RootState } from "../../../app/app.store";
 import { useProduct } from "../hooks/useProduct";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { Product } from "../utils/productTypes";
+import ProductCardSkeleton from "../components/ProductCardSkeleton";
 
 const Home = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
   const products = useSelector((state: RootState) => state.product.products);
 
   const navigate = useNavigate();
@@ -17,14 +20,31 @@ const Home = () => {
 
   const { handleGetProducts } = useProduct();
 
+  // useEffect(() => {
+  //   handleGetProducts(category || undefined, parentCategory || undefined);
+  // }, [category, parentCategory]);
+
   useEffect(() => {
-    handleGetProducts(category || undefined, parentCategory || undefined);
+    const fetchProducts = async () => {
+      try {
+        setIsLoading(true);
+
+        await handleGetProducts(
+          category || undefined,
+          parentCategory || undefined,
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProducts();
   }, [category, parentCategory]);
 
   return (
     <>
       <div
-        className="min-h-screen selection:bg-[#C9A96E]/30"
+        className="min-h-screen selection:bg-[#A8874F]/30"
         style={{
           backgroundColor: "#fbf9f6",
           fontFamily: "'Inter', sans-serif",
@@ -35,16 +55,16 @@ const Home = () => {
 
           <div className="flex flex-col items-center pt-24 pb-24 text-center">
             <div className="mb-8 flex items-center gap-4">
-              <div className="h-px w-12 bg-[#C9A96E]/50" />
+              <div className="h-px w-12 bg-[#A8874F]/50" />
 
               <span
                 className="text-[10px] font-medium tracking-[0.24em] uppercase"
-                style={{ color: "#C9A96E" }}
+                style={{ color: "#A8874F" }}
               >
                 The Collection
               </span>
 
-              <div className="h-px w-12 bg-[#C9A96E]/50" />
+              <div className="h-px w-12 bg-[#A8874F]/50" />
             </div>
 
             <h1
@@ -60,6 +80,7 @@ const Home = () => {
             <p
               className="mx-auto max-w-xl text-sm leading-relaxed"
               style={{ color: "#7A6E63" }}
+              // style={{ color: "#5f574d" }}
             >
               Discover our latest curation of premium minimalist pieces,
               meticulously designed for effortless elegance and enduring
@@ -68,7 +89,14 @@ const Home = () => {
           </div>
 
           {/* ── Product Grid ── */}
-          {products && products.length > 0 ? (
+
+          {isLoading ? (
+            <div className="grid grid-cols-1 gap-x-8 gap-y-16 pb-32 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {Array.from({ length: 8 }).map((_, index) => (
+                <ProductCardSkeleton key={index} />
+              ))}
+            </div>
+          ) : products && products.length > 0 ? (
             <div className="grid grid-cols-1 gap-x-8 gap-y-16 pb-32 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {products.map((product: Product) => {
                 const imageUrl =
@@ -109,13 +137,13 @@ const Home = () => {
                     <div className="flex flex-col gap-3">
                       <span
                         className="text-[10px] tracking-[0.22em] uppercase"
-                        style={{ color: "#C9A96E" }}
+                        style={{ color: "#A8874F" }}
                       >
                         Curated Piece
                       </span>
 
                       <h3
-                        className="text-xl leading-snug transition-colors duration-300 group-hover:text-[#C9A96E]"
+                        className="text-xl leading-snug transition-colors duration-300 group-hover:text-[#A8874F]"
                         style={{
                           fontFamily: "'Cormorant Garamond', serif",
                           color: "#1b1c1a",
@@ -144,7 +172,7 @@ const Home = () => {
 
                         <span
                           className="translate-x-2 text-[10px] tracking-[0.2em] uppercase opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100"
-                          style={{ color: "#C9A96E" }}
+                          style={{ color: "#A8874F" }}
                         >
                           View Piece →
                         </span>
@@ -185,10 +213,10 @@ const Home = () => {
             className="text-[10px] tracking-[0.35em] uppercase"
             style={{
               fontFamily: "'Cormorant Garamond', serif",
-              color: "#C9A96E",
+              color: "#A8874F",
             }}
           >
-            Snitch. © {new Date().getFullYear()}
+            Vestra. © {new Date().getFullYear()}
           </span>
         </footer>
       </div>

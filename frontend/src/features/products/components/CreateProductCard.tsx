@@ -172,7 +172,7 @@ const CreateProductCard = () => {
   return (
     <>
       <div
-        className="flex min-h-screen flex-col justify-center selection:bg-[#C9A96E]/30 lg:flex-row"
+        className="flex min-h-screen flex-col justify-center selection:bg-[#B89455]/30 lg:flex-row"
         style={{
           backgroundColor: "#fbf9f6",
           fontFamily: "'Inter', sans-serif",
@@ -183,7 +183,7 @@ const CreateProductCard = () => {
           <div className="w-full max-w-lg">
             {/* HEADER */}
             <div className="mb-14">
-              <p className="mb-4 text-[10px] tracking-[0.22em] text-[#C9A96E] uppercase">
+              <p className="mb-4 text-[10px] tracking-[0.22em] text-[#B89455] uppercase">
                 Seller Dashboard
               </p>
 
@@ -405,7 +405,7 @@ const CreateProductCard = () => {
                         type="checkbox"
                         value={occasion}
                         {...register("occasions")}
-                        className="h-4 w-4 accent-[#C9A96E]"
+                        className="h-4 w-4 accent-[#B89455]"
                       />
 
                       <span className="text-sm text-[#1b1c1a]">{occasion}</span>
@@ -471,7 +471,7 @@ const CreateProductCard = () => {
                   onDragLeave={handleDragLeave}
                   onClick={() => fileInputRef.current?.click()}
                   className="flex cursor-pointer flex-col items-center justify-center gap-3 border border-dashed border-[#d0c5b5] px-6 py-12 transition-all duration-300"
-                  // className="border border-dashed border-[#d0c5b5] py-16 transition-all duration-300 hover:border-[#C9A96E]"
+                  // className="border border-dashed border-[#d0c5b5] py-16 transition-all duration-300 hover:border-[#B89455]"
                   style={{
                     backgroundColor: isDragging
                       ? "rgba(201,169,110,0.06)"
@@ -485,7 +485,7 @@ const CreateProductCard = () => {
                   <div className="text-center">
                     <p className="text-sm text-[#7A6E63]">
                       Drag & drop images or{" "}
-                      <span className="text-[#C9A96E] underline">browse</span>
+                      <span className="text-[#B89455] underline">browse</span>
                     </p>
 
                     <p className="mt-2 text-[10px] tracking-[0.15em] text-[#B5ADA3] uppercase">
@@ -535,7 +535,7 @@ const CreateProductCard = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="sticky bottom-6 w-full bg-[#1b1c1a] py-4 text-[11px] tracking-[0.25em] text-white uppercase transition-all duration-300 hover:bg-[#C9A96E] hover:text-[#1b1c1a]"
+                className="sticky bottom-6 w-full bg-[#1b1c1a] py-4 text-[11px] tracking-[0.25em] text-white uppercase transition-all duration-300 hover:bg-[#B89455] hover:text-[#1b1c1a]"
               >
                 {isSubmitting ? "Publishing..." : "Publish Product"}
               </button>

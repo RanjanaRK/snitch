@@ -31,7 +31,7 @@ export interface AIRecommendResponse {
 
   recommendation: Recommendation;
   detected: Detected;
-  refineSuggestion: string[];
+  refineSuggestions: string[];
   products: ScoredProduct[];
 }
 

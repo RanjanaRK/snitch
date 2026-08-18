@@ -17,7 +17,7 @@ const WishList = () => {
   if (!wishlistItems.length) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#fbf9f6]">
-        <p className="text-xs tracking-[0.2em] text-[#B5ADA3] uppercase">
+        <p className="text-xs tracking-[0.2em] text-[#81776D] uppercase">
           Your wishlist is empty
         </p>
       </div>
@@ -33,12 +33,13 @@ const WishList = () => {
         {/* Header */}
         <div className="mb-10">
           <h1
-            className="text-3xl font-light tracking-wide"
+            className="text-3xl font-light tracking-wide text-[#2B2926]"
             style={{ fontFamily: "'Cormorant Garamond', serif" }}
           >
             Wishlist
           </h1>
-          <p className="mt-2 text-xs tracking-[0.2em] text-[#B5ADA3] uppercase">
+
+          <p className="mt-2 text-xs tracking-[0.2em] text-[#81776D] uppercase">
             Saved pieces you love
           </p>
         </div>

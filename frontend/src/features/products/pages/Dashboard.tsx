@@ -23,7 +23,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className="bg-[#fbf9f6]font-['Inter'] selection:bg-[#C9A96E]/30v min-h-screen">
+      <div className="bg-[#fbf9f6]font-['Inter'] min-h-screen selection:bg-[#B89455]/30">
         <div className="mx-auto max-w-7xl px-8 lg:px-16 xl:px-24">
           {/* ── Top Bar ── */}
 
@@ -31,11 +31,11 @@ const Dashboard = () => {
 
           <div className="flex flex-col justify-between gap-8 border-b border-[#e4e2df] pt-4 pb-10 md:flex-row md:items-end">
             <div>
-              <p className="mb-3 text-[10px] tracking-[0.35em] text-[#C9A96E] uppercase">
+              <p className="mb-3 text-[10px] tracking-[0.35em] text-[#B89455] uppercase">
                 Seller Dashboard
               </p>
 
-              <h1 className="font-['Cormorant_Garamond'] text-5xl font-light text-[#1b1c1a] lg:text-7xl">
+              <h1 className="font-['Cormorant_Garamond'] text-5xl font-light text-[#171815] lg:text-7xl">
                 Your Vault
               </h1>
 
@@ -44,16 +44,16 @@ const Dashboard = () => {
                 exceptional pieces to customers.
               </p>
 
-              <div className="mt-6 h-px w-20 bg-[#C9A96E]" />
+              <div className="mt-6 h-px w-20 bg-[#B89455]" />
             </div>
 
             <button
               onClick={() => navigate("/seller/create-product")}
-              className="group relative overflow-hidden border border-[#1b1c1a] px-8 py-4 text-[11px] tracking-[0.28em] uppercase transition-all duration-500 hover:border-[#C9A96E]"
+              className="group relative overflow-hidden border border-[#171815] px-8 py-4 text-[11px] tracking-[0.28em] uppercase transition-all duration-500 hover:border-[#B89455]"
             >
-              <span className="absolute inset-0 origin-left scale-x-0 bg-[#C9A96E] transition-transform duration-500 group-hover:scale-x-100" />
+              <span className="absolute inset-0 origin-left scale-x-0 bg-[#B89455] transition-transform duration-500 group-hover:scale-x-100" />
 
-              <span className="relative z-10 transition-colors duration-500 group-hover:text-[#1b1c1a]">
+              <span className="relative z-10 transition-colors duration-500 group-hover:text-[#171815]">
                 New Listing
               </span>
             </button>
@@ -67,7 +67,7 @@ const Dashboard = () => {
                 Total Listings
               </p>
 
-              <h3 className="mt-3 font-['Cormorant_Garamond'] text-4xl text-[#1b1c1a]">
+              <h3 className="mt-3 font-['Cormorant_Garamond'] text-4xl text-[#171815]">
                 {sellerProducts?.length || 0}
               </h3>
             </div>
@@ -77,7 +77,7 @@ const Dashboard = () => {
                 Collection
               </p>
 
-              <h3 className="mt-3 font-['Cormorant_Garamond'] text-4xl text-[#1b1c1a]">
+              <h3 className="mt-3 font-['Cormorant_Garamond'] text-4xl text-[#171815]">
                 Active
               </h3>
             </div>
@@ -93,11 +93,11 @@ const Dashboard = () => {
             </div>
           ) : (
             <div className="flex min-h-[50vh] flex-col items-center justify-center text-center">
-              <span className="mb-4 text-[10px] tracking-[0.35em] text-[#C9A96E] uppercase">
+              <span className="mb-4 text-[10px] tracking-[0.35em] text-[#B89455] uppercase">
                 Empty Vault
               </span>
 
-              <h2 className="font-['Cormorant_Garamond'] text-4xl font-light text-[#1b1c1a]">
+              <h2 className="font-['Cormorant_Garamond'] text-4xl font-light text-[#171815]">
                 Begin Your Collection
               </h2>
 
@@ -108,7 +108,7 @@ const Dashboard = () => {
 
               <button
                 onClick={() => navigate("/seller/create-product")}
-                className="mt-10 border border-[#1b1c1a] px-8 py-4 text-[11px] tracking-[0.25em] uppercase transition-all duration-300 hover:border-[#C9A96E] hover:bg-[#C9A96E]"
+                className="mt-10 border border-[#171815] px-8 py-4 text-[11px] tracking-[0.25em] uppercase transition-all duration-300 hover:border-[#B89455] hover:bg-[#B89455]"
               >
                 Create First Listing
               </button>

@@ -189,9 +189,9 @@ const ProductDetail = () => {
         ? product.images
         : [{ url: "/snitch_editorial_warm.png" }];
 
-  const displayPrice = activeVariant?.price?.amount
-    ? activeVariant.price
-    : product.price;
+  // const displayPrice = activeVariant?.price?.amount
+  //   ? activeVariant.price
+  //   : product.price;
 
   return (
     <>
@@ -236,7 +236,7 @@ const ProductDetail = () => {
 
               {/* Main Image */}
               <div
-                className="group relative aspect-4/5 overflow-hidden border"
+                className="group relative aspect-4/5 min-w-0 flex-1 overflow-hidden border"
                 style={{
                   backgroundColor: "#f5f3f0",
                   borderColor: "#e4e2df",

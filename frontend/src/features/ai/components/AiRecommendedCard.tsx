@@ -30,20 +30,20 @@ const AiRecommendedCard = ({
   // const sortedProducts = [...products].sort((a, b) => b.score - a.score);
 
   return (
-    <div className="animate-in fade-in space-y-6 p-4 duration-500">
+    <div className="animate-in fade-in space-y-6 p-6 duration-500">
       {/* TOP SECTION */}
-      <div className="gap-5 rounded-3xl shadow md:flex">
+      <div className="gap-5 shadow md:flex">
         {/* Uploaded Outfit */}
-        <div className="rounded-3xl border border-stone-200 bg-white p-4 shadow-sm transition-all duration-300 hover:shadow-xl">
+        <div className="border-stone-200 bg-white p-4 transition-all duration-300">
           <h3 className="mb-4 text-lg font-semibold">Your Uploaded Outfit</h3>
 
           <img
             src={previewUrl}
             alt="Uploaded Outfit"
-            className="aspect-4/5 w-full rounded-2xl object-cover md:aspect-3/4 md:h-40 md:w-40"
+            className="aspect-4/5 w-full object-cover md:aspect-3/4 md:h-40 md:w-40"
           />
 
-          <div className="mt-4 rounded-2xl bg-stone-50 p-4">
+          <div className="mt-4 bg-stone-50 p-4">
             <p className="text-xs text-stone-500">Looks Like</p>
 
             <p className="mt-1 font-medium text-[#C9A96E]">
@@ -57,7 +57,7 @@ const AiRecommendedCard = ({
         </div>
 
         {/* AI Recommendation */}
-        <div className="rounded-3xl border border-stone-200 bg-white p-5 shadow-sm md:border-0 md:shadow-none">
+        <div className="border border-stone-200 bg-white p-5 shadow-sm md:border-0 md:shadow-none">
           <div className="mb-4 flex items-center gap-2">
             <Sparkles size={18} className="animate-pulse text-[#C9A96E]" />
 
@@ -65,13 +65,13 @@ const AiRecommendedCard = ({
           </div>
 
           {/* AI Reason */}
-          <div className="rounded-2xl border border-[#eadfcf] bg-[#f7f2eb] p-4 shadow-sm">
+          <div className="border border-[#eadfcf] bg-[#f7f2eb] p-4 shadow-sm">
             <p className="leading-7 text-stone-700">{recommendation.reason}</p>
           </div>
 
           {/* Stats */}
           <div className="mt-5 grid grid-cols-3 gap-3">
-            <div className="rounded-2xl border p-3 transition-all duration-300 hover:border-[#C9A96E] hover:shadow-md">
+            <div className="border p-3 transition-all duration-300 hover:border-[#C9A96E] hover:shadow-md">
               <Shirt size={18} className="mb-2 text-[#C9A96E]" />
 
               <p className="text-xs text-stone-500">Style</p>
@@ -79,7 +79,7 @@ const AiRecommendedCard = ({
               <p className="font-medium">{recommendation.formality}</p>
             </div>
 
-            <div className="rounded-2xl border p-3 transition-all duration-300 hover:border-[#C9A96E] hover:shadow-md">
+            <div className="border p-3 transition-all duration-300 hover:border-[#C9A96E] hover:shadow-md">
               <CalendarDays size={18} className="mb-2 text-[#C9A96E]" />
 
               <p className="text-xs text-stone-500">Occasion</p>
@@ -87,7 +87,7 @@ const AiRecommendedCard = ({
               <p className="font-medium">{recommendation.occasion}</p>
             </div>
 
-            <div className="rounded-2xl border p-3 transition-all duration-300 hover:border-[#C9A96E] hover:shadow-md">
+            <div className="border p-3 transition-all duration-300 hover:border-[#C9A96E] hover:shadow-md">
               <Wallet size={18} className="mb-2 text-[#C9A96E]" />
 
               <p className="text-xs text-stone-500">Budget</p>
@@ -133,7 +133,7 @@ const AiRecommendedCard = ({
           </div>
 
           {/* Why */}
-          <div className="mt-6 rounded-2xl border border-[#eadfcf] bg-[#f7f2eb] p-4 text-[#7A6E63]">
+          <div className="mt-6 border border-[#eadfcf] bg-[#f7f2eb] p-4 text-[#7A6E63]">
             <h3 className="mb-3 font-semibold text-green-700">
               Why we recommend this
             </h3>
@@ -175,8 +175,34 @@ const AiRecommendedCard = ({
 
         <div className="grid grid-cols-2 gap-4">
           {products.length === 0 ? (
-            <div className="rounded-2xl border p-8 text-center">
-              No matching products found
+            <div className="col-span-full flex min-h-[420px] flex-col items-center justify-center border border-[#ece6dc] bg-[#fdfcf9] px-8 py-20 text-center">
+              <div className="mb-6 h-px w-16 bg-[#C9A96E]" />
+
+              <p className="mb-3 text-[10px] tracking-[0.3em] text-[#B5ADA3] uppercase">
+                Refined Search
+              </p>
+
+              <h2 className="mb-4 font-['Cormorant_Garamond'] text-4xl font-light text-[#1b1c1a] md:text-5xl">
+                No Pieces Found
+              </h2>
+
+              <p className="max-w-md text-sm leading-relaxed text-[#7A6E63]">
+                We couldn't find any pieces matching your current selection.
+                Adjust your filters or explore our complete collection.
+              </p>
+
+              <div className="mt-8 h-px w-24 bg-[#ece6dc]" />
+
+              <button
+                // onClick={() => {
+                //   setSearch("");
+                //   setSelectedCategory("");
+                //   setSelectedSubCategory("");
+                // }}
+                className="mt-8 border border-[#1b1c1a] px-8 py-4 text-[10px] tracking-[0.25em] uppercase transition-all duration-300 hover:bg-[#1b1c1a] hover:text-white"
+              >
+                Clear Filters
+              </button>
             </div>
           ) : (
             products?.map((item, index) => {
@@ -185,57 +211,86 @@ const AiRecommendedCard = ({
               return (
                 <div
                   key={product._id}
-                  className="group overflow-hidden rounded-3xl border border-stone-200 bg-white shadow-sm transition-all duration-300 hover:shadow-xl"
+                  className="group overflow-hidden border border-[#ece6dc] bg-[#fdfcf9] transition-all duration-500 hover:-translate-y-1 hover:border-[#d8c6a5] hover:shadow-[0_25px_80px_rgba(27,28,26,0.08)]"
                 >
-                  <div className="relative">
+                  {/* Image */}
+                  <div className="relative overflow-hidden">
                     <img
                       src={product.images?.[0]?.url}
                       alt={product.title}
-                      className="aspect-4/5 w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      className="aspect-[4/5] w-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                     />
 
-                    <div className="absolute top-3 left-3 rounded-full border border-[#eadfcf] bg-[#f7f2eb] px-3 py-1 text-xs font-semibold text-[#C9A96E]">
-                      {Math.round(item.score)}% Match
+                    {/* Match Badge */}
+                    <div className="absolute top-4 left-4 border border-[#d8c6a5] bg-[#fbf9f6]/95 px-4 py-2 backdrop-blur-sm">
+                      <p className="text-[9px] tracking-[0.22em] text-[#7A6E63] uppercase">
+                        AI Match
+                      </p>
+
+                      <p className="font-['Cormorant_Garamond'] text-xl text-[#745a27]">
+                        {Math.round(item.score)}%
+                      </p>
                     </div>
 
+                    {/* Best Match */}
                     {index === 0 && (
-                      <div className="absolute top-3 right-3 rounded-full bg-linear-to-r from-[#C9A96E] to-[#D8B77B] px-3 py-1 text-xs font-medium text-white shadow-lg">
-                        Best Match
+                      <div className="absolute top-4 right-4 bg-[#C9A96E] px-4 py-2">
+                        <span className="text-[9px] tracking-[0.22em] text-white uppercase">
+                          Best Match
+                        </span>
                       </div>
                     )}
                   </div>
 
-                  <div className="p-3">
-                    <h3 className="line-clamp-2 text-sm font-medium">
+                  {/* Content */}
+                  <div className="p-6">
+                    <div className="mb-4 h-px w-12 bg-[#C9A96E]" />
+
+                    <h3 className="font-['Cormorant_Garamond'] text-2xl leading-tight text-[#1b1c1a]">
                       {product.title}
                     </h3>
 
-                    <p className="mt-2 text-lg font-semibold">
-                      {product.price.currency === "INR" && "₹"}
-                      {product.price?.amount}
+                    <p className="mt-2 text-[10px] tracking-[0.2em] text-[#7A6E63] uppercase">
+                      Curated Recommendation
                     </p>
-                    {/* Progress */}
-                    <div className="mt-3">
-                      <div className="mb-1 flex justify-between text-xs">
-                        <span>AI Match</span>
 
-                        <span>{Math.round(item.score)}%</span>
+                    {/* Price */}
+                    <div className="mt-5">
+                      <p className="text-[10px] tracking-[0.2em] text-[#7A6E63] uppercase">
+                        Investment
+                      </p>
+
+                      <p className="font-['Cormorant_Garamond'] text-3xl text-[#1b1c1a]">
+                        ₹{product.price?.amount?.toLocaleString("en-IN")}
+                      </p>
+                    </div>
+
+                    {/* Match Bar */}
+                    <div className="mt-6">
+                      <div className="mb-2 flex items-center justify-between">
+                        <span className="text-[10px] tracking-[0.15em] text-[#7A6E63] uppercase">
+                          Compatibility
+                        </span>
+
+                        <span className="text-[10px] tracking-[0.15em] text-[#745a27] uppercase">
+                          {Math.round(item.score)}%
+                        </span>
                       </div>
 
-                      <div className="h-2 rounded-full bg-stone-200">
+                      <div className="h-[2px] bg-[#ece6dc]">
                         <div
-                          className="h-full rounded-full bg-[#C9A96E] transition-all duration-1000 ease-out"
-                          style={{
-                            width: `${item.score}%`,
-                          }}
+                          className="h-full bg-[#C9A96E] transition-all duration-1000"
+                          style={{ width: `${item.score}%` }}
                         />
                       </div>
                     </div>
+
+                    {/* CTA */}
                     <button
                       onClick={() => navigate(`/product/${product._id}`)}
-                      className="mt-4 w-full rounded-xl bg-[#1b1c1a] py-2 text-sm text-white transition-all duration-300 hover:bg-[#C9A96E] hover:shadow-lg"
+                      className="mt-8 w-full border border-[#1b1c1a] py-4 text-[10px] tracking-[0.25em] uppercase transition-all duration-300 hover:bg-[#1b1c1a] hover:text-white"
                     >
-                      View Details
+                      View Piece
                     </button>
                   </div>
                 </div>

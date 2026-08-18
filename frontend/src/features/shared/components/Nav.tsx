@@ -23,10 +23,10 @@ const Nav = () => {
             className="text-xl tracking-[0.3em] uppercase transition-all duration-500 hover:tracking-[0.4em] hover:text-[#D8B77B]"
             style={{
               fontFamily: "'Cormorant Garamond', serif",
-              color: "#C9A96E",
+              color: "#A8874F",
             }}
           >
-            Snitch.
+            VESTRA.
           </Link>
 
           {/* Desktop Categories */}
@@ -56,7 +56,7 @@ const Nav = () => {
                     <Link
                       to="/cart"
                       className="group relative flex items-center transition-all duration-300 hover:-translate-y-0.5"
-                      style={{ color: "#1b1c1a" }}
+                      // style={{ color: "#1b1c1a" }}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
