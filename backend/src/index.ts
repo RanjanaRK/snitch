@@ -19,6 +19,9 @@ connectDB();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+console.log("FRONTEND_URL:", env.FRONTEND_URL);
+console.log("BACKEND_URL:", env.BACKEND_URL);
 app.use(
   cors({
     origin: [env.FRONTEND_URL, "http://localhost:5173"],
