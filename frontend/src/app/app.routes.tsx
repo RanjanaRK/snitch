@@ -28,6 +28,8 @@ const SellerProductDetails = lazy(
   () => import("../features/products/pages/SellerProductDetails"),
 );
 
+const Orders = lazy(() => import("../features/order/pages/Orders"));
+
 const LoaderFallback = () => (
   <div className="flex min-h-screen items-center justify-center">
     <Loader className="animate-spin" />
@@ -75,6 +77,14 @@ export const routes = createBrowserRouter([
         element: withSuspense(
           <Protected>
             <OrderSuccess />
+          </Protected>,
+        ),
+      },
+      {
+        path: "/orders",
+        element: withSuspense(
+          <Protected>
+            <Orders />
           </Protected>,
         ),
       },

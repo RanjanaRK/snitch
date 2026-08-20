@@ -1,12 +1,12 @@
 import type { Request, Response } from "express";
-import cartModel from "../model/cart.model.js";
-import productModel from "../model/product.model.js";
-import type { JwtUser } from "../utils/types.js";
 import mongoose from "mongoose";
-import { createOrder } from "../service/payment.service.js";
-import paymentModel from "../model/payment.model.js";
 import { validatePaymentVerification } from "razorpay/dist/utils/razorpay-utils.js";
 import env from "../config/env.js";
+import cartModel from "../model/cart.model.js";
+import paymentModel from "../model/payment.model.js";
+import productModel from "../model/product.model.js";
+import { createOrder } from "../service/payment.service.js";
+import type { JwtUser } from "../utils/types.js";
 
 const getCartDetails = async (userId: string) => {
   let cart = await cartModel.aggregate([
@@ -568,31 +568,6 @@ export const verifyOrderController = async (req: Request, res: Response) => {
     }
 
     // deduct stock
-
-    // for (const item of payment.orderItems) {
-    //   const updatedProduct = await productModel.findOneAndUpdate(
-    //     {
-    //       _id: item.productId,
-    //       "variants._id": item.variantId,
-    //       "variants.stock": { $gte: item.quantity },
-    //     } as any,
-    //     {
-    //       $inc: {
-    //         "variants.$.stock": -(item.quantity ?? 1),
-    //       },
-    //     },
-    //     {
-    //       new: true,
-    //     },
-    //   );
-
-    //   if (!updatedProduct) {
-    //     return res.status(400).json({
-    //       message: `${item.title} is out of stock`,
-    //       success: false,
-    //     });
-    //   }
-    // }
 
     for (const item of payment.orderItems) {
       const updatedProduct = await productModel.findOneAndUpdate(

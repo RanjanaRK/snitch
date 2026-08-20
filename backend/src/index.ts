@@ -12,6 +12,7 @@ import cartRouter from "./routes/cart.routes.js";
 import likeRoute from "./routes/wishlist.routes.js";
 import categoryRouter from "./routes/category.routes.js";
 import aiRouter from "./routes/ai.routes.js";
+import orderRoute from "./routes/order.routes.js";
 
 connectDB();
 
@@ -44,6 +45,7 @@ passport.use(
 app.use("/api/auth", authRouter);
 app.use("/api/products", productRouter);
 app.use("/api/cart", cartRouter);
+app.use("/api/orders", orderRoute);
 app.use("/api/wishlist", likeRoute);
 app.use("/api/categories", categoryRouter);
 app.use("/api/ai", aiRouter);
