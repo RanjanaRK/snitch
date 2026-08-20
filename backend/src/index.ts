@@ -22,11 +22,20 @@ app.use(cookieParser());
 
 console.log("FRONTEND_URL:", env.FRONTEND_URL);
 console.log("BACKEND_URL:", env.BACKEND_URL);
+// app.use(
+//   cors({
+//     origin: [env.FRONTEND_URL, "http://localhost:5173"],
+//     methods: ["GET", "POST", "PATCH", "DELETE"],
+//     credentials: true,
+//   }),
+// );
+
 app.use(
   cors({
     origin: [env.FRONTEND_URL, "http://localhost:5173"],
-    methods: ["GET", "POST", "PATCH", "DELETE"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
 
