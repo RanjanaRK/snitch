@@ -13,6 +13,7 @@ import likeRoute from "./routes/wishlist.routes.js";
 import categoryRouter from "./routes/category.routes.js";
 import aiRouter from "./routes/ai.routes.js";
 import orderRoute from "./routes/order.routes.js";
+import reviewRouter from "./routes/review.routes.js";
 
 connectDB();
 
@@ -61,6 +62,7 @@ app.use("/api/orders", orderRoute);
 app.use("/api/wishlist", likeRoute);
 app.use("/api/categories", categoryRouter);
 app.use("/api/ai", aiRouter);
+app.use("/api/reviews", reviewRouter);
 
 const PORT = process.env.PORT || 3000;
 
