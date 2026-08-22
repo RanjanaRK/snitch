@@ -11,6 +11,8 @@ const Orders = () => {
 
   const orders = useSelector((state: RootState) => state.order.orders);
 
+  console.log({ orders });
+
   useEffect(() => {
     handleGetAllOrders();
   }, []);

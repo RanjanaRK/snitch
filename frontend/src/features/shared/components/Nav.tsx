@@ -1,4 +1,4 @@
-import { Heart } from "lucide-react";
+import { Heart, Package } from "lucide-react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
 import type { RootState } from "../../../app/app.store";
@@ -50,6 +50,16 @@ const Nav = () => {
                       <Heart
                         size={18}
                         className="transition-all duration-500 hover:-translate-y-0.5 hover:text-red-500"
+                      />
+                    </Link>
+
+                    <Link
+                      to="/orders"
+                      className="group flex items-center transition-all duration-500 hover:-translate-y-0.5"
+                    >
+                      <Package
+                        size={18}
+                        className="transition-colors duration-300 group-hover:text-[#C9A96E]"
                       />
                     </Link>
 
