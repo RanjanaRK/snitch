@@ -21,7 +21,6 @@ const reviewSchema = new mongoose.Schema(
     reviewComment: {
       type: String,
       trim: true,
-      required: true,
     },
   },
   {

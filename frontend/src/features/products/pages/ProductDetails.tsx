@@ -8,6 +8,7 @@ import WishlistButton from "../../like/components/WishlistButton";
 import { useWishlist } from "../../like/hooks/useWishlist";
 import { useProduct } from "../hooks/useProduct";
 import type { Product } from "../utils/productTypes";
+import CreateReview from "../../review/components/CreateReview";
 
 type VariantAttributes = Record<string, string>;
 
@@ -498,6 +499,7 @@ const ProductDetail = () => {
               </div>
             </div>
           </div>
+          <CreateReview />
         </div>
       </div>
     </>
