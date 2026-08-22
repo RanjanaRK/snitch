@@ -9,8 +9,10 @@ import {
   verifyCartOrder,
 } from "../service/cart.api";
 import {
+  clearCart,
   decreamentCartItem,
   increamentCartItem,
+  removeCartItem as removeCartItemFromState,
   setCart,
 } from "../state/cart.slice";
 
@@ -73,7 +75,12 @@ export const useCart = () => {
     variantId: string;
   }) => {
     const data = await removeCartItem({ productId, variantId });
-
+    dispatch(
+      removeCartItemFromState({
+        productId,
+        variantId,
+      }),
+    );
     return data;
   };
 
@@ -102,6 +109,7 @@ export const useCart = () => {
 
     console.log(data);
 
+    if (data.success) dispatch(clearCart());
     return data.success;
   };
 

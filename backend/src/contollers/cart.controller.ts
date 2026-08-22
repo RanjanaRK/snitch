@@ -506,7 +506,7 @@ export const createOrderController = async (req: Request, res: Response) => {
         productId: item.product._id,
         variantId: item.variant,
         quantity: item.quantity,
-        images: item.product.images,
+        images: item.product.images.url || item.product.variants.images.url,
         description: item.product.description,
         price: {
           amount:
