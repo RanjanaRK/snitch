@@ -484,6 +484,14 @@ export const createOrderController = async (req: Request, res: Response) => {
       currency: cart.currency,
     });
 
+    cart.items.forEach((item: any) => {
+      console.log({
+        title: item.product.title,
+        variantImages: item.product.variants.images,
+        productImages: item.product.images,
+      });
+    });
+
     const payment = await paymentModel.create({
       user: user.id,
       razorpay: {
@@ -498,7 +506,7 @@ export const createOrderController = async (req: Request, res: Response) => {
         productId: item.product._id,
         variantId: item.variant,
         quantity: item.quantity,
-        images: item.product.variants.images || item.product.images,
+        images: item.product.images,
         description: item.product.description,
         price: {
           amount:

@@ -40,24 +40,34 @@ const Orders = () => {
           {orders.map((order) => (
             <div
               key={order._id}
-              className="cursor-pointer border border-[#e4e2df] bg-white p-6 transition hover:shadow-md"
               onClick={() => navigate(`/orders/${order._id}`)}
+              className="cursor-pointer rounded-lg border bg-white p-5 hover:shadow-md"
             >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-[#7A6E63]">
+              <div className="flex gap-4">
+                <img
+                  src={order.orderItems[0]?.images?.[0]?.url}
+                  alt={order.orderItems[0]?.title}
+                  className="h-20 w-20 rounded object-cover"
+                />
+
+                <div className="flex-1">
+                  <h3 className="font-medium">
+                    {order.orderItems[0]?.title}
+                    {order.orderItems.length > 1 &&
+                      ` +${order.orderItems.length - 1} more`}
+                  </h3>
+
+                  <p className="mt-1 text-sm text-gray-500">
                     Order #{order._id.slice(-8)}
                   </p>
 
-                  <p className="mt-2 text-xs text-[#B5ADA3]">
-                    {new Date(order.createdAt).toLocaleDateString()}
+                  <p className="mt-1 text-sm text-gray-500">
+                    ₹{order.price.amount}
                   </p>
                 </div>
 
-                <div className="text-right">
-                  <p className="font-medium">₹{order.price.amount}</p>
-
-                  <span className="mt-2 inline-block rounded-full bg-[#f5f3f0] px-3 py-1 text-xs">
+                <div>
+                  <span className="rounded-full bg-gray-100 px-3 py-1 text-xs">
                     {order.orderStatus}
                   </span>
                 </div>
