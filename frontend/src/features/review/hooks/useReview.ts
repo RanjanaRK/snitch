@@ -1,6 +1,11 @@
 import { useDispatch } from "react-redux";
-import { createReview, getReviews } from "../service/review.api";
-import { addReview, setLoading, setReviews } from "../state/review.slice";
+import { createReview, getReviews, updateReview } from "../service/review.api";
+import {
+  addReview,
+  setLoading,
+  setReviews,
+  updateReviewState,
+} from "../state/review.slice";
 import type { ReviewSchemaType } from "../utils/zodSchema";
 
 const useReview = () => {
@@ -33,7 +38,27 @@ const useReview = () => {
     }
   };
 
-  return { handleCreateReview, handleGetReviews };
+  const handleDeleteReview = async (reviewId: string) => {};
+
+  const handleUpdateReview = async ({
+    reviewData,
+    reviewId,
+  }: {
+    reviewData: ReviewSchemaType;
+    reviewId: string;
+  }) => {
+    const response = await updateReview({ reviewData, reviewId });
+
+    dispatch(updateReviewState(response.review));
+    return response;
+  };
+
+  return {
+    handleCreateReview,
+    handleGetReviews,
+    handleDeleteReview,
+    handleUpdateReview,
+  };
 };
 
 export default useReview;

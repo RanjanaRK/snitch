@@ -1,15 +1,19 @@
 import { Pencil, Star, Trash2 } from "lucide-react";
+import { useState } from "react";
+import useReview from "../hooks/useReview";
 import type { Review } from "../utils/types";
+import EditReview from "./EditReview";
 
 type ReviewCardProps = {
   review: Review;
-
-  isOwner?: boolean;
-  onEdit?: () => void;
-  onDelete?: () => void;
+  isOwner: boolean;
 };
 
-const ReviewCard = ({ review, isOwner, onDelete, onEdit }: ReviewCardProps) => {
+const ReviewCard = ({ review, isOwner }: ReviewCardProps) => {
+  const [open, setOpen] = useState(false);
+
+  const { handleDeleteReview, handleUpdateReview } = useReview();
+
   return (
     <>
       <div className="border border-[#e4e2df] bg-white p-6 transition-all duration-300 hover:border-[#C9A96E]/40 hover:shadow-lg">
@@ -34,14 +38,14 @@ const ReviewCard = ({ review, isOwner, onDelete, onEdit }: ReviewCardProps) => {
           {isOwner && (
             <div className="flex items-center gap-3">
               <button
-                onClick={onEdit}
+                onClick={() => setOpen(true)}
                 className="text-[#7A6E63] transition-colors hover:text-[#C9A96E]"
               >
                 <Pencil size={16} />
               </button>
 
               <button
-                onClick={onDelete}
+                onClick={() => handleDeleteReview(review._id)}
                 className="text-[#7A6E63] transition-colors hover:text-red-500"
               >
                 <Trash2 size={16} />
@@ -71,6 +75,19 @@ const ReviewCard = ({ review, isOwner, onDelete, onEdit }: ReviewCardProps) => {
         <p className="text-sm leading-7 text-[#4e4741]">
           {review.reviewComment}
         </p>
+        {isOwner && (
+          <EditReview
+            open={open}
+            onOpenChange={setOpen}
+            review={review}
+            onSubmitReview={async (data) => {
+              await handleUpdateReview({
+                reviewData: data,
+                reviewId: review._id,
+              });
+            }}
+          />
+        )}
 
         {/* Footer */}
 

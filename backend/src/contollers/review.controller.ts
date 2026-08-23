@@ -19,7 +19,7 @@ export const createReviewController = async (req: Request, res: Response) => {
 
     const boughtProduct = await paymentModel.findOne({
       user: user.id,
-      "products.productId": productId,
+      "orderItems.productId": productId,
     });
 
     if (!boughtProduct) {

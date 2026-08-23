@@ -44,7 +44,7 @@ export const updateReview = async ({
   reviewData: ReviewSchemaType;
   reviewId: string;
 }) => {
-  const response = await reviewApiInstance.patch<ReviewResponse>(
+  const response = await reviewApiInstance.patch<ReviewCreateResponse>(
     `/update/${reviewId}`,
     reviewData,
   );

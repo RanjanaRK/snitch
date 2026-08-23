@@ -46,13 +46,17 @@ const ReviewsSection = ({ productId }: { productId: string }) => {
         </div>
 
         <div className="space-y-6">
-          {reviews.map((review: Review) => (
-            <ReviewCard
-              key={review._id}
-              review={review}
-              isOwner={review.user._id === user?._id}
-            />
-          ))}
+          {reviews.map((review: Review) => {
+            return (
+              <>
+                <ReviewCard
+                  key={review._id}
+                  review={review}
+                  isOwner={user?._id === review.user._id}
+                />
+              </>
+            );
+          })}
         </div>
       </div>
     </>
