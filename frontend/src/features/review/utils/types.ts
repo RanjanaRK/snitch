@@ -1,3 +1,5 @@
+import type { UserType } from "../../auth/utils/authTypes";
+
 export interface ReviewUser {
   _id: string;
   fullname?: string;
@@ -7,7 +9,7 @@ export interface ReviewUser {
 
 export interface Review {
   _id: string;
-  user: ReviewUser;
+  user: UserType;
   product: string;
 
   rating: number;
@@ -18,6 +20,11 @@ export interface Review {
 }
 
 export interface ReviewResponse {
+  success: boolean;
+  message: string;
+  reviews: Review[];
+}
+export interface ReviewCreateResponse {
   success: boolean;
   message: string;
   review: Review;

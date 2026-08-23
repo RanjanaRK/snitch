@@ -6,9 +6,11 @@ import type { RootState } from "../../../app/app.store";
 import { useCart } from "../../cart/hooks/useCart";
 import WishlistButton from "../../like/components/WishlistButton";
 import { useWishlist } from "../../like/hooks/useWishlist";
+import CreateReview from "../../review/components/CreateReview";
 import { useProduct } from "../hooks/useProduct";
 import type { Product } from "../utils/productTypes";
-import CreateReview from "../../review/components/CreateReview";
+import ReviewCard from "../../review/components/ReviewCard";
+import ReviewsSection from "../../review/components/ReviewsSection";
 
 type VariantAttributes = Record<string, string>;
 
@@ -26,8 +28,6 @@ const ProductDetail = () => {
   const { handleAddItem } = useCart();
   const { handleGetWishlist } = useWishlist();
   const wishlistItems = useSelector((state: RootState) => state.wishlist.items);
-
-  // console.log(wishlistItems);
 
   const handleAddToCart = async () => {
     try {
@@ -499,7 +499,10 @@ const ProductDetail = () => {
               </div>
             </div>
           </div>
-          <CreateReview />
+
+          <CreateReview productId={productId!} />
+
+          <ReviewsSection productId={productId!} />
         </div>
       </div>
     </>

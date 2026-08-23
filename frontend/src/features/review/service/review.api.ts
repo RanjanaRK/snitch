@@ -1,5 +1,9 @@
 import axios from "axios";
-import type { DeleteReviewResponse, ReviewResponse } from "../utils/types";
+import type {
+  DeleteReviewResponse,
+  ReviewCreateResponse,
+  ReviewResponse,
+} from "../utils/types";
 import type { ReviewSchemaType } from "../utils/zodSchema";
 
 const reviewApiInstance = axios.create({
@@ -14,14 +18,14 @@ export const createReview = async ({
   reviewData: ReviewSchemaType;
   productId: string;
 }) => {
-  const response = await reviewApiInstance.post<ReviewResponse>(
+  const response = await reviewApiInstance.post<ReviewCreateResponse>(
     `/create/${productId}`,
     reviewData,
   );
   return response.data;
 };
 
-export const getReview = async (productId: string) => {
+export const getReviews = async (productId: string) => {
   const response = await reviewApiInstance.get<ReviewResponse>(`/${productId}`);
   return response.data;
 };

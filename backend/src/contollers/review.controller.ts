@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import productModel from "../model/product.model.js";
 import { reviewModel } from "../model/review.model.js";
 import type { JwtUser } from "../utils/types.js";
+import paymentModel from "../model/payment.model.js";
 
 export const createReviewController = async (req: Request, res: Response) => {
   try {
@@ -13,6 +14,17 @@ export const createReviewController = async (req: Request, res: Response) => {
     if (!product) {
       return res.status(404).json({
         message: "Product not found",
+      });
+    }
+
+    const boughtProduct = await paymentModel.findOne({
+      user: user.id,
+      "products.productId": productId,
+    });
+
+    if (!boughtProduct) {
+      return res.status(403).json({
+        message: "You haven't bought this product",
       });
     }
 
@@ -55,7 +67,7 @@ export const getProductReviewsController = async (
 
     const reviews = await reviewModel
       .find({ product: productId })
-      .populate("user", "name email avatar")
+      .populate("user", "fullName email")
       .sort({ createdAt: -1 });
 
     return res.status(200).json({

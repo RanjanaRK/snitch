@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
-import { createReview, getReview } from "../service/review.api";
+import { createReview, getReviews } from "../service/review.api";
+import { addReview, setLoading, setReviews } from "../state/review.slice";
 import type { ReviewSchemaType } from "../utils/zodSchema";
-import { setReview } from "../state/review.slice";
 
 const useReview = () => {
   const dispatch = useDispatch();
@@ -15,17 +15,25 @@ const useReview = () => {
   }) => {
     const response = await createReview({ reviewData, productId });
 
-    dispatch(setReview(response.review));
+    dispatch(addReview(response.review));
     return response;
   };
 
-  const handleGetReview = async (productId: string) => {
-    const response = await getReview(productId);
-    dispatch(setReview(response.review));
-    return response;
+  const handleGetReviews = async (productId: string) => {
+    try {
+      dispatch(setLoading(true));
+
+      const response = await getReviews(productId);
+
+      dispatch(setReviews(response.reviews));
+
+      return response;
+    } finally {
+      dispatch(setLoading(false));
+    }
   };
 
-  return { handleCreateReview, handleGetReview };
+  return { handleCreateReview, handleGetReviews };
 };
 
 export default useReview;

@@ -5,14 +5,17 @@ import type { ReviewSchemaType } from "../utils/zodSchema";
 import reviewSchema from "../utils/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import useReview from "../hooks/useReview";
 
-const CreateReview = () => {
+const CreateReview = ({ productId }: { productId: string }) => {
+  const { handleCreateReview } = useReview();
+
   const {
     register,
     handleSubmit,
     setValue,
     watch,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<ReviewSchemaType>({
     resolver: zodResolver(reviewSchema),
     defaultValues: {
@@ -23,13 +26,17 @@ const CreateReview = () => {
 
   const rating = watch("rating");
 
-  const onSubmit = (data: ReviewSchemaType) => {
+  const onSubmit = async (data: ReviewSchemaType) => {
     try {
       console.log(data);
 
-      //   toast.success("Review published successfully");
+      const res = await handleCreateReview({ reviewData: data, productId });
+
+      if (res.success) {
+        toast.success(res.message);
+      }
     } catch (error: any) {
-      toast.error(error.message);
+      toast.error(error.response.data.message);
     }
   };
 
@@ -125,9 +132,10 @@ const CreateReview = () => {
 
           <button
             type="submit"
+            disabled={isSubmitting}
             className="flex h-13 w-full items-center justify-center bg-[#1b1c1a] text-sm font-medium tracking-[0.15em] text-white uppercase transition-all duration-300 hover:bg-[#C9A96E] hover:text-[#1b1c1a]"
           >
-            Publish Review
+            {isSubmitting ? "Publishing..." : "Publish Review"}
           </button>
         </form>
       </div>
