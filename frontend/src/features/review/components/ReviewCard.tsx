@@ -1,5 +1,6 @@
-import { Pencil, Star, Trash2 } from "lucide-react";
+import { Loader, Pencil, Star, Trash2 } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 import useReview from "../hooks/useReview";
 import type { Review } from "../utils/types";
 import EditReview from "./EditReview";
@@ -12,7 +13,23 @@ type ReviewCardProps = {
 const ReviewCard = ({ review, isOwner }: ReviewCardProps) => {
   const [open, setOpen] = useState(false);
 
-  const { handleDeleteReview, handleUpdateReview } = useReview();
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const { handleDeleteReview } = useReview();
+
+  const handleDeleteSubmit = async () => {
+    try {
+      setDeleteLoading(true);
+      const res = await handleDeleteReview(review._id);
+
+      if (res.success) {
+        toast.success;
+      }
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Failed to delete review");
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
 
   return (
     <>
@@ -38,14 +55,19 @@ const ReviewCard = ({ review, isOwner }: ReviewCardProps) => {
           {isOwner && (
             <div className="flex items-center gap-3">
               <button
+                disabled={deleteLoading}
                 onClick={() => setOpen(true)}
                 className="text-[#7A6E63] transition-colors hover:text-[#C9A96E]"
               >
-                <Pencil size={16} />
+                {deleteLoading ? (
+                  <Loader className="animate-spin" />
+                ) : (
+                  <Pencil size={16} />
+                )}
               </button>
 
               <button
-                onClick={() => handleDeleteReview(review._id)}
+                onClick={() => handleDeleteSubmit()}
                 className="text-[#7A6E63] transition-colors hover:text-red-500"
               >
                 <Trash2 size={16} />

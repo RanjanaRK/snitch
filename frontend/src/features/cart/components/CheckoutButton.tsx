@@ -53,7 +53,6 @@ const CheckoutButton = () => {
       <button
         id="proceed-checkout"
         className="my-4 w-full bg-[#1b1c1a] py-4 text-[11px] font-medium tracking-[0.3em] text-white uppercase transition-all duration-500 hover:bg-[#C9A96E] hover:text-[#1b1c1a] hover:shadow-[0_15px_40px_rgba(201,169,110,0.25)]"
-        // className="mb-3 w-full bg-[#1b1c1a] py-4 text-[11px] font-medium tracking-[0.25em] text-[#fbf9f6] uppercase transition-all duration-300 hover:bg-[#C9A96E] hover:text-[#1b1c1a]"
         onClick={handleCheckout}
       >
         Proceed to Checkout

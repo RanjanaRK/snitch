@@ -429,7 +429,7 @@ const ProductDetail = () => {
               )}
 
               {/* Actions */}
-              <div className="mt-auto flex flex-col gap-4">
+              <div className="mt-auto flex flex-col gap-4 pt-3">
                 <button
                   className="hover:border-[#C9A96E]duration-300 w-full py-4 text-[11px] font-medium tracking-[0.25em] uppercase transition-all hover:bg-[#C9A96E]"
                   style={{

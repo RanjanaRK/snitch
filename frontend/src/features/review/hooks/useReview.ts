@@ -1,7 +1,13 @@
 import { useDispatch } from "react-redux";
-import { createReview, getReviews, updateReview } from "../service/review.api";
+import {
+  createReview,
+  deleteReview,
+  getReviews,
+  updateReview,
+} from "../service/review.api";
 import {
   addReview,
+  removeReview,
   setLoading,
   setReviews,
   updateReviewState,
@@ -38,7 +44,11 @@ const useReview = () => {
     }
   };
 
-  const handleDeleteReview = async (reviewId: string) => {};
+  const handleDeleteReview = async (reviewId: string) => {
+    const response = await deleteReview(reviewId);
+    dispatch(removeReview(reviewId));
+    return response;
+  };
 
   const handleUpdateReview = async ({
     reviewData,

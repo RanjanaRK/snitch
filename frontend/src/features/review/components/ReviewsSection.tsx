@@ -5,11 +5,14 @@ import useReview from "../hooks/useReview";
 import type { Review } from "../utils/types";
 import ReviewCard from "./ReviewCard";
 import ReviewSkeleton from "./ReviewSkeloton";
+import { Link } from "react-router";
 
 const ReviewsSection = ({ productId }: { productId: string }) => {
   const reviews = useSelector((state: RootState) => state.review.reviews);
   const user = useSelector((state: RootState) => state.auth.user);
   const loading = useSelector((state: RootState) => state.review.loading);
+
+  console.log({ reviews, user });
 
   const { handleGetReviews } = useReview();
 
@@ -46,17 +49,22 @@ const ReviewsSection = ({ productId }: { productId: string }) => {
         </div>
 
         <div className="space-y-6">
-          {reviews.map((review: Review) => {
-            return (
-              <>
-                <ReviewCard
-                  key={review._id}
-                  review={review}
-                  isOwner={user?._id === review.user._id}
-                />
-              </>
-            );
-          })}
+          {reviews.slice(0, 3).map((review: Review) => (
+            <ReviewCard
+              key={review._id}
+              review={review}
+              isOwner={user?._id === review.user._id}
+            />
+          ))}
+
+          {reviews.length > 3 && (
+            <Link
+              to={`/product/${productId}/reviews`}
+              className="mt-5 inline-block text-sm font-semibold underline"
+            >
+              Read more reviews
+            </Link>
+          )}
         </div>
       </div>
     </>
