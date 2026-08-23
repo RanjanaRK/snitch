@@ -9,6 +9,9 @@ import {
   DialogTitle,
 } from "../../../components/ui/dialog";
 import { Star } from "lucide-react";
+import useReview from "../hooks/useReview";
+import { toast } from "sonner";
+import { useEffect } from "react";
 
 type EditReviewProps = {
   open: boolean;
@@ -18,15 +21,11 @@ type EditReviewProps = {
     rating: number;
     reviewComment: string;
   };
-  onSubmitReview: (data: ReviewSchemaType) => Promise<void>;
 };
 
-const EditReview = ({
-  open,
-  onOpenChange,
-  review,
-  onSubmitReview,
-}: EditReviewProps) => {
+const EditReview = ({ open, onOpenChange, review }: EditReviewProps) => {
+  const { handleUpdateReview } = useReview();
+
   const {
     register,
     handleSubmit,
@@ -44,6 +43,29 @@ const EditReview = ({
 
   const rating = watch("rating");
 
+  useEffect(() => {
+    reset({
+      rating: review.rating,
+      reviewComment: review.reviewComment,
+    });
+  }, [review, reset]);
+
+  const handleSubmitReview = async (data: ReviewSchemaType) => {
+    try {
+      const res = await handleUpdateReview({
+        reviewId: review._id,
+        reviewData: data,
+      });
+
+      if (res.success) {
+        toast.success(res.message);
+        onOpenChange(false);
+      }
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message || "Failed to update review");
+    }
+  };
+
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
@@ -60,10 +82,7 @@ const EditReview = ({
           </DialogHeader>
 
           <form
-            onSubmit={handleSubmit(async (data) => {
-              await onSubmitReview(data);
-              onOpenChange(false);
-            })}
+            onSubmit={handleSubmit(handleSubmitReview)}
             className="space-y-6"
           >
             {/* Rating */}

@@ -29,7 +29,7 @@ reviewRouter.delete(
 reviewRouter.patch(
   "/update/:reviewId",
   authenticateRole(["buyer"]),
-  createReviewController,
+  updateReviewController,
 );
 
 export default reviewRouter;

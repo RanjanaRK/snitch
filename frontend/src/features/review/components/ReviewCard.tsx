@@ -76,17 +76,7 @@ const ReviewCard = ({ review, isOwner }: ReviewCardProps) => {
           {review.reviewComment}
         </p>
         {isOwner && (
-          <EditReview
-            open={open}
-            onOpenChange={setOpen}
-            review={review}
-            onSubmitReview={async (data) => {
-              await handleUpdateReview({
-                reviewData: data,
-                reviewId: review._id,
-              });
-            }}
-          />
+          <EditReview open={open} onOpenChange={setOpen} review={review} />
         )}
 
         {/* Footer */}
