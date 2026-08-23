@@ -67,7 +67,7 @@ export const getProductReviewsController = async (
 
     const reviews = await reviewModel
       .find({ product: productId })
-      .populate("user")
+      .populate("user", "email fullname role")
       .sort({ createdAt: -1 });
 
     return res.status(200).json({
