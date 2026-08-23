@@ -4,6 +4,7 @@ import {
   createReviewController,
   deleteReviewController,
   getProductReviewsController,
+  updateReviewController,
 } from "../contollers/review.controller.js";
 
 const reviewRouter = express.Router();
