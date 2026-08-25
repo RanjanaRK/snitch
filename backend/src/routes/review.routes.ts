@@ -37,13 +37,13 @@ reviewRouter.patch(
 
 reviewRouter.post(
   "/:productId/ai-review-summary",
-  authenticateRole(["buyer"]),
+  authenticateRole(["seller"]),
   regenerateReviewSummaryController,
 );
 
 reviewRouter.get(
   "/ai-review-summary/:productId",
-  authenticateRole(["seller"]),
+  authenticateRole(["buyer"]),
   getReviewSummaryController,
 );
 

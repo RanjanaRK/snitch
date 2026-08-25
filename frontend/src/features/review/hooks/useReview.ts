@@ -3,6 +3,8 @@ import {
   createReview,
   deleteReview,
   getReviews,
+  getReviewSummary,
+  regenerateReviewSummary,
   updateReview,
 } from "../service/review.api";
 import {
@@ -63,11 +65,25 @@ const useReview = () => {
     return response;
   };
 
+  const handleGetReviewSummary = async (productId: string) => {
+    const response = await getReviewSummary(productId);
+
+    return response;
+  };
+
+  const handleRegenerateReviewSummary = async (productId: string) => {
+    const response = await regenerateReviewSummary(productId);
+
+    return response;
+  };
+
   return {
     handleCreateReview,
     handleGetReviews,
     handleDeleteReview,
     handleUpdateReview,
+    handleGetReviewSummary,
+    handleRegenerateReviewSummary,
   };
 };
 

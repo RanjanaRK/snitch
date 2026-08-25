@@ -1,8 +1,10 @@
 import axios from "axios";
 import type {
   DeleteReviewResponse,
+  RegenerateReviewSummaryResponse,
   ReviewCreateResponse,
   ReviewResponse,
+  ReviewSummaryResponse,
 } from "../utils/types";
 import type { ReviewSchemaType } from "../utils/zodSchema";
 
@@ -48,5 +50,22 @@ export const updateReview = async ({
     `/update/${reviewId}`,
     reviewData,
   );
+  return response.data;
+};
+
+export const getReviewSummary = async (productId: string) => {
+  const response = await reviewApiInstance.get<ReviewSummaryResponse>(
+    `/ai-review-summary/${productId}`,
+  );
+
+  return response.data;
+};
+
+export const regenerateReviewSummary = async (productId: string) => {
+  const response =
+    await reviewApiInstance.post<RegenerateReviewSummaryResponse>(
+      `/summary/${productId}`,
+    );
+
   return response.data;
 };

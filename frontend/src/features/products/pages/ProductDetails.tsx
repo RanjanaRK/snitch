@@ -8,6 +8,7 @@ import WishlistButton from "../../like/components/WishlistButton";
 import { useWishlist } from "../../like/hooks/useWishlist";
 import CreateReview from "../../review/components/CreateReview";
 import ReviewsSection from "../../review/components/ReviewsSection";
+import ReviewSummary from "../../review/components/ReviewSummary";
 import { useProduct } from "../hooks/useProduct";
 import type { Product } from "../utils/productTypes";
 
@@ -499,6 +500,7 @@ const ProductDetail = () => {
             </div>
           </div>
 
+          <ReviewSummary productId={productId!} />
           <CreateReview productId={productId!} />
 
           <ReviewsSection productId={productId!} />
