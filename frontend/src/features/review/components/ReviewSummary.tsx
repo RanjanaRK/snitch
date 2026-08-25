@@ -39,23 +39,23 @@ const ReviewSummary = ({ productId }: Props) => {
     return null;
   }
 
-  const { handleRegenerateReviewSummary } = useReview();
+  //   const { handleRegenerateReviewSummary } = useReview();
 
-  const [regenerating, setRegenerating] = useState(false);
+  //   const [, setRegenerating] = useState(false);
 
-  const handleRegenerate = async () => {
-    try {
-      setRegenerating(true);
+  //   const handleRegenerate = async () => {
+  //     try {
+  //       setRegenerating(true);
 
-      const response = await handleRegenerateReviewSummary(productId);
+  //       const response = await handleRegenerateReviewSummary(productId);
 
-      setSummary(response.savedSummary);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setRegenerating(false);
-    }
-  };
+  //       setSummary(response.savedSummary);
+  //     } catch (error) {
+  //       console.error(error);
+  //     } finally {
+  //       setRegenerating(false);
+  //     }
+  //   };
 
   return (
     <section className="space-y-6">
