@@ -33,4 +33,9 @@ reviewRouter.patch(
   updateReviewController,
 );
 
+reviewRouter.post(
+  "/products/:productId/ai-review-summary",
+  authenticateRole(["buyer"]),
+  getProductReviewsController,
+);
 export default reviewRouter;
