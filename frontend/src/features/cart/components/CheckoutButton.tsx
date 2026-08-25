@@ -22,7 +22,7 @@ const CheckoutButton = () => {
       key: import.meta.env.VITE_RAZORPAY_KEY_ID,
       amount: order.amount, // Amount in paise
       currency: order.currency,
-      name: "Snitch",
+      name: "Vestra",
       description: "Test Transaction",
       order_id: order.id, // Generate order_id on server
       handler: async (response: any) => {

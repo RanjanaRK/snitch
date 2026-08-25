@@ -370,7 +370,25 @@ const CreateProductCard = () => {
                   Style
                 </label>
 
-                <Select>
+                {/* <Select>
+                  <SelectTrigger className="w-full rounded-none border-b border-[#d0c5b5] bg-transparent">
+                    <SelectValue placeholder="Select Style" />
+                  </SelectTrigger>
+
+                  <SelectContent className="border-[#e4e2df] bg-[#fbf9f6]">
+                    {STYLES.map((style) => (
+                      <SelectItem
+                        key={style}
+                        value={style}
+                        className="cursor-pointer tracking-wide hover:bg-[#f3ede4] focus:bg-[#f3ede4]"
+                      >
+                        {style}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select> */}
+
+                <Select onValueChange={(value) => setValue("style", value)}>
                   <SelectTrigger className="w-full rounded-none border-b border-[#d0c5b5] bg-transparent">
                     <SelectValue placeholder="Select Style" />
                   </SelectTrigger>
