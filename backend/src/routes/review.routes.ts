@@ -1,12 +1,13 @@
 import express from "express";
-import { authenticateRole } from "../middlewares/auth.middleware.js";
 import {
   createReviewController,
   deleteReviewController,
-  generateReviewSummaryController,
   getProductReviewsController,
+  getReviewSummaryController,
+  regenerateReviewSummaryController,
   updateReviewController,
 } from "../contollers/review.controller.js";
+import { authenticateRole } from "../middlewares/auth.middleware.js";
 
 const reviewRouter = express.Router();
 
@@ -35,8 +36,15 @@ reviewRouter.patch(
 );
 
 reviewRouter.post(
-  "/products/:productId/ai-review-summary",
+  "/:productId/ai-review-summary",
   authenticateRole(["buyer"]),
-  generateReviewSummaryController,
+  regenerateReviewSummaryController,
 );
+
+reviewRouter.get(
+  "/ai-review-summary/:productId",
+  authenticateRole(["seller"]),
+  getReviewSummaryController,
+);
+
 export default reviewRouter;

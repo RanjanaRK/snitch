@@ -27,7 +27,7 @@ const LoginForm = () => {
         navigate("/seller/dashboard");
       }
     } catch (error: any) {
-      toast.error(error.message);
+      toast.error(error.response?.data?.message);
     }
   };
 

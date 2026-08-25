@@ -4,6 +4,7 @@ import { reviewModel } from "../model/review.model.js";
 import type { JwtUser } from "../utils/types.js";
 import paymentModel from "../model/payment.model.js";
 import { generateReviewSummary } from "../service/ai.service.js";
+import { reviewSummaryModel } from "../model/reviewSummary.model.js";
 
 export const createReviewController = async (req: Request, res: Response) => {
   try {
@@ -48,10 +49,63 @@ export const createReviewController = async (req: Request, res: Response) => {
       reviewComment,
     });
 
+    const reviewCount = await reviewModel.countDocuments({
+      product: productId,
+    });
+
+    let summary = null;
+
+    const reviewReminder = reviewCount % 10 === 0;
+
+    if (reviewCount >= 10 && reviewReminder) {
+      const reviews = await reviewModel
+        .find({ product: productId })
+        .select("rating reviewComment");
+
+      // if (reviews.length === 0) {
+      //   return res.status(400).json({
+      //     success: false,
+      //     message: "No reviews available for this product",
+      //   });
+      // }
+
+      const result = await generateReviewSummary({
+        product,
+        reviews,
+      });
+
+      const cleanJson = result
+        ?.replace(/```json/g, "")
+        .replace(/```/g, "")
+        .trim();
+
+      summary = JSON.parse(cleanJson || "{}");
+
+      const updateReviewSummary = await reviewSummaryModel.findOneAndUpdate(
+        { product: productId },
+        {
+          $set: {
+            product: productId,
+            summary: summary.summary,
+            pros: summary.pros,
+            cons: summary.cons,
+            generatedFromReviewCount: reviewCount,
+            generatedAt: new Date(),
+          },
+        },
+        {
+          upsert: true,
+          new: true,
+        },
+      );
+    }
+
     return res.status(201).json({
       success: true,
       message: "Review posted successfully",
       review,
+      reviewCount,
+      summary,
     });
   } catch (error) {
     console.log(error);
@@ -155,7 +209,7 @@ export const updateReviewController = async (req: Request, res: Response) => {
   }
 };
 
-export const generateReviewSummaryController = async (
+export const regenerateReviewSummaryController = async (
   req: Request,
   res: Response,
 ) => {
@@ -175,10 +229,10 @@ export const generateReviewSummaryController = async (
       .find({ product: productId })
       .select("rating reviewComment");
 
-    if (reviews.length === 0) {
+    if (reviews.length < 10) {
       return res.status(400).json({
         success: false,
-        message: "No reviews available for this product",
+        message: "At least 10 reviews are required",
       });
     }
 
@@ -193,6 +247,53 @@ export const generateReviewSummaryController = async (
       .trim();
 
     const summary = JSON.parse(cleanJson || "{}");
+
+    const savedSummary = await reviewSummaryModel.findOneAndUpdate(
+      { product: productId },
+      {
+        $set: {
+          product: productId,
+          summary: summary.summary,
+          pros: summary.pros,
+          cons: summary.cons,
+          generatedFromReviewCount: reviews.length,
+          generatedAt: new Date(),
+        },
+      },
+      {
+        upsert: true,
+        new: true,
+      },
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "AI review summary regenerated successfully",
+      savedSummary,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const getReviewSummaryController = async (
+  req: Request,
+  res: Response,
+) => {
+  try {
+    const { productId } = req.params as { productId: string };
+
+    const summary = await reviewSummaryModel.findOne({
+      product: productId,
+    });
+
+    if (!summary) {
+      return res.status(404).json({
+        success: false,
+        message: "Review summary not available",
+      });
+    }
 
     return res.status(200).json({
       success: true,
