@@ -7,10 +7,9 @@ import { useCart } from "../../cart/hooks/useCart";
 import WishlistButton from "../../like/components/WishlistButton";
 import { useWishlist } from "../../like/hooks/useWishlist";
 import CreateReview from "../../review/components/CreateReview";
+import ReviewsSection from "../../review/components/ReviewsSection";
 import { useProduct } from "../hooks/useProduct";
 import type { Product } from "../utils/productTypes";
-import ReviewCard from "../../review/components/ReviewCard";
-import ReviewsSection from "../../review/components/ReviewsSection";
 
 type VariantAttributes = Record<string, string>;
 

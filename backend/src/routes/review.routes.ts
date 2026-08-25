@@ -3,6 +3,7 @@ import { authenticateRole } from "../middlewares/auth.middleware.js";
 import {
   createReviewController,
   deleteReviewController,
+  generateReviewSummaryController,
   getProductReviewsController,
   updateReviewController,
 } from "../contollers/review.controller.js";
@@ -36,6 +37,6 @@ reviewRouter.patch(
 reviewRouter.post(
   "/products/:productId/ai-review-summary",
   authenticateRole(["buyer"]),
-  getProductReviewsController,
+  generateReviewSummaryController,
 );
 export default reviewRouter;

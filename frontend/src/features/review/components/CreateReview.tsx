@@ -1,11 +1,10 @@
-import { Star } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import type { ReviewSchemaType } from "../utils/zodSchema";
-import reviewSchema from "../utils/zodSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Star } from "lucide-react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import useReview from "../hooks/useReview";
+import type { ReviewSchemaType } from "../utils/zodSchema";
+import reviewSchema from "../utils/zodSchema";
 
 const CreateReview = ({ productId }: { productId: string }) => {
   const { handleCreateReview } = useReview();

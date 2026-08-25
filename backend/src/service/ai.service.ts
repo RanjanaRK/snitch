@@ -596,3 +596,49 @@ export const rankProducts = (products: any[], recommendation: any) => {
     .sort((a, b) => b.score - a.score)
     .slice(0, 10);
 };
+
+// AI REVIEW SUMMARIZATION
+export const generateReviewSummary = async ({
+  product,
+  reviews,
+}: {
+  product: any;
+  reviews: any[];
+}) => {
+  const reviewText = reviews
+    .map(
+      (review) => `Rating: ${review.rating}/5\nReview: ${review.reviewComment}`,
+    )
+    .join("\n\n");
+
+  const prompt = `
+You are an AI ecommerce review analyst.
+
+Analyze the customer reviews for this product.
+
+PRODUCT:
+${product.title}
+
+REVIEWS:
+${reviewText}
+
+Return ONLY valid JSON:
+
+{
+  "summary": "",
+  "positivePoints": [],
+  "negativePoints": [],
+  "fit": "",
+  "quality": "",
+  "valueForMoney": "",
+  "recommendation": ""
+}
+`;
+
+  const response = await ai.models.generateContent({
+    model: "gemini-3.5-flash",
+    contents: prompt,
+  });
+
+  return response.text;
+};

@@ -3,6 +3,7 @@ import productModel from "../model/product.model.js";
 import { reviewModel } from "../model/review.model.js";
 import type { JwtUser } from "../utils/types.js";
 import paymentModel from "../model/payment.model.js";
+import { generateReviewSummary } from "../service/ai.service.js";
 
 export const createReviewController = async (req: Request, res: Response) => {
   try {
@@ -150,6 +151,56 @@ export const updateReviewController = async (req: Request, res: Response) => {
       review,
     });
   } catch (error) {
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const generateReviewSummaryController = async (
+  req: Request,
+  res: Response,
+) => {
+  try {
+    const { productId } = req.params as { productId: string };
+
+    const product = await productModel.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+
+    const reviews = await reviewModel
+      .find({ product: productId })
+      .select("rating reviewComment");
+
+    if (reviews.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "No reviews available for this product",
+      });
+    }
+
+    const result = await generateReviewSummary({
+      product,
+      reviews,
+    });
+
+    const cleanJson = result
+      ?.replace(/```json/g, "")
+      .replace(/```/g, "")
+      .trim();
+
+    const summary = JSON.parse(cleanJson || "{}");
+
+    return res.status(200).json({
+      success: true,
+      message: "AI review summary generated successfully",
+      summary,
+    });
+  } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: "Server error" });
   }
 };
