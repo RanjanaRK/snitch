@@ -7,7 +7,15 @@ import ReviewCard from "./ReviewCard";
 import ReviewSkeleton from "./ReviewSkeloton";
 import { Link } from "react-router";
 
-const ReviewsSection = ({ productId }: { productId: string }) => {
+type ReviewsSectionProps = {
+  productId: string;
+  showAll?: boolean;
+};
+
+const ReviewsSection = ({
+  productId,
+  showAll = false,
+}: ReviewsSectionProps) => {
   const reviews = useSelector((state: RootState) => state.review.reviews);
   const user = useSelector((state: RootState) => state.auth.user);
   const loading = useSelector((state: RootState) => state.review.loading);
@@ -49,7 +57,7 @@ const ReviewsSection = ({ productId }: { productId: string }) => {
         </div>
 
         <div className="space-y-6">
-          {reviews.slice(0, 3).map((review: Review) => (
+          {(showAll ? reviews : reviews.slice(0, 3)).map((review: Review) => (
             <ReviewCard
               key={review._id}
               review={review}
@@ -57,10 +65,10 @@ const ReviewsSection = ({ productId }: { productId: string }) => {
             />
           ))}
 
-          {reviews.length > 3 && (
+          {!showAll && reviews.length > 3 && (
             <Link
               to={`/product/${productId}/reviews`}
-              className="mt-5 inline-block text-sm font-semibold underline"
+              className="mt-5 inline-block text-sm font-semibold underline hover:text-[#A8874F]"
             >
               Read more reviews
             </Link>

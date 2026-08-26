@@ -148,7 +148,7 @@ const OrderDetails = () => {
                       {/* Line */}
                       {index !== 3 && (
                         <div
-                          className={`absolute top-5 left-1/2 h-[2px] w-full ${
+                          className={`absolute top-5 left-1/2 h-0.5 w-full ${
                             index < currentIndex
                               ? "bg-[#C9A96E]"
                               : "bg-[#E5DED3]"

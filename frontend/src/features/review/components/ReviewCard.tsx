@@ -34,7 +34,7 @@ const ReviewCard = ({ review, isOwner }: ReviewCardProps) => {
 
   return (
     <>
-      <div className="border-b border-[#e4e2df] bg-white px-2 py-5 transition-all duration-300">
+      <div className="border-b border-[#e4e2df] bg-white p-4 transition-all duration-300">
         {/* HEADER */}
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-3">

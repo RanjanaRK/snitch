@@ -499,11 +499,13 @@ const ProductDetail = () => {
               </div>
             </div>
           </div>
+          <div className="space-y-5 pt-12">
+            <ReviewSummary productId={productId!} />
 
-          <ReviewSummary productId={productId!} />
-          <CreateReview productId={productId!} />
+            <CreateReview productId={productId!} />
 
-          <ReviewsSection productId={productId!} />
+            <ReviewsSection productId={productId!} />
+          </div>
         </div>
       </div>
     </>
