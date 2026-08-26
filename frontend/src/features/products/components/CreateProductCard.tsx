@@ -151,6 +151,8 @@ const CreateProductCard = () => {
       const res = await handleCreateProduct(formData);
 
       setImages([]);
+      setSelectedParent("");
+      setSubCategories([]);
 
       reset();
 
@@ -291,8 +293,6 @@ const CreateProductCard = () => {
                   </select>
                 </div>
               </div>
-
-              {/* category */}
 
               {/* GENDER */}
 
