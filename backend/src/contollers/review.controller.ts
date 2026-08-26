@@ -55,19 +55,12 @@ export const createReviewController = async (req: Request, res: Response) => {
 
     let summary = null;
 
-    const reviewReminder = reviewCount % 10 === 0;
+    const reviewReminder = reviewCount % 5 === 0;
 
-    if (reviewCount >= 10 && reviewReminder) {
+    if (reviewCount >= 5 && reviewReminder) {
       const reviews = await reviewModel
         .find({ product: productId })
         .select("rating reviewComment");
-
-      // if (reviews.length === 0) {
-      //   return res.status(400).json({
-      //     success: false,
-      //     message: "No reviews available for this product",
-      //   });
-      // }
 
       const result = await generateReviewSummary({
         product,
@@ -229,10 +222,10 @@ export const regenerateReviewSummaryController = async (
       .find({ product: productId })
       .select("rating reviewComment");
 
-    if (reviews.length < 10) {
+    if (reviews.length < 5) {
       return res.status(400).json({
         success: false,
-        message: "At least 10 reviews are required",
+        message: "At least 5 reviews are required",
       });
     }
 
