@@ -7,9 +7,32 @@ interface ReviewState {
   loading: boolean;
 }
 
+interface ReviewStats {
+  averageRating: number;
+  reviewCount: number;
+  breakdown: {
+    _id: number;
+    count: number;
+  }[];
+}
+
+interface ReviewState {
+  reviews: Review[];
+  review: Review | null;
+  reviewStats: ReviewStats;
+  loading: boolean;
+}
+
 const initialState: ReviewState = {
   reviews: [],
   review: null,
+
+  reviewStats: {
+    averageRating: 0,
+    reviewCount: 0,
+    breakdown: [],
+  },
+
   loading: false,
 };
 
@@ -28,7 +51,9 @@ const reviewSlice = createSlice({
     setReview: (state, action: PayloadAction<Review>) => {
       state.review = action.payload;
     },
-
+    setReviewStats: (state, action) => {
+      state.reviewStats = action.payload;
+    },
     addReview: (state, action: PayloadAction<Review>) => {
       state.reviews.unshift(action.payload);
     },
@@ -51,6 +76,7 @@ export const {
   setReviews,
   setLoading,
   setReview,
+  setReviewStats,
   addReview,
   removeReview,
   updateReviewState,

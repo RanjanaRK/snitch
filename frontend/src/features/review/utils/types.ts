@@ -19,11 +19,22 @@ export interface Review {
   updatedAt: string;
 }
 
+export interface ReviewStats {
+  averageRating: number;
+  reviewCount: number;
+  breakdown: {
+    _id: number;
+    count: number;
+  }[];
+}
+
 export interface ReviewResponse {
   success: boolean;
   message: string;
   reviews: Review[];
+  reviewStats: ReviewStats;
 }
+
 export interface ReviewCreateResponse {
   success: boolean;
   message: string;

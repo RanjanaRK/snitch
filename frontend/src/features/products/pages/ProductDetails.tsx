@@ -51,7 +51,8 @@ const ProductDetail = () => {
     try {
       if (!productId) return;
       const data = await handleGetProductDetails(productId);
-      // Handle both cases depending on how API is structured
+      console.log(data);
+
       setProduct(data?.product || data);
     } catch (error) {
       console.error("Failed to fetch product details", error);

@@ -64,7 +64,7 @@ export const getReviewSummary = async (productId: string) => {
 export const regenerateReviewSummary = async (productId: string) => {
   const response =
     await reviewApiInstance.post<RegenerateReviewSummaryResponse>(
-      `/summary/${productId}`,
+      `/ai-review-summary/${productId}`,
     );
 
   return response.data;

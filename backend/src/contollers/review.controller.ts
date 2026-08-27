@@ -1,10 +1,11 @@
 import type { Request, Response } from "express";
+import mongoose from "mongoose";
+import paymentModel from "../model/payment.model.js";
 import productModel from "../model/product.model.js";
 import { reviewModel } from "../model/review.model.js";
-import type { JwtUser } from "../utils/types.js";
-import paymentModel from "../model/payment.model.js";
-import { generateReviewSummary } from "../service/ai.service.js";
 import { reviewSummaryModel } from "../model/reviewSummary.model.js";
+import { generateReviewSummary } from "../service/ai.service.js";
+import type { JwtUser } from "../utils/types.js";
 
 export const createReviewController = async (req: Request, res: Response) => {
   try {
@@ -118,10 +119,57 @@ export const getProductReviewsController = async (
       .populate("user", "email fullname role")
       .sort({ createdAt: -1 });
 
+    const reviewStats = await reviewModel.aggregate([
+      {
+        $match: {
+          product: new mongoose.Types.ObjectId(productId),
+        },
+      },
+      {
+        $facet: {
+          summary: [
+            {
+              $group: {
+                _id: null,
+                averageRating: { $avg: "$rating" },
+                reviewCount: { $sum: 1 },
+              },
+            },
+          ],
+
+          breakdown: [
+            {
+              $group: {
+                _id: "$rating",
+                count: { $sum: 1 },
+              },
+            },
+            {
+              $sort: {
+                _id: -1,
+              },
+            },
+          ],
+        },
+      },
+    ]);
+
+    const stats = reviewStats[0];
+
+    const summary = stats.summary[0] || {
+      averageRating: 0,
+      reviewCount: 0,
+    };
+
     return res.status(200).json({
       success: true,
       message: "All reviews fetched successfully",
       reviews,
+      reviewStats: {
+        averageRating: Number(summary.averageRating.toFixed(1)),
+        reviewCount: summary.reviewCount,
+        breakdown: stats.breakdown,
+      },
     });
   } catch (error) {
     return res.status(500).json({ message: "Server error" });

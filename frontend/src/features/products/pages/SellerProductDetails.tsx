@@ -2,7 +2,8 @@ import { useParams } from "react-router";
 import { useProduct } from "../hooks/useProduct";
 import { useEffect, useState, type ChangeEvent } from "react";
 import type { Product, Variant } from "../utils/productTypes";
-import { PlusIcon, TrashIcon } from "lucide-react";
+import { PlusIcon, RefreshCw, TrashIcon } from "lucide-react";
+import useReview from "../../review/hooks/useReview";
 
 interface NewVariantState {
   images: {
@@ -34,6 +35,11 @@ const SellerProductDetails = () => {
   });
 
   const { productId } = useParams<{ productId: string }>();
+
+  const [summary, setSummary] = useState(null);
+  const [regenerating, setRegenerating] = useState(false);
+
+  const { handleRegenerateReviewSummary } = useReview();
 
   const { handleGetProductDetails, handleAddProductVariant } = useProduct();
 
@@ -68,9 +74,7 @@ const SellerProductDetails = () => {
     setLocalVariants(updatedVariants);
   };
 
-  // Handlers for New Variant Form
   const handleAddNewVariant = async () => {
-    // Validate required at least one attribute to be filled
     const hasValidAttribute = attributeInputs.some(
       (attr) => attr.key.trim() && attr.value.trim(),
     );
@@ -79,13 +83,11 @@ const SellerProductDetails = () => {
       return;
     }
 
-    // Maps preview URL so the variant list can display the image locally
     const cleanImages = newVariant.images.map((img) => ({
       url: img.previewUrl,
       file: img.file,
     }));
 
-    // Attributes is already an object in newVariant, just use it safely
     const cleanAttributes = { ...newVariant.attributes };
 
     const variantToSave: Variant = {
@@ -104,8 +106,6 @@ const SellerProductDetails = () => {
 
     await handleAddProductVariant(productId!, variantToSave);
 
-    // Reset form
-    // Note: should ideally revoke old object URLs as well to prevent memory leaks if it were a long-lived SPA
     setAttributeInputs([{ key: "", value: "" }]);
     setNewVariant({
       images: [],
@@ -184,6 +184,20 @@ const SellerProductDetails = () => {
     }
     const updatedImages = newVariant.images.filter((_, i) => i !== index);
     setNewVariant((prev) => ({ ...prev, images: updatedImages }));
+  };
+
+  const handleRegenerate = async () => {
+    try {
+      setRegenerating(true);
+
+      const response = await handleRegenerateReviewSummary(productId!);
+
+      setSummary(response?.savedSummary);
+    } catch (error) {
+      console.error("Failed to regenerate review summary", error);
+    } finally {
+      setRegenerating(false);
+    }
   };
 
   if (loading) {
@@ -516,6 +530,39 @@ const SellerProductDetails = () => {
                 ))}
               </div>
             )}
+          </section>
+
+          {/* AI Review Summary Management */}
+          <section className="mb-16 bg-[#f5f3f0] p-6 md:p-8">
+            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+              <div>
+                <p className="mb-2 text-xs tracking-[0.2em] text-[#745a27] uppercase">
+                  AI Insights
+                </p>
+
+                <h3 className="font-serif text-2xl uppercase">
+                  Customer Review Summary
+                </h3>
+
+                <p className="mt-2 max-w-xl text-sm leading-relaxed text-[#6e6258]">
+                  Regenerate the AI-generated summary based on the latest
+                  customer reviews.
+                </p>
+              </div>
+
+              <button
+                onClick={handleRegenerate}
+                disabled={regenerating}
+                className="flex shrink-0 items-center justify-center gap-2 bg-[#745a27] px-6 py-3 text-sm tracking-wider text-white uppercase transition-colors hover:bg-[#5a4312] disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                <RefreshCw
+                  size={16}
+                  className={regenerating ? "animate-spin" : ""}
+                />
+
+                {regenerating ? "Regenerating..." : "Regenerate Summary"}
+              </button>
+            </div>
           </section>
         </main>
       </div>

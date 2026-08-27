@@ -1,10 +1,8 @@
 import type { Request, Response } from "express";
+import { categoryModel } from "../model/category.model.js";
 import productModel from "../model/product.model.js";
 import { uploadImage } from "../service/storage.service.js";
 import type { JwtUser } from "../utils/types.js";
-import { categoryModel } from "../model/category.model.js";
-import { reviewModel } from "../model/review.model.js";
-import mongoose from "mongoose";
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
@@ -143,88 +141,10 @@ export const getProductById = async (req: Request, res: Response) => {
       });
     }
 
-    // const breakdown = await reviewModel.aggregate([
-    //   {
-    //     $match: {
-    //       product: new mongoose.Types.ObjectId(id),
-    //     },
-    //   },
-    //   {
-    //     $group: {
-    //       _id: "$rating",
-    //       count: {
-    //         $sum: 1,
-    //       },
-    //     },
-    //   },
-    // ]);
-
-    // const averageResult = await reviewModel.aggregate([
-    //   {
-    //     $match: {
-    //       product: new mongoose.Types.ObjectId(id),
-    //     },
-    //   },
-    //   {
-    //     $group: {
-    //       _id: null,
-    //       averageRating: { $avg: "$rating" },
-    //       reviewCount: { $sum: 1 },
-    //     },
-    //   },
-    // ]);
-
-    const reviewStats = await reviewModel.aggregate([
-      {
-        $match: {
-          product: new mongoose.Types.ObjectId(id),
-        },
-      },
-      {
-        $facet: {
-          summary: [
-            {
-              $group: {
-                _id: null,
-                averageRating: { $avg: "$rating" },
-                reviewCount: { $sum: 1 },
-              },
-            },
-          ],
-
-          breakdown: [
-            {
-              $group: {
-                _id: "$rating",
-                count: { $sum: 1 },
-              },
-            },
-            {
-              $sort: {
-                _id: -1,
-              },
-            },
-          ],
-        },
-      },
-    ]);
-
-    const stats = reviewStats[0];
-
-    const summary = stats.summary[0] || {
-      averageRating: 0,
-      reviewCount: 0,
-    };
-
     return res.status(200).json({
       message: "Product fetched successfully",
       success: true,
       product,
-      reviewStats: {
-        averageRating: Number(summary.averageRating.toFixed(1)),
-        reviewCount: summary.reviewCount,
-        breakdown: stats.breakdown,
-      },
     });
   } catch (error) {
     return res.status(500).json({ message: "Error fetching product" });

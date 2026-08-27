@@ -12,6 +12,7 @@ import {
   removeReview,
   setLoading,
   setReviews,
+  setReviewStats,
   updateReviewState,
 } from "../state/review.slice";
 import type { ReviewSchemaType } from "../utils/zodSchema";
@@ -39,6 +40,7 @@ const useReview = () => {
       const response = await getReviews(productId);
 
       dispatch(setReviews(response.reviews));
+      dispatch(setReviewStats(response.reviewStats));
 
       return response;
     } finally {
