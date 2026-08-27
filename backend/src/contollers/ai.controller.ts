@@ -192,14 +192,58 @@ export const recommendOutfitController = async (
   }
 };
 
+// export const refineOutfitController = async (req: Request, res: Response) => {
+//   try {
+//     const { recommendation, detected, userPrompt, budget } = req.body;
+
+//     const refinedResult = await refineRecommendation({
+//       recommendation,
+//       detected,
+//       userPrompt,
+//     });
+
+//     const cleanJson = refinedResult
+//       ?.replace(/```json/g, "")
+//       .replace(/```/g, "")
+//       .trim();
+
+//     const refinedRecommendation = JSON.parse(cleanJson || "{}");
+
+//     const products = await getProductsForRecommendation(
+//       refinedRecommendation.categoryIds,
+//       Number(budget),
+//     );
+
+//     const scoredProducts = rankProducts(products, refinedRecommendation);
+
+//     return res.status(200).json({
+//       success: true,
+//       message: "Recommendation refined successfully",
+//       recommendation: refinedRecommendation,
+//       products: scoredProducts,
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json({ message: "Server error" });
+//   }
+// };
+
 export const refineOutfitController = async (req: Request, res: Response) => {
   try {
     const { recommendation, detected, userPrompt, budget } = req.body;
+
+    const categories = await getCategoriesForAI();
+
+    const aiCategories = categories.map((category) => ({
+      id: category._id.toString(),
+      name: category.name,
+    }));
 
     const refinedResult = await refineRecommendation({
       recommendation,
       detected,
       userPrompt,
+      categories: aiCategories,
     });
 
     const cleanJson = refinedResult
@@ -208,6 +252,11 @@ export const refineOutfitController = async (req: Request, res: Response) => {
       .trim();
 
     const refinedRecommendation = JSON.parse(cleanJson || "{}");
+
+    console.log(
+      "REFINED RECOMMENDATION:",
+      JSON.stringify(refinedRecommendation, null, 2),
+    );
 
     const products = await getProductsForRecommendation(
       refinedRecommendation.categoryIds,
@@ -224,6 +273,9 @@ export const refineOutfitController = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: "Server error" });
+
+    return res.status(500).json({
+      message: "Server error",
+    });
   }
 };

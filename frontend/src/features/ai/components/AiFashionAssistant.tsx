@@ -158,8 +158,9 @@ const AiFashionAssistant = () => {
       toast.success(res.message);
     } catch (error: any) {
       const status = error?.response?.status;
+      console.log(status);
 
-      if (status === 503) {
+      if (status == 503) {
         toast.error(
           "Our AI stylist is currently busy. Please try again in a few moments.",
         );

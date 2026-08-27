@@ -430,12 +430,14 @@ Return exactly this structure:
 // Refine recommendation
 export const refineRecommendation = async ({
   recommendation,
-  userPrompt,
   detected,
+  userPrompt,
+  categories,
 }: {
   recommendation: any;
   userPrompt: string;
   detected: any;
+  categories: any;
 }) => {
   const prompt = `
 You are an expert fashion stylist.
@@ -446,13 +448,24 @@ ${JSON.stringify(detected, null, 2)}
 Current Recommendation:
 ${JSON.stringify(recommendation, null, 2)}
 
+Available Product Categories:
+${JSON.stringify(categories, null, 2)}
+
 User Refinement Request:
 "${userPrompt}"
 
 TASK:
 Modify the recommendation according to the user's request.
 
-RULES:
+IMPORTANT CATEGORY RULES:
+- categoryIds MUST contain the actual MongoDB category IDs from "Available Product Categories".
+- NEVER use numbers such as 1, 2, 3 for categoryIds.
+- NEVER invent category IDs.
+- If you change categoryIds, use the exact "id" value provided in Available Product Categories.
+- categoryIds must be an array of strings.
+- If the existing category is still appropriate, keep its existing valid MongoDB ID.
+
+OTHER RULES:
 - Keep EXACTLY the same JSON structure.
 - Do not add extra fields.
 - Update categoryIds, preferredColors, keywords, occasion, formality and reason if needed.
@@ -461,6 +474,7 @@ RULES:
 - Do not wrap response in markdown.
 
 Example refinements:
+
 "show only denim options"
 → keywords should focus on denim.
 
