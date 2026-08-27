@@ -635,6 +635,7 @@ export const verifyOrderController = async (req: Request, res: Response) => {
     return res.status(200).json({
       message: "Payment verified successfully",
       success: true,
+      orderId: payment._id,
     });
   } catch (error) {
     // console.log(error);

@@ -31,6 +31,13 @@ export const getSingleOrdersController = async (
       .populate("orderItems.productId")
       .populate("orderItems.variantId");
 
+    if (!order) {
+      return res.status(404).json({
+        message: "Order not found",
+        success: false,
+      });
+    }
+
     return res
       .status(200)
       .json({ message: "Order fetched successfully", success: true, order });
