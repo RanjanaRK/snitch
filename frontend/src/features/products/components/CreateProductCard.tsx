@@ -4,6 +4,13 @@ import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
 import type { RootState } from "../../../app/app.store";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../../components/ui/select";
 import { OCCASIONS, STYLES } from "../../../constants/product";
 import { useCategory } from "../../category/hooks/useCategory";
 import type { Category } from "../../category/utils/types";
@@ -13,13 +20,6 @@ import {
   type ImageType,
   type ProductFormDataType,
 } from "../utils/zodSchema";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../../../components/ui/select";
 
 const CURRENCIES = ["INR", "USD", "EUR", "GBP"];
 const MAX_IMAGES = 7;

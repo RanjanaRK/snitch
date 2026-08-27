@@ -26,12 +26,12 @@ const CheckoutButton = () => {
       description: "Test Transaction",
       order_id: order.id, // Generate order_id on server
       handler: async (response: any) => {
-        console.log(response);
-        const isValid = await handleVerifyCartOrder(response);
-        console.log(isValid);
+        const result = await handleVerifyCartOrder(response);
 
-        if (isValid) {
-          navigate(`/order-success?order_id=${response?.razorpay_order_id}`);
+        console.log("VERIFY RESULT:", result);
+
+        if (result?.success) {
+          navigate(`/order-success?orderId=${result.orderId}`);
         }
       },
       prefill: {

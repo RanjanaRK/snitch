@@ -1,7 +1,7 @@
 import { ArrowRight, Check, Package, Truck } from "lucide-react";
-import { Link, useLocation } from "react-router";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { Link, useLocation } from "react-router";
 
 import type { RootState } from "../../../app/app.store";
 import useOrder from "../../order/hooks/useOrder";
@@ -14,12 +14,13 @@ const OrderSuccess = () => {
   const order = useSelector((state: RootState) => state.order.order);
 
   console.log({ order });
-
   const queryParams = new URLSearchParams(location.search);
 
   const orderId = queryParams.get("orderId");
 
   useEffect(() => {
+    // console.log("ORDER ID FROM URL:", orderId);
+
     if (orderId) {
       handleGetSingleOrder(orderId);
     }

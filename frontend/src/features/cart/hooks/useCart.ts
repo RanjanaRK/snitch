@@ -9,7 +9,6 @@ import {
   verifyCartOrder,
 } from "../service/cart.api";
 import {
-  clearCart,
   decreamentCartItem,
   increamentCartItem,
   removeCartItem as removeCartItemFromState,
@@ -101,16 +100,20 @@ export const useCart = () => {
     razorpay_payment_id: string;
     razorpay_signature: string;
   }) => {
-    const data = await verifyCartOrder({
-      razorpay_order_id,
-      razorpay_payment_id,
-      razorpay_signature,
-    });
+    try {
+      const response = await verifyCartOrder({
+        razorpay_order_id,
+        razorpay_payment_id,
+        razorpay_signature,
+      });
 
-    console.log(data);
+      console.log(response);
 
-    if (data.success) dispatch(clearCart());
-    return data.success;
+      return response;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
   };
 
   return {

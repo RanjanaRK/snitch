@@ -442,8 +442,6 @@ const Cart = () => {
                   </div>
                 </div>
 
-                {/* Total divider */}
-
                 {/* Grand Total */}
 
                 <div className="mb-10 flex items-center justify-between border-t border-[#ece6dc] pt-6">

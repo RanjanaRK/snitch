@@ -1,6 +1,6 @@
 import axios from "axios";
-import type { CartResponse } from "../utils/types";
 import { env } from "../../shared/utils/env";
+import type { CartResponse } from "../utils/types";
 
 const cartApiInstance = axios.create({
   baseURL: `${env.VITE_BACKEND_URL}/api/cart`,
