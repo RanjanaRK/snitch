@@ -4,6 +4,8 @@ import { useEffect, useState, type ChangeEvent } from "react";
 import type { Product, Variant } from "../utils/productTypes";
 import { PlusIcon, RefreshCw, TrashIcon } from "lucide-react";
 import useReview from "../../review/hooks/useReview";
+import { toast } from "sonner";
+import type { Review, ReviewSummary } from "../../review/utils/types";
 
 interface NewVariantState {
   images: {
@@ -36,7 +38,7 @@ const SellerProductDetails = () => {
 
   const { productId } = useParams<{ productId: string }>();
 
-  const [summary, setSummary] = useState(null);
+  const [summary, setSummary] = useState<ReviewSummary | null>(null);
   const [regenerating, setRegenerating] = useState(false);
 
   const { handleRegenerateReviewSummary } = useReview();
@@ -190,11 +192,13 @@ const SellerProductDetails = () => {
     try {
       setRegenerating(true);
 
-      const response = await handleRegenerateReviewSummary(productId!);
+      const res = await handleRegenerateReviewSummary(productId!);
 
-      setSummary(response?.savedSummary);
-    } catch (error) {
+      setSummary(res?.savedSummary);
+      toast.success(res?.message);
+    } catch (error: any) {
       console.error("Failed to regenerate review summary", error);
+      toast.error(error?.response?.data?.message || "Failed to regenerate");
     } finally {
       setRegenerating(false);
     }

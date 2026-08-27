@@ -5,8 +5,11 @@ import { toast } from "sonner";
 import useReview from "../hooks/useReview";
 import type { ReviewSchemaType } from "../utils/zodSchema";
 import reviewSchema from "../utils/zodSchema";
+import { useNavigate } from "react-router";
 
 const CreateReview = ({ productId }: { productId: string }) => {
+  const navigate = useNavigate();
+
   const { handleCreateReview } = useReview();
 
   const {
@@ -36,6 +39,9 @@ const CreateReview = ({ productId }: { productId: string }) => {
       }
     } catch (error: any) {
       toast.error(error.response.data.message);
+      if (error.status === 401) {
+        navigate("/login");
+      }
     }
   };
 

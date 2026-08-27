@@ -1,98 +1,3 @@
-// import { useEffect, useState } from "react";
-// import useReview from "../hooks/useReview";
-// import type { ReviewSummary as ReviewSummaryType } from "../utils/types";
-
-// type Props = {
-//   productId: string;
-// };
-
-// const ReviewSummary = ({ productId }: Props) => {
-//   const { handleGetReviewSummary } = useReview();
-
-//   const [summary, setSummary] = useState<ReviewSummaryType | null>(null);
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     const fetchSummary = async () => {
-//       try {
-//         const response = await handleGetReviewSummary(productId);
-
-//         setSummary(response.summary);
-//         console.log({ summary });
-//       } catch (error) {
-//         // 404 simply means summary hasn't been generated yet
-//         setSummary(null);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchSummary();
-//   }, [productId]);
-
-//   if (loading) {
-//     return <p>Loading customer insights...</p>;
-//   }
-
-//   if (!summary) {
-//     return null;
-//   }
-
-//   //   const { handleRegenerateReviewSummary } = useReview();
-
-//   //   const [, setRegenerating] = useState(false);
-
-//   //   const handleRegenerate = async () => {
-//   //     try {
-//   //       setRegenerating(true);
-
-//   //       const response = await handleRegenerateReviewSummary(productId);
-
-//   //       setSummary(response.savedSummary);
-//   //     } catch (error) {
-//   //       console.error(error);
-//   //     } finally {
-//   //       setRegenerating(false);
-//   //     }
-//   //   };
-
-//   return (
-//     <section className="space-y-6">
-//       <div>
-//         <h2 className="text-xl font-semibold">What Customers Say</h2>
-
-//         <p className="mt-2 text-sm text-gray-600">{summary.summary} aaa</p>
-
-//         <p className="mt-2 text-xs text-gray-500">
-//           Based on {summary.generatedFromReviewCount} reviews
-//         </p>
-//       </div>
-
-//       <div>
-//         <h3 className="font-semibold">Pros</h3>
-
-//         <ul className="mt-2 space-y-2">
-//           {summary.pros.map((pro) => (
-//             <li key={pro}>✓ {pro}</li>
-//           ))}
-//         </ul>
-//       </div>
-
-//       <div>
-//         <h3 className="font-semibold">Cons</h3>
-
-//         <ul className="mt-2 space-y-2">
-//           {summary.cons.map((con) => (
-//             <li key={con}>× {con}</li>
-//           ))}
-//         </ul>
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default ReviewSummary;
-
 import { Check, Sparkles, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import useReview from "../hooks/useReview";
@@ -147,7 +52,7 @@ const ReviewSummary = ({ productId }: Props) => {
   return (
     <section className="relative overflow-hidden">
       {/* subtle decorative glow */}
-      <div className="pointer-events-none absolute -top-32 -right-32 h-64 w-64 rounded-full bg-[#C9A96E]/[0.05] blur-3xl" />
+      <div className="pointer-events-none absolute -top-32 -right-32 h-64 w-64 rounded-full bg-[#C9A96E]/5 blur-3xl" />
 
       {/* HEADER */}
       <div className="relative mb-8 flex items-end justify-between gap-6">

@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ImagePlus, Sparkles, Upload, X } from "lucide-react";
+import { ImagePlus, RefreshCw, Sparkles, Upload, X } from "lucide-react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -38,12 +38,15 @@ const AiFashionAssistant = () => {
 
   const [, setLoadingRefine] = useState(false);
 
+  const [showRefine, setShowRefine] = useState(true);
+
   const { createAiFashionRecommend, createRefineRecommendation } = useAi();
 
   const {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
@@ -177,6 +180,8 @@ const AiFashionAssistant = () => {
 
   const handleRefine = async (userPrompt: string) => {
     try {
+      setLoadingRefine(true);
+
       const result = await createRefineRecommendation({
         recommendations,
         detected,
@@ -187,10 +192,38 @@ const AiFashionAssistant = () => {
       setRecommendations(result.recommendation);
 
       setProducts(result.products);
+
+      setShowRefine(false);
     } catch (error) {
     } finally {
       setLoadingRefine(false);
     }
+  };
+
+  // REFRESH
+  const handleNewLook = () => {
+    setSelectedFile(null);
+
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+    }
+
+    setPreviewUrl(null);
+
+    setRecommendations(null);
+    setDetected(null);
+    setProducts([]);
+    setRefineSuggestions([]);
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+
+    reset({
+      occasion: "",
+      budget: 5000,
+      prompt: "",
+    });
   };
 
   return (
@@ -223,16 +256,45 @@ const AiFashionAssistant = () => {
 
         {!isLaoding && recommendations && detected ? (
           <div className="h-full overflow-y-auto p-5">
+            <div className="mb-5 flex items-center justify-between">
+              <div>
+                <p className="text-[10px] tracking-[0.2em] text-[#9b793e] uppercase">
+                  Your Style
+                </p>
+
+                <h2
+                  className="mt-1 text-2xl font-light"
+                  style={{
+                    fontFamily: "'Cormorant Garamond', serif",
+                  }}
+                >
+                  Your Recommended Look
+                </h2>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleNewLook}
+                className="flex items-center gap-2 rounded-full border border-[#d8d2cb] bg-white px-4 py-2 text-[10px] font-medium tracking-[0.12em] text-[#665e56] uppercase transition hover:border-[#A8874F] hover:text-[#A8874F]"
+              >
+                <RefreshCw size={14} />
+                New Look
+              </button>
+            </div>
+
             <AiRecommendedCard
               recommendation={recommendations}
               detected={detected}
               previewUrl={previewUrl!}
               products={products}
             />
-            <AiRefinePanel
-              suggestions={refineSuggestions}
-              onRefine={handleRefine}
-            />
+
+            {showRefine && (
+              <AiRefinePanel
+                suggestions={refineSuggestions}
+                onRefine={handleRefine}
+              />
+            )}
           </div>
         ) : (
           !isLaoding && (
@@ -472,9 +534,7 @@ const AiFashionAssistant = () => {
                   Find My Perfect Look
                 </button>
 
-                {/* =========================
-                FOOTER
-            ========================= */}
+                {/* FOOTER */}
 
                 <p className="mt-4 text-center text-[10px] tracking-wide text-[#91877D]">
                   Powered by Vestra
