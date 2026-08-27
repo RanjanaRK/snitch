@@ -1,11 +1,11 @@
-import { useParams } from "react-router";
-import { useProduct } from "../hooks/useProduct";
-import { useEffect, useState, type ChangeEvent } from "react";
-import type { Product, Variant } from "../utils/productTypes";
 import { PlusIcon, RefreshCw, TrashIcon } from "lucide-react";
-import useReview from "../../review/hooks/useReview";
+import { useEffect, useState, type ChangeEvent } from "react";
+import { useParams } from "react-router";
 import { toast } from "sonner";
-import type { Review, ReviewSummary } from "../../review/utils/types";
+import useReview from "../../review/hooks/useReview";
+import type { ReviewSummary } from "../../review/utils/types";
+import { useProduct } from "../hooks/useProduct";
+import type { Product, Variant } from "../utils/productTypes";
 
 interface NewVariantState {
   images: {
@@ -38,7 +38,7 @@ const SellerProductDetails = () => {
 
   const { productId } = useParams<{ productId: string }>();
 
-  const [summary, setSummary] = useState<ReviewSummary | null>(null);
+  const [, setSummary] = useState<ReviewSummary | null>(null);
   const [regenerating, setRegenerating] = useState(false);
 
   const { handleRegenerateReviewSummary } = useReview();
