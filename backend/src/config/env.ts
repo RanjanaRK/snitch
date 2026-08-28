@@ -44,6 +44,9 @@ if (!process.env.FRONTEND_URL) {
 if (!process.env.GEMINI_API_KEY) {
   throw new Error("GEMINI_API_KEY is not defined in environment variables");
 }
+if (!process.env.SMTP_USER) {
+  throw new Error("SMTP_USER is not defined in environment variables");
+}
 
 type Iconfig = {
   readonly MONGO_URI: string;
