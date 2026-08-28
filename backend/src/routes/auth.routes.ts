@@ -5,6 +5,7 @@ import {
   login,
   logout,
   register,
+  verifyEmail,
 } from "../contollers/auth.controller.js";
 import {
   validateLoginUser,
@@ -19,6 +20,8 @@ const authRouter = Router();
 authRouter.post("/register", validateRegisterUser, register);
 
 authRouter.post("/login", validateLoginUser, login);
+
+authRouter.get("/verify-email", verifyEmail);
 
 authRouter.get(
   "/google",

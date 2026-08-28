@@ -47,6 +47,14 @@ if (!process.env.GEMINI_API_KEY) {
 if (!process.env.SMTP_USER) {
   throw new Error("SMTP_USER is not defined in environment variables");
 }
+if (!process.env.SMTP_PASS) {
+  throw new Error("SMTP_PASS is not defined in environment variables");
+}
+if (!process.env.EMAIL_VERIFICATION_TOKEN) {
+  throw new Error(
+    "EMAIL_VERIFICATION_TOKEN is not defined in environment variables",
+  );
+}
 
 type Iconfig = {
   readonly MONGO_URI: string;
@@ -60,6 +68,9 @@ type Iconfig = {
   readonly FRONTEND_URL: string;
   readonly BACKEND_URL: string;
   readonly GEMINI_API_KEY: string;
+  readonly SMTP_USER: string;
+  readonly SMTP_PASS: string;
+  readonly EMAIL_VERIFICATION_TOKEN: string;
 };
 export const env: Iconfig = {
   MONGO_URI: process.env.MONGO_URI,
@@ -73,6 +84,9 @@ export const env: Iconfig = {
   FRONTEND_URL: process.env.FRONTEND_URL,
   BACKEND_URL: process.env.BACKEND_URL,
   GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+  SMTP_USER: process.env.SMTP_USER,
+  SMTP_PASS: process.env.SMTP_PASS,
+  EMAIL_VERIFICATION_TOKEN: process.env.EMAIL_VERIFICATION_TOKEN,
 };
 
 export default env;

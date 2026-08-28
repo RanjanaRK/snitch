@@ -5,6 +5,7 @@ export interface IUser extends Document {
   contact: string;
   password: string;
   fullname: string;
+  emailVerified: boolean;
   role: "buyer" | "seller";
   googleId?: string;
 
@@ -20,7 +21,14 @@ const userSchema = new mongoose.Schema<IUser>({
       return !this.googleId;
     },
   },
-  fullname: { type: String, required: true },
+  fullname: {
+    type: String,
+    required: true,
+  },
+  emailVerified: {
+    type: Boolean,
+    default: false,
+  },
   role: {
     type: String,
     enum: ["buyer", "seller"],

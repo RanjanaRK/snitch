@@ -1,8 +1,9 @@
 import type { Request, Response } from "express";
 import userModel, { type IUser } from "../model/user.model.js";
-import jwt from "jsonwebtoken";
+import jwt, { type JwtPayload } from "jsonwebtoken";
 import env from "../config/env.js";
 import type { GoogleUser, JwtUser } from "../utils/types.js";
+import { sendEmail } from "../service/mail.service.js";
 
 async function sendTokenResponse(
   user: IUser,
@@ -50,11 +51,44 @@ export const register = async (req: Request, res: Response) => {
       email,
       password,
       fullname,
+      emailVerified: false,
       contact,
       role: isSeller ? "seller" : "buyer",
     });
 
-    await sendTokenResponse(user, res, "User registered successfully");
+    // await sendTokenResponse(user, res, "User registered successfully");
+
+    const emailVerificationToken = jwt.sign(
+      { email: user.email },
+      env.EMAIL_VERIFICATION_TOKEN,
+    );
+
+    await sendEmail({
+      to: user.email,
+      subject: "Email Verification",
+      html: `<p>Hi ${user.fullname},</p>
+             <p>Thank you for registering at <strong>Vestra</strong>.</p>
+             <p>Please verify your email address by clicking below:</p>
+
+             <a href="http://localhost:5000/api/auth/verify-email?token=${emailVerificationToken}">
+               Verify Email
+             </a>
+             <p>If you did not create an account, please ignore this email.</p>
+             <p>Best regards,<br>The Vestra Team</p>`,
+    });
+
+    res.status(200).json({
+      success: true,
+      message:
+        "User registered successfully. Please check your email for verification.",
+      user: {
+        _id: user._id,
+        email: user.email,
+        fullname: user.fullname,
+        contact: user.contact,
+        role: user.role,
+      },
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Server error" });
@@ -77,6 +111,11 @@ export const login = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
+    if (!user.emailVerified) {
+      return res.status(400).json({
+        message: "Please verify your email before logging in",
+      });
+    }
     await sendTokenResponse(user, res, "User logged in successfully");
   } catch (error) {
     return res.status(500).json({ message: "Server error" });
@@ -125,6 +164,46 @@ export const googleAuthCallback = async (req: Request, res: Response) => {
     res.redirect("http://localhost:5173");
   } catch (error) {
     return res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const verifyEmail = async (req: Request, res: Response) => {
+  try {
+    const { token } = req.query;
+
+    if (!token || typeof token !== "string") {
+      return res.status(400).json({
+        success: false,
+        message: "Verification token is required.",
+      });
+    }
+
+    const decoded = jwt.verify(
+      token,
+      env.EMAIL_VERIFICATION_TOKEN,
+    ) as JwtPayload;
+
+    if (!decoded) {
+      throw new Error("Invalid email verification token");
+    }
+
+    const user = await userModel.findOne({ email: decoded.email });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    if (user.emailVerified) {
+      throw new Error("Email already verified");
+    }
+
+    user.emailVerified = true;
+
+    await user.save();
+
+    return user;
+  } catch (error: any) {
+    throw new Error(error);
   }
 };
 
