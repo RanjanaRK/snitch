@@ -1,10 +1,12 @@
 import { Router } from "express";
 import {
+  forgotPassword,
   getMe,
   googleAuthCallback,
   login,
   logout,
   register,
+  resetPassword,
   verifyEmail,
 } from "../contollers/auth.controller.js";
 import {
@@ -22,6 +24,10 @@ authRouter.post("/register", validateRegisterUser, register);
 authRouter.post("/login", validateLoginUser, login);
 
 authRouter.get("/verify-email", verifyEmail);
+
+authRouter.post("/forgot-password", forgotPassword);
+
+authRouter.post("/reset-password", resetPassword);
 
 authRouter.get(
   "/google",

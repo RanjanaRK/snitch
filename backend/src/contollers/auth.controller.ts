@@ -1,9 +1,9 @@
 import type { Request, Response } from "express";
-import userModel, { type IUser } from "../model/user.model.js";
-import jwt, { type JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import env from "../config/env.js";
-import type { GoogleUser, JwtUser } from "../utils/types.js";
+import userModel, { type IUser } from "../model/user.model.js";
 import { sendEmail } from "../service/mail.service.js";
+import type { GoogleUser, JwtUser } from "../utils/types.js";
 
 async function sendTokenResponse(
   user: IUser,
@@ -56,11 +56,10 @@ export const register = async (req: Request, res: Response) => {
       role: isSeller ? "seller" : "buyer",
     });
 
-    // await sendTokenResponse(user, res, "User registered successfully");
-
     const emailVerificationToken = jwt.sign(
       { email: user.email },
       env.EMAIL_VERIFICATION_TOKEN,
+      { expiresIn: "15m" },
     );
 
     await sendEmail({
@@ -178,32 +177,131 @@ export const verifyEmail = async (req: Request, res: Response) => {
       });
     }
 
-    const decoded = jwt.verify(
-      token,
-      env.EMAIL_VERIFICATION_TOKEN,
-    ) as JwtPayload;
+    const decoded = jwt.verify(token, env.EMAIL_VERIFICATION_TOKEN) as {
+      email: string;
+    };
 
     if (!decoded) {
-      throw new Error("Invalid email verification token");
+      return res.status(400).json({
+        success: false,
+        message: "Invalid verification token.",
+      });
     }
 
     const user = await userModel.findOne({ email: decoded.email });
 
     if (!user) {
-      throw new Error("User not found");
+      return res.status(400).json({
+        success: false,
+        message: "User not found.",
+      });
     }
 
     if (user.emailVerified) {
-      throw new Error("Email already verified");
+      return res.status(400).json({
+        message: "Email already verified.",
+      });
     }
 
     user.emailVerified = true;
 
     await user.save();
 
-    return user;
-  } catch (error: any) {
-    throw new Error(error);
+    return res.status(200).json({
+      success: true,
+      message: "Email verified successfully",
+      user,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const forgotPassword = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const forgotPassToken = jwt.sign(
+      { email: user.email },
+      env.FORGOT_PASSWORD_TOKEN,
+      { expiresIn: "15m" },
+    );
+
+    await sendEmail({
+      to: user.email,
+      subject: "Password Reset",
+      html: ` <p>Hi ${user.fullname},</p>
+                <p>Click the link below to reset your password:</p>
+                <a href="http://localhost:5173/reset-password?token=${forgotPassToken}">
+                      Reset Password
+                </a>
+                <p>If you did not request a password reset, please ignore this email.</p>
+                <p>Best regards,<br>The Resume Analyzer Team</p>`,
+    });
+
+    return res.status(200).json({
+      message: "Password reset email sent successfully",
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const resetPassword = async (req: Request, res: Response) => {
+  try {
+    const { token } = req.query;
+    const { password } = req.body;
+
+    if (!token || typeof token !== "string") {
+      return res.status(400).json({
+        success: false,
+        message: "Reset token is required",
+      });
+    }
+
+    if (!password) {
+      return res.status(400).json({
+        success: false,
+        message: "Password is required",
+      });
+    }
+
+    const decoded = jwt.verify(token, env.FORGOT_PASSWORD_TOKEN) as {
+      email: string;
+    };
+
+    const user = await userModel.findOne({
+      email: decoded.email,
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    user.password = password;
+
+    await user.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Password reset successfully",
+    });
+  } catch (error) {
+    console.log(error);
+
+    return res.status(400).json({
+      success: false,
+      message: "Invalid or expired reset token",
+    });
   }
 };
 

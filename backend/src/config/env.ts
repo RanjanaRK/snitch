@@ -55,6 +55,11 @@ if (!process.env.EMAIL_VERIFICATION_TOKEN) {
     "EMAIL_VERIFICATION_TOKEN is not defined in environment variables",
   );
 }
+if (!process.env.FORGOT_PASSWORD_TOKEN) {
+  throw new Error(
+    "FORGOT_PASSWORD_TOKEN is not defined in environment variables",
+  );
+}
 
 type Iconfig = {
   readonly MONGO_URI: string;
@@ -71,6 +76,7 @@ type Iconfig = {
   readonly SMTP_USER: string;
   readonly SMTP_PASS: string;
   readonly EMAIL_VERIFICATION_TOKEN: string;
+  readonly FORGOT_PASSWORD_TOKEN: string;
 };
 export const env: Iconfig = {
   MONGO_URI: process.env.MONGO_URI,
@@ -87,6 +93,7 @@ export const env: Iconfig = {
   SMTP_USER: process.env.SMTP_USER,
   SMTP_PASS: process.env.SMTP_PASS,
   EMAIL_VERIFICATION_TOKEN: process.env.EMAIL_VERIFICATION_TOKEN,
+  FORGOT_PASSWORD_TOKEN: process.env.FORGOT_PASSWORD_TOKEN,
 };
 
 export default env;
