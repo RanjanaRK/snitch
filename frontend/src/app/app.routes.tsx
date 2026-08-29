@@ -8,6 +8,13 @@ import AppLayout from "./AppLayout";
 // Lazy loaded pages
 const Login = lazy(() => import("../features/auth/pages/Login"));
 const Register = lazy(() => import("../features/auth/pages/RegisterPage"));
+const VerifyEmail = lazy(() => import("../features/auth/pages/VerifyEmail"));
+const ForgotPassword = lazy(
+  () => import("../features/auth/pages/ForgotPassword"),
+);
+const ResetPassword = lazy(
+  () => import("../features/auth/pages/ResetPassword"),
+);
 
 const Home = lazy(() => import("../features/products/pages/Home"));
 const ProductDetails = lazy(
@@ -16,22 +23,16 @@ const ProductDetails = lazy(
 
 const Cart = lazy(() => import("../features/cart/pages/Cart"));
 const OrderSuccess = lazy(() => import("../features/cart/pages/OrderSuccess"));
-
 const WishList = lazy(() => import("../features/like/pages/WishList"));
-
 const CreateProduct = lazy(
   () => import("../features/products/pages/CreateProduct"),
 );
 const Dashboard = lazy(() => import("../features/products/pages/Dashboard"));
-
 const SellerProductDetails = lazy(
   () => import("../features/products/pages/SellerProductDetails"),
 );
-
 const Orders = lazy(() => import("../features/order/pages/Orders"));
-
 const OrderDetails = lazy(() => import("../features/order/pages/OrderDetails"));
-
 const Reviews = lazy(() => import("../features/review/pages/Reviews"));
 
 const LoaderFallback = () => (
@@ -53,6 +54,20 @@ export const routes = createBrowserRouter([
     path: "/register",
     element: withSuspense(<Register />),
   },
+  {
+    path: "/verify-email",
+    element: withSuspense(<VerifyEmail />),
+  },
+
+  {
+    path: "/forgot-password",
+    element: withSuspense(<ForgotPassword />),
+  },
+  {
+    path: "/reset-password",
+    element: withSuspense(<ResetPassword />),
+  },
+
   {
     element: <AppLayout />,
     children: [

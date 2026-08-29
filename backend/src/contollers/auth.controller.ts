@@ -69,7 +69,7 @@ export const register = async (req: Request, res: Response) => {
              <p>Thank you for registering at <strong>Vestra</strong>.</p>
              <p>Please verify your email address by clicking below:</p>
 
-             <a href="http://localhost:5000/api/auth/verify-email?token=${emailVerificationToken}">
+             <a href="http://localhost:5173/api/auth/verify-email?token=${emailVerificationToken}">
                Verify Email
              </a>
              <p>If you did not create an account, please ignore this email.</p>
@@ -222,10 +222,14 @@ export const forgotPassword = async (req: Request, res: Response) => {
     const { email } = req.body;
 
     const user = await userModel.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
 
+    if (!user) {
+      return res.status(200).json({
+        success: true,
+        message:
+          "If this email is registered, a password reset link has been sent.",
+      });
+    }
     const forgotPassToken = jwt.sign(
       { email: user.email },
       env.FORGOT_PASSWORD_TOKEN,
@@ -286,7 +290,6 @@ export const resetPassword = async (req: Request, res: Response) => {
         message: "User not found",
       });
     }
-
     user.password = password;
 
     await user.save();

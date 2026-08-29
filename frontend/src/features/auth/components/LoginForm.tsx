@@ -115,6 +115,14 @@ const LoginForm = () => {
                     </span>
                   )}
                 </div>
+                <div className="flex justify-end">
+                  <Link
+                    to="/forgot-password"
+                    className="text-[10px] tracking-[0.08em] text-[#7A6E63] underline"
+                  >
+                    Forgot Password?
+                  </Link>
+                </div>
 
                 {/* BUTTON */}
                 <button

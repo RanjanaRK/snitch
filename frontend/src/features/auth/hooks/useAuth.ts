@@ -1,6 +1,14 @@
 import { useDispatch } from "react-redux";
 import { toast } from "sonner";
-import { getMe, loginUser, logout, registerUser } from "../service/auth.api";
+import {
+  forgotPassword,
+  getMe,
+  loginUser,
+  logout,
+  registerUser,
+  resetPassword,
+  verifyEmail,
+} from "../service/auth.api";
 import { setError, setLoading, setUser } from "../state/auth.slice";
 import type { LoginFormData, RegisterFormData } from "../utils/zodSchema";
 
@@ -62,6 +70,23 @@ export const useAuth = () => {
     }
   };
 
+  const handleVerifyEmail = async (token: string) => {
+    try {
+      dispatch(setLoading(true));
+      const data = await verifyEmail(token);
+      toast.success(data.message);
+      return data;
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message || "Email verification failed";
+      dispatch(setError(message));
+      toast.error(message);
+      throw error;
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
   const handleGetme = async () => {
     try {
       dispatch(setLoading(true));
@@ -103,5 +128,55 @@ export const useAuth = () => {
     }
   };
 
-  return { handleRegister, handleLogin, handleGetme, handleLogout };
+  const handleForgotPassword = async (email: string) => {
+    try {
+      dispatch(setLoading(true));
+
+      const data = await forgotPassword(email);
+
+      return data;
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message || "Failed to send password reset link";
+
+      dispatch(setError(message));
+
+      throw error;
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+  const handleResetPassword = async (token: string, password: string) => {
+    try {
+      dispatch(setLoading(true));
+
+      const data = await resetPassword(token, password);
+
+      toast.success(data.message);
+
+      return data;
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message || "Failed to reset password";
+
+      dispatch(setError(message));
+
+      toast.error(message);
+
+      throw error;
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+  return {
+    handleRegister,
+    handleLogin,
+    handleVerifyEmail,
+    handleGetme,
+    handleLogout,
+    handleForgotPassword,
+    handleResetPassword,
+  };
 };

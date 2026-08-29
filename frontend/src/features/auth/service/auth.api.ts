@@ -38,3 +38,29 @@ export const logout = async (): Promise<AuthResponse> => {
   const response = await authApiInstance.post("/logout");
   return response.data;
 };
+
+export const verifyEmail = async (token: string) => {
+  const response = await authApiInstance.get(`/verify-email?token=${token}`);
+  return response.data;
+};
+
+const authApi = axios.create({
+  baseURL: `${import.meta.env.VITE_BACKEND_URL}/api/auth`,
+  withCredentials: true,
+});
+
+export const forgotPassword = async (email: string) => {
+  const response = await authApi.post("/forgot-password", {
+    email,
+  });
+
+  return response.data;
+};
+
+export const resetPassword = async (token: string, password: string) => {
+  const response = await authApi.post(`/reset-password?token=${token}`, {
+    password,
+  });
+
+  return response.data;
+};
