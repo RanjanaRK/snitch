@@ -31,11 +31,13 @@ const RegisterForm = () => {
       const res = await handleRegister(data);
       toast.success(res.message);
 
-      if (res.user?.role === "buyer") {
-        navigate("/");
-      } else if (res.user?.role === "seller") {
-        navigate("/seller/dashboard");
-      }
+      navigate("/login");
+
+      // if (res.user?.role === "buyer") {
+      //   navigate("/");
+      // } else if (res.user?.role === "seller") {
+      //   navigate("/seller/dashboard");
+      // }
     } catch (error: any) {
       toast.error(error.message);
     }

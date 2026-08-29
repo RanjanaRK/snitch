@@ -62,6 +62,8 @@ export const register = async (req: Request, res: Response) => {
       { expiresIn: "15m" },
     );
 
+    console.log({ emailVerificationToken });
+
     await sendEmail({
       to: user.email,
       subject: "Email Verification",
