@@ -54,10 +54,48 @@ export const createProduct = async (req: Request, res: Response) => {
       });
     }
 
-    let parsedOccasions: string[] = [];
+    const allowedOccasions = [
+      "casual",
+      "party",
+      "ethnic",
+      "interview",
+      "office",
+      "college",
+      "wedding",
+      "travel",
+      "gym",
+      "daily",
+      "festive",
+      "birthday",
+      "anniversary",
+      "christmas",
+    ] as const;
+
+    type Occasion = (typeof allowedOccasions)[number];
+
+    // Parse occasions
+    let parsedOccasions: Occasion[] = [];
 
     if (occasions) {
-      parsedOccasions = Array.isArray(occasions) ? occasions : [occasions];
+      const occasionArray = Array.isArray(occasions) ? occasions : [occasions];
+
+      const invalidOccasions = occasionArray.filter(
+        (occasion): occasion is string =>
+          !allowedOccasions.includes(occasion.trim().toLowerCase() as Occasion),
+      );
+
+      if (invalidOccasions.length > 0) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid occasion",
+          invalidOccasions,
+          allowedOccasions,
+        });
+      }
+
+      parsedOccasions = occasionArray.map(
+        (occasion) => occasion.trim().toLowerCase() as Occasion,
+      );
     }
 
     let parsedKeywords: string[] = [];
