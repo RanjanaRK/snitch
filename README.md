@@ -1,6 +1,6 @@
-# Snitch - Full Stack E-Commerce Platform
+# Vastra - Full Stack E-Commerce Platform
 
-A modern full-stack e-commerce application inspired by Snitch, built using React, Node.js, Express, MongoDB, and TypeScript.
+A modern full-stack e-commerce application inspired by Vastra, built using React, Node.js, Express, MongoDB, and TypeScript.
 
 ## Features
 
@@ -88,6 +88,14 @@ IMAGEKIT_PRIVATE_KEY=
 RAZORPAY_KEY_ID=
 
 RAZORPAY_KEY_SECRET=
+
+GEMINI_API_KEY=
+
+EMAIL_VERIFICATION_TOKEN=
+
+FORGOT_PASSWORD_TOKEN=
+
+RESEND_API_KEY=
 
 NODE_ENV=development
 
