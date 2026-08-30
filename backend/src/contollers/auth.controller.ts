@@ -71,7 +71,7 @@ export const register = async (req: Request, res: Response) => {
              <p>Thank you for registering at <strong>Vestra</strong>.</p>
              <p>Please verify your email address by clicking below:</p>
 
-             <a href="http://localhost:5173/verify-email?token=${emailVerificationToken}">
+             <a href="${env.FRONTEND_URL}/verify-email?token=${emailVerificationToken}">
                 Verify Email
              </a>
              <p>If you did not create an account, please ignore this email.</p>
@@ -243,7 +243,7 @@ export const forgotPassword = async (req: Request, res: Response) => {
       subject: "Password Reset",
       html: ` <p>Hi ${user.fullname},</p>
                 <p>Click the link below to reset your password:</p>
-                <a href="http://localhost:5173/reset-password?token=${forgotPassToken}">
+                <a href="${env.FRONTEND_URL}/reset-password?token=${forgotPassToken}">
                       Reset Password
                 </a>
                 <p>If you did not request a password reset, please ignore this email.</p>
