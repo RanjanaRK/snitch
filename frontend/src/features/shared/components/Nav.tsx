@@ -26,7 +26,7 @@ const Nav = () => {
               color: "#A8874F",
             }}
           >
-            VESTRA.
+            VASTRA.
           </Link>
 
           {/* Desktop Categories */}

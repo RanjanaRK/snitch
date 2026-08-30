@@ -537,7 +537,7 @@ const AiFashionAssistant = () => {
                 {/* FOOTER */}
 
                 <p className="mt-4 text-center text-[10px] tracking-wide text-[#91877D]">
-                  Powered by Vestra
+                  Powered by Vastra
                 </p>
               </form>
             </div>
