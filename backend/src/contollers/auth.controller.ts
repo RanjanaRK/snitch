@@ -34,18 +34,89 @@ async function sendTokenResponse(
   });
 }
 
+// export const register = async (req: Request, res: Response) => {
+//   const { email, password, fullname, contact, isSeller } = req.body;
+//   try {
+//     const existingUser = await userModel.findOne({
+//       $or: [{ email }, { contact }],
+//     });
+
+//     if (existingUser) {
+//       return res.status(400).json({
+//         message: "User with this email or contact already exists",
+//       });
+//     }
+
+//     const user = await userModel.create({
+//       email,
+//       password,
+//       fullname,
+//       emailVerified: false,
+//       contact,
+//       role: isSeller ? "seller" : "buyer",
+//     });
+
+//     const emailVerificationToken = jwt.sign(
+//       { email: user.email },
+//       env.EMAIL_VERIFICATION_TOKEN,
+//       { expiresIn: "15m" },
+//     );
+
+//     console.log({ emailVerificationToken });
+
+//     await sendEmail({
+//       to: user.email,
+//       subject: "Email Verification",
+//       html: `<p>Hi ${user.fullname},</p>
+//              <p>Thank you for registering at <strong>Vestra</strong>.</p>
+//              <p>Please verify your email address by clicking below:</p>
+
+//              <a href="http://localhost:5173/verify-email?token=${emailVerificationToken}">
+//                 Verify Email
+//              </a>
+//              <p>If you did not create an account, please ignore this email.</p>
+//              <p>Best regards,<br>The Vestra Team</p>`,
+//     });
+
+//     res.status(200).json({
+//       success: true,
+//       message:
+//         "User registered successfully. Please check your email for verification.",
+//       user: {
+//         _id: user._id,
+//         email: user.email,
+//         fullname: user.fullname,
+//         contact: user.contact,
+//         role: user.role,
+//       },
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json({ message: "Server error" });
+//   }
+// };
+
 export const register = async (req: Request, res: Response) => {
-  const { email, password, fullname, contact, isSeller } = req.body;
+  console.time("REGISTER TOTAL");
+
   try {
+    const { email, password, fullname, contact, isSeller } = req.body;
+
+    console.time("FIND USER");
+
     const existingUser = await userModel.findOne({
       $or: [{ email }, { contact }],
     });
+
+    console.timeEnd("FIND USER");
 
     if (existingUser) {
       return res.status(400).json({
         message: "User with this email or contact already exists",
       });
     }
+
+    console.time("CREATE USER");
 
     const user = await userModel.create({
       email,
@@ -56,27 +127,40 @@ export const register = async (req: Request, res: Response) => {
       role: isSeller ? "seller" : "buyer",
     });
 
+    console.timeEnd("CREATE USER");
+
+    console.time("GENERATE TOKEN");
+
     const emailVerificationToken = jwt.sign(
       { email: user.email },
       env.EMAIL_VERIFICATION_TOKEN,
       { expiresIn: "15m" },
     );
 
-    console.log({ emailVerificationToken });
+    console.timeEnd("GENERATE TOKEN");
+
+    console.time("SEND EMAIL");
 
     await sendEmail({
       to: user.email,
       subject: "Email Verification",
-      html: `<p>Hi ${user.fullname},</p>
-             <p>Thank you for registering at <strong>Vestra</strong>.</p>
-             <p>Please verify your email address by clicking below:</p>
+      html: `
+        <p>Hi ${user.fullname},</p>
+        <p>Thank you for registering at <strong>Vestra</strong>.</p>
+        <p>Please verify your email address by clicking below:</p>
 
-             <a href="http://localhost:5173/api/auth/verify-email?token=${emailVerificationToken}">
-               Verify Email
-             </a>
-             <p>If you did not create an account, please ignore this email.</p>
-             <p>Best regards,<br>The Vestra Team</p>`,
+        <a href="http://localhost:5173/auth/verify-email?token=${emailVerificationToken}">
+          Verify Email
+        </a>
+
+        <p>If you did not create an account, please ignore this email.</p>
+        <p>Best regards,<br>The Vestra Team</p>
+      `,
     });
+
+    console.timeEnd("SEND EMAIL");
+
+    console.time("SEND RESPONSE");
 
     res.status(200).json({
       success: true,
@@ -90,9 +174,17 @@ export const register = async (req: Request, res: Response) => {
         role: user.role,
       },
     });
+
+    console.timeEnd("SEND RESPONSE");
+    console.timeEnd("REGISTER TOTAL");
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: "Server error" });
+    console.error(error);
+
+    console.timeEnd("REGISTER TOTAL");
+
+    return res.status(500).json({
+      message: "Server error",
+    });
   }
 };
 

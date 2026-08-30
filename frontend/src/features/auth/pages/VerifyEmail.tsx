@@ -180,14 +180,14 @@ const VerifyEmail = () => {
 
                 <div className="mt-8 flex flex-col gap-4">
                   <Link
-                    to="/auth/login"
+                    to="/login"
                     className="flex w-full items-center justify-center bg-[#1b1c1a] py-4 text-[11px] tracking-[0.25em] text-[#fbf9f6] uppercase transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#C9A96E] hover:shadow-lg"
                   >
                     Go to Login
                   </Link>
 
                   <Link
-                    to="/auth/register"
+                    to="/register"
                     className="flex w-full items-center justify-center border border-[#d0c5b5] py-4 text-[11px] tracking-[0.25em] text-[#7A6E63] uppercase transition-all duration-300 hover:border-[#C9A96E] hover:text-[#1b1c1a]"
                   >
                     Create New Account
