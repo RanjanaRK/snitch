@@ -149,7 +149,7 @@ export const googleAuthCallback = async (req: Request, res: Response) => {
     }
 
     const token = jwt.sign(
-      { _id: user?._id, role: user?.role },
+      { id: user?._id, role: user?.role },
       env.JWT_SECRET,
       {
         expiresIn: "7d",
