@@ -39,7 +39,9 @@ authRouter.get(
   passport.authenticate("google", {
     session: false,
     failureRedirect:
-      env.NODE_ENV === "development" ? "http://localhost:5173/login" : "/login",
+      env.NODE_ENV === "development"
+        ? "http://localhost:5173/login"
+        : `${env.FRONTEND_URL}/login`,
   }),
   googleAuthCallback,
 );

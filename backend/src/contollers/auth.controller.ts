@@ -162,7 +162,7 @@ export const googleAuthCallback = async (req: Request, res: Response) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.redirect("http://localhost:5173");
+    res.redirect(env.FRONTEND_URL);
   } catch (error) {
     return res.status(500).json({ message: "Server error" });
   }
