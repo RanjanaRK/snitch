@@ -144,6 +144,7 @@ export const googleAuthCallback = async (req: Request, res: Response) => {
         email,
         googleId: id,
         fullname: displayName,
+        emailVerified: true,
       });
     }
 
