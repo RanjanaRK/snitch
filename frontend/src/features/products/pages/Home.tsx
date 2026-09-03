@@ -216,7 +216,7 @@ const Home = () => {
               color: "#A8874F",
             }}
           >
-            Vestra. © {new Date().getFullYear()}
+            Vastra. © {new Date().getFullYear()}
           </span>
         </footer>
       </div>
