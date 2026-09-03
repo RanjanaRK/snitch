@@ -20,23 +20,35 @@ const Nav = () => {
         <div className="flex items-center justify-between px-4 py-4 md:px-8 lg:px-16 xl:px-24">
           <Link
             to="/"
-            className="flex items-center gap-2 transition-all duration-300"
+            className="group flex items-center gap-3 transition-all duration-500"
           >
-            <img
-              src={"/favicon.png"}
-              alt="Vastra"
-              className="h-11 w-11 object-contain"
-            />
+            {/* Logo */}
+            <div className="relative">
+              <div className="absolute inset-0 rounded-full bg-[#A8874F]/10 opacity-0 blur-md transition-opacity duration-500 group-hover:opacity-100" />
 
-            <span
-              className="text-xl tracking-[0.3em] uppercase"
-              style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                color: "#A8874F",
-              }}
-            >
-              VASTRA.
-            </span>
+              <img
+                src="/favicon.png"
+                alt="Vastra"
+                className="relative h-11 w-11 object-contain transition-all duration-500 ease-out group-hover:scale-105 group-hover:-rotate-1"
+              />
+            </div>
+
+            {/* Brand */}
+            <div className="relative flex flex-col leading-none">
+              <span
+                className="text-[22px] tracking-[0.28em] uppercase transition-all duration-500 group-hover:tracking-[0.34em]"
+                style={{
+                  fontFamily: "'Cormorant Garamond', serif",
+                  color: "#A8874F",
+                  fontWeight: 500,
+                }}
+              >
+                VASTRA
+              </span>
+
+              {/* Luxury accent */}
+              <span className="mt-1.25 h-px w-0 bg-[#A8874F]/70 transition-all duration-500 group-hover:w-full" />
+            </div>
           </Link>
 
           {/* Desktop Categories */}
