@@ -20,13 +20,23 @@ const Nav = () => {
         <div className="flex items-center justify-between px-4 py-4 md:px-8 lg:px-16 xl:px-24">
           <Link
             to="/"
-            className="text-xl tracking-[0.3em] uppercase transition-all duration-500 hover:tracking-[0.4em] hover:text-[#D8B77B]"
-            style={{
-              fontFamily: "'Cormorant Garamond', serif",
-              color: "#A8874F",
-            }}
+            className="flex items-center gap-2 transition-all duration-300 hover:scale-105"
           >
-            VASTRA.
+            <img
+              src={"/favicon.png"}
+              alt="Vastra"
+              className="h-11 w-11 object-contain"
+            />
+
+            <span
+              className="text-xl tracking-[0.3em] uppercase"
+              style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                color: "#A8874F",
+              }}
+            >
+              VASTRA.
+            </span>
           </Link>
 
           {/* Desktop Categories */}
