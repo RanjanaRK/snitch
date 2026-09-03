@@ -20,7 +20,7 @@ const Nav = () => {
         <div className="flex items-center justify-between px-4 py-4 md:px-8 lg:px-16 xl:px-24">
           <Link
             to="/"
-            className="flex items-center gap-2 transition-all duration-300 hover:scale-105"
+            className="flex items-center gap-2 transition-all duration-300"
           >
             <img
               src={"/favicon.png"}
